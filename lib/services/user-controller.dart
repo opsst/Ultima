@@ -13,6 +13,7 @@ class userController extends GetxController{
   changePage(int page){
     statePage.value = page;
     thisControl?.jumpToPage(page);
+    // thisControl?.animateToPage(page, duration: Duration(milliseconds: 100), curve: Curves.linear);
   }
 
 }

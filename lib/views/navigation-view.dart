@@ -1,8 +1,10 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ultima/views/account-view.dart';
 import 'package:ultima/views/discover-view.dart';
@@ -41,9 +43,10 @@ class _NavigationBarViewState extends State<NavigationBarView> {
           children: [
             Expanded(
               child: SafeArea(
+                top: false,
                 bottom: false,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 2.0.h,bottom: 1.h),
+                  padding: EdgeInsets.only(bottom: 0.h),
                   child: PageView(
                     pageSnapping: false,
                     physics: NeverScrollableScrollPhysics(),
@@ -58,62 +61,94 @@ class _NavigationBarViewState extends State<NavigationBarView> {
             Obx(
                   ()=> Container(
                     decoration: BoxDecoration(
-                      color: Colors.white
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(32),
+                      boxShadow: [
+                        BoxShadow(offset: Offset(0,18),color: Colors.black.withOpacity(0.1),blurRadius: 100,spreadRadius: 20)
+                      ]
                     ),
                 child: SafeArea(
                   top: false,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              Get.find<userController>().changePage(0);
-                            },
-                            child: Container(
-                              width: 25.w,
-                              // height: 5.h,
-                              child: Icon(EvaIcons.homeOutline,color: Get.find<userController>().statePage.value==0?Color(0xFF4E82FF):Color(0xFFBBBBBB),size: 22.sp),
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 1.5.h),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: (){
+                                Get.find<userController>().changePage(0);
+                              },
+                              child: Container(
+                                width: 25.w,
+                                // height: 5.h,
+                                child: Column(
+                                  children: [
+                                    Icon(Boxicons.bx_home_circle,color: Get.find<userController>().statePage.value==0?Color(0xFF4E82FF):Color(0xFFBBBBBB),size: 20.sp),
+                                    SizedBox(height: 0.2.h,),
+                                    Text('Home',style: GoogleFonts.inter(fontSize: 12.sp,fontWeight: FontWeight.w600,color: Get.find<userController>().statePage.value==0?Color(0xFF4E82FF):Color(0xFFBBBBBB)),)
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-                              Get.find<userController>().changePage(1);
+                            GestureDetector(
+                              onTap: (){
+                                Get.find<userController>().changePage(1);
 
-                            },
-                            child: Container(
-                              width: 25.w,
-                              // height: 5.h,
-                              child: Icon(EvaIcons.clockOutline,color: Get.find<userController>().statePage.value==1?Colors.white:Colors.grey,size: 22.sp),
+                              },
+                              child: Container(
+                                width: 25.w,
+                                // height: 5.h,
+                                child: Column(
+                                  children: [
+                                    Icon(Boxicons.bx_search,color: Get.find<userController>().statePage.value==1?Color(0xFF4E82FF):Color(0xFFBBBBBB),size: 20.sp),
+                                    SizedBox(height: 0.2.h,),
+                                    Text('Search',style: GoogleFonts.inter(fontSize: 12.sp,fontWeight: FontWeight.w600,color: Get.find<userController>().statePage.value==1?Color(0xFF4E82FF):Color(0xFFBBBBBB)),)
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-                              Get.find<userController>().changePage(2);
+                            GestureDetector(
+                              onTap: (){
+                                Get.find<userController>().changePage(2);
 
-                            },
-                            child: Container(
-                              width: 25.w,
-                              // height: 5.h,
-                              child: Icon(EvaIcons.playCircleOutline,color: Get.find<userController>().statePage.value==2?Colors.white:Colors.grey,size: 22.sp),
+                              },
+                              child: Container(
+                                width: 25.w,
+                                // height: 5.h,
+                                child: Column(
+                                  children: [
+                                    Icon(EvaIcons.bellOutline,color: Get.find<userController>().statePage.value==2?Color(0xFF4E82FF):Color(0xFFBBBBBB),size: 20.sp),
+                                    SizedBox(height: 0.2.h,),
+                                    Text('Notification',style: GoogleFonts.inter(fontSize: 12.sp,fontWeight: FontWeight.w600,color: Get.find<userController>().statePage.value==2?Color(0xFF4E82FF):Color(0xFFBBBBBB)),)
+
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-                              Get.find<userController>().changePage(3);
+                            GestureDetector(
+                              onTap: (){
+                                Get.find<userController>().changePage(3);
+                              },
+                              child: Container(
+                                width: 25.w,
+                                // height: 5.h,
+                                child: Column(
+                                  children: [
+                                    Icon(Boxicons.bx_user,color: Get.find<userController>().statePage.value==3?Color(0xFF4E82FF):Color(0xFFBBBBBB),size: 20.sp),
+                                    SizedBox(height: 0.2.h,),
+                                    Text('Account',style: GoogleFonts.inter(fontSize: 12.sp,fontWeight: FontWeight.w600,color: Get.find<userController>().statePage.value==3?Color(0xFF4E82FF):Color(0xFFBBBBBB)),)
 
-                            },
-                            child: Container(
-                              width: 25.w,
-                              // height: 5.h,
-                              child: Icon(EvaIcons.bellOutline,color: Get.find<userController>().statePage.value==3?Colors.white:Colors.grey,size: 22.sp),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
 
-                        ],
-                      ),
-                      SizedBox(height: 2.h,)
-                    ],
+                          ],
+                        ),
+                        SizedBox(height: 1.w,)
+                      ],
+                    ),
                   ),
                 ),
               ),
