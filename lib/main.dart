@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ultima/services/user-controller.dart';
 import 'package:ultima/views/navigation-view.dart';
+import 'package:ultima/views/welcome-view.dart';
 
 import 'firebase_options.dart';
 
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
             title: "Ultima",
             theme: _buildTheme(Brightness.light),
             debugShowCheckedModeBanner: false,
-            home: NavigationBarView()
+            home: WelcomepageView()
         );
       },
 
