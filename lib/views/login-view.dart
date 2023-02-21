@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:ultima/services/user-controller.dart';
+import 'package:ultima/views/home-view.dart';
 import 'package:ultima/views/signup-view.dart';
+
+import 'navigation-view.dart';
 
 class LoginpageView extends StatefulWidget {
   const LoginpageView({Key? key}) : super(key: key);
@@ -48,15 +54,22 @@ class _LoginpageViewState extends State<LoginpageView> {
             SizedBox(height: 1.5.h,),
             Align(alignment: Alignment.centerRight,child: Text('Forgot Password?',style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w500,color: Color(0xFF6E7A92)))),
             SizedBox(height: 4.h,),
-            Container(
-                height: 6.5.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Color(0xFF4E82FF),
-                ),
-                child: Center(
-                  child: Text('LOGIN',style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w800,color: Colors.white, letterSpacing: 1)),
-                )
+            GestureDetector(
+              onTap: (){
+                Get.to(
+                    () => NavigationBarView()
+                );
+              },
+              child: Container(
+                  height: 6.5.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Color(0xFF4E82FF),
+                  ),
+                  child: Center(
+                    child: Text('LOGIN',style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w800,color: Colors.white, letterSpacing: 1)),
+                  )
+              ),
             ),
             SizedBox(height: 1.5.h,),
             Text('You don’t have an account?',style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w500,color: Color(0xFF6E7A92))),
