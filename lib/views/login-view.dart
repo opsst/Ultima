@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:ultima/provider/auth-service.dart';
 import 'package:ultima/services/user-controller.dart';
 import 'package:ultima/views/home-view.dart';
 import 'package:ultima/views/signup-view.dart';
@@ -98,14 +97,9 @@ class _LoginpageViewState extends State<LoginpageView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    AuthService().signInWithGoogle();
-                  },
-                  child: Image.asset('assets/images/google-icon.png',height: 6.5.h)
-                ),
+                Image.asset('assets/images/google-icon.png',height: 7.h),
                 SizedBox(width: 3.h,),
-                Image.asset('assets/images/facebook-icon.png',height: 6.5.h),
+                Image.asset('assets/images/facebook-icon.png',height: 7.h),
               ],
             )
           ],
