@@ -132,7 +132,7 @@ class _HomepageViewState extends State<HomepageView> {
                                         ]
                                     ),),
                                 ),
-                                Image.asset('assets/images/cosmetic-tryon.png',scale: 0.9,),
+                                Image.asset('assets/images/cosmetic-tryon.png',height: 15.h),
                                 Positioned(
                                     top: 0,
                                     left: 0,
@@ -161,7 +161,7 @@ class _HomepageViewState extends State<HomepageView> {
 
                                     ),),
                                 ),
-                                Image.asset('assets/images/product-discovery.png',scale: 0.9,),
+                                Image.asset('assets/images/product-discovery.png',height: 15.h,),
                                 Positioned(
                                     top: 0,
                                     right: 0,
@@ -194,9 +194,9 @@ class _HomepageViewState extends State<HomepageView> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset('assets/images/menu1.png',scale: 0.8,),
+                                Image.asset('assets/images/menu1.png',height: 4.h,),
                                 SizedBox(height: 2.w,),
-                                Text('Ingredient\nInvestigator',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
+                                Text('Ingredient\nInvestigator',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
 
                         ],
                             ),
@@ -217,9 +217,9 @@ class _HomepageViewState extends State<HomepageView> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset('assets/images/menu2.png',scale: 0.8,),
+                                Image.asset('assets/images/menu2.png',height: 4.h,),
                                 SizedBox(height: 2.w,),
-                                Text('Compare\nProduct',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
+                                Text('Compare\nProduct',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
 
                               ],
                             ),
@@ -238,9 +238,9 @@ class _HomepageViewState extends State<HomepageView> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset('assets/images/menu3.png',scale: 0.8,),
+                                Image.asset('assets/images/menu3.png',height: 4.h,),
                                 SizedBox(height: 2.w,),
-                                Text('Similar\nFinder',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
+                                Text('Similar\nFinder',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
 
                               ],
                             ),

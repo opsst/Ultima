@@ -26,7 +26,7 @@ class _WelcomepageViewState extends State<WelcomepageView> {
           child: Stack(
             children: [
               Container(
-                height: 80.h,
+                height: 78.h,
                 width: 100.w,
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -37,18 +37,18 @@ class _WelcomepageViewState extends State<WelcomepageView> {
                 child: Stack(
                   children: [
                     Positioned(
-                      top: 14.h,
+                      top: 13.h,
                       left: 0,
                       right: 0,
                       child: Column(
                         children: [
                           Text('Welcome to',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Colors.white)),
-                          SizedBox(height: 1.h),
+                          SizedBox(height: 0.5.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset('assets/images/logo_icon.png',scale: 1, height: 36),
-                              SizedBox(width: 2.w),
+                              Image.asset('assets/images/logo_icon.png',scale: 1, height: 6.5.h),
+                              SizedBox(width: 2.5.w),
                               Text('Ultima',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 25.sp,fontWeight: FontWeight.w700,color: Colors.white)),
                             ],
                           )
@@ -65,7 +65,7 @@ class _WelcomepageViewState extends State<WelcomepageView> {
                 ),
               ),
               Positioned(
-                bottom: 8.h,
+                bottom: 10.h,
                 left: 5.h,
                 right: 5.h,
                 child: Column(
