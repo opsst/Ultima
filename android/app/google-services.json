@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "889329332221",
-    "project_id": "ultima-b32f3",
-    "storage_bucket": "ultima-b32f3.appspot.com"
+    "project_number": "710359658843",
+    "project_id": "ultima-2989f",
+    "storage_bucket": "ultima-2989f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:889329332221:android:2a7ea79248d6244ba7f394",
+        "mobilesdk_app_id": "1:710359658843:android:0e5a80683d83aab2e2ea7e",
         "android_client_info": {
           "package_name": "com.ultima.ultima"
         }
       },
       "oauth_client": [
         {
-          "client_id": "889329332221-qdqa5snih132h8tg33oqijqntd5go1ph.apps.googleusercontent.com",
+          "client_id": "710359658843-342f2kj88nfeef19n3otqpvcvp7babh0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyChjM6At47DmEllhl028Vd4u-xeFcPd5UY"
+          "current_key": "AIzaSyBluI5NGiTKZnr0KIs0S8o6VbK-DPfJO7I"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "889329332221-qdqa5snih132h8tg33oqijqntd5go1ph.apps.googleusercontent.com",
+              "client_id": "710359658843-342f2kj88nfeef19n3otqpvcvp7babh0.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "889329332221-1g6dq92pkpunq67khssccvrb9060g532.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.ultima.ultima"
-              }
             }
           ]
         }
