@@ -17,6 +17,21 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
+
+  _user() async {
+    await FirebaseAuth.instance.currentUser!.getIdTokenResult().then((result) {
+      print('getIdTokenResult: ');
+      print(result);
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _user();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -62,7 +77,7 @@ class _AccountViewState extends State<AccountView> {
                           children: [
                             CircleAvatar(),
                             SizedBox(width: 2.w,),
-                            Text(FirebaseAuth.instance.currentUser!.displayName!,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 18.sp,letterSpacing: 0.3,color: Color(0xFF0B1F4F)),),
+                            Text(FirebaseAuth.instance.currentUser!.displayName!.toString(),style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 18.sp,letterSpacing: 0.3,color: Color(0xFF0B1F4F)),),
                             Spacer(),
                             IconButton(onPressed: (){}, icon: Icon(FeatherIcons.moreVertical,size: 20.sp,))
 

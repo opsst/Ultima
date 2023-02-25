@@ -100,12 +100,19 @@ class _LoginpageViewState extends State<LoginpageView> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    AuthService().signInWithGoogle();
+                    AuthService().signInWithGoogle(context);
+                    // Navigator.pop(context);
                   },
                   child: Image.asset('assets/images/google-icon.png',height: 6.5.h)
                 ),
                 SizedBox(width: 3.h,),
-                Image.asset('assets/images/facebook-icon.png',height: 6.5.h),
+                GestureDetector(
+                    onTap: () {
+                      AuthService().signInWithFacebook(context);
+                      // Navigator.pop(context);
+                    },
+                  child: Image.asset('assets/images/facebook-icon.png',height: 6.5.h)
+                ),
               ],
             )
           ],
