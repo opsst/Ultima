@@ -40,7 +40,8 @@ class MyApp extends StatelessWidget {
             title: "Ultima",
             theme: _buildTheme(Brightness.light),
             debugShowCheckedModeBanner: false,
-            home: AuthService().handleAuthState()
+            // home: AuthService().handleAuthState()
+            home: NavigationBarView(),
         );
       },
     );
