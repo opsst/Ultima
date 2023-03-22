@@ -89,6 +89,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.13+1"
+  camera_deep_ar:
+    dependency: "direct main"
+    description:
+      name: camera_deep_ar
+      sha256: b0d30e373409067fb5e43496ec016c5cc67a63eadd1e88ad96349716f164c905
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2+3"
   camera_platform_interface:
     dependency: transitive
     description:

@@ -1,7 +1,10 @@
 import 'package:camera/camera.dart';
+import 'package:camera_deep_ar/camera_deep_ar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../services/config.dart';
 
 class CameraView extends StatefulWidget {
   const CameraView({Key? key}) : super(key: key);
@@ -12,14 +15,36 @@ class CameraView extends StatefulWidget {
 
 class _CameraViewState extends State<CameraView> {
 
+
+  final deepArController = CameraDeepArController(config);
+  String _platformVersion = 'Unknown';
+  bool isRecording = false;
+  CameraMode cameraMode = config.cameraMode;
+  DisplayMode displayMode = config.displayMode;
+
   late CameraController controller;
+  late CameraDeepArController cameraDeepArController;
   late List<CameraDescription> _cameras;
   bool cameraReady = false;
 
   @override
   void initState() {
-    cameraInit();
+    // cameraInit();
     super.initState();
+    CameraDeepArController.checkPermissions();
+    deepArController.setEventHandler(DeepArEventHandler(onCameraReady: (v) {
+      _platformVersion = "onCameraReady $v";
+      setState(() {});
+    }, onSnapPhotoCompleted: (v) {
+      _platformVersion = "onSnapPhotoCompleted $v";
+      setState(() {});
+    }, onVideoRecordingComplete: (v) {
+      _platformVersion = "onVideoRecordingComplete $v";
+      setState(() {});
+    }, onSwitchEffect: (v) {
+      _platformVersion = "onSwitchEffect $v";
+      setState(() {});
+    }));
   }
 
 
@@ -49,7 +74,8 @@ class _CameraViewState extends State<CameraView> {
 
   @override
   void dispose() {
-    controller.dispose();
+    deepArController?.dispose();
+    // controller.dispose();
     super.dispose();
   }
 
@@ -62,9 +88,11 @@ class _CameraViewState extends State<CameraView> {
           Container(
             height: 100.h,
             width: 100.w,
-            child: cameraReady?CameraPreview(
-              controller!,
-            ):Container()
+            child: DeepArPreview(deepArController),
+            // cameraReady?
+            // CameraPreview(
+            //   controller!,
+            // ):Container()
           ),
         ],
       ),
