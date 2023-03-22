@@ -7,9 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:ultima/views/camera-view.dart';
 
 class HomepageView extends StatefulWidget {
   const HomepageView({Key? key}) : super(key: key);
@@ -908,7 +911,11 @@ class _HomepageViewState extends State<HomepageView> {
                       children: [
                         Text('Ultima',style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 22.sp,letterSpacing: 1,color: Color(0xFF0B1F4F)),),
                         Spacer(),
-                        IconButton(onPressed: (){}, icon: Icon(FeatherIcons.maximize,size: 20.sp,))
+                        IconButton(onPressed: (){
+                          Get.to(
+                              () => CameraView()
+                          );
+                        }, icon: Icon(FeatherIcons.maximize,size: 20.sp,))
 
                       ],
                     ),
