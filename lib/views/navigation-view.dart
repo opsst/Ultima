@@ -70,7 +70,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                 child: SafeArea(
                   top: false,
                   child: Padding(
-                    padding: EdgeInsets.only(top: 1.5.h),
+                    padding: EdgeInsets.only(top: 1.5.h,bottom: 1.h),
                     child: Column(
                       children: [
                         Row(
