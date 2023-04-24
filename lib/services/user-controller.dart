@@ -10,6 +10,7 @@ class userController extends GetxController{
   startControl(PageController controller){
     thisControl = controller;
   }
+
   changePage(int page){
     statePage.value = page;
     thisControl?.jumpToPage(page);
