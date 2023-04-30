@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:camera_deep_ar/camera_deep_ar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../services/config.dart';
@@ -27,6 +28,9 @@ class _CameraViewState extends State<CameraView> {
   late List<CameraDescription> _cameras;
   bool cameraReady = false;
 
+  var mySystemTheme= SystemUiOverlayStyle.dark
+      .copyWith(systemNavigationBarColor: Colors.red);
+
   @override
   void initState() {
     // cameraInit();
@@ -45,6 +49,7 @@ class _CameraViewState extends State<CameraView> {
       _platformVersion = "onSwitchEffect $v";
       setState(() {});
     }));
+
   }
 
 
@@ -82,9 +87,11 @@ class _CameraViewState extends State<CameraView> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Stack(
         children: [
+
           Container(
             height: 100.h,
             width: 100.w,
@@ -94,8 +101,38 @@ class _CameraViewState extends State<CameraView> {
             //   controller!,
             // ):Container()
           ),
+          SafeArea(
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: (){
+                    deepArController.switchEffect(CameraMode.filter, 'assets/images/test.deepar');
+                  },
+                  child: Container(
+                    width: 10.w,
+                    height: 10.w,
+                    color: Colors.red,
+                    child: Text('test'),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: (){
+                    deepArController.switchEffect(CameraMode.filter, 'assets/images/MakeupLook.deepar');
+                  },
+                  child: Container(
+                    width: 10.w,
+                    height: 10.w,
+                    color: Colors.green,
+                    child: Text('test2'),
+                  ),
+                ),
+
+              ],
+            ),
+          )
         ],
       ),
     );
   }
+
 }
