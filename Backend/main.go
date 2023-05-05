@@ -5,6 +5,8 @@ import (
 	"fiber-mongo-api/routes" //add this
 
 	"github.com/gofiber/fiber/v2"
+
+	
 )
 
 func main() {
@@ -13,6 +15,7 @@ func main() {
 	//run database
 	configs.ConnectDB()
 
+	
 	//routes
 	routes.UserRoute(app) //add this
 
