@@ -17,6 +17,7 @@ import (
 )
 
 var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
+
 var validate = validator.New()
 
 func CreateUser(c *fiber.Ctx) error {

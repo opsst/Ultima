@@ -5,9 +5,8 @@ import (
 	"fiber-mongo-api/routes" //add this
 
 	"github.com/gofiber/fiber/v2"
-
-	
 )
+
 
 func main() {
 	app := fiber.New()
@@ -18,6 +17,6 @@ func main() {
 	
 	//routes
 	routes.UserRoute(app) //add this
-
+    routes.CosmeticRoute(app)
 	app.Listen(":8000")
 }

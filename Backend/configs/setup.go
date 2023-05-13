@@ -39,3 +39,8 @@ func GetCollection(client *mongo.Client, collectionName string) *mongo.Collectio
 	collection := client.Database("Ultima-API").Collection(collectionName)
 	return collection
 }
+
+func GetCollection2(client *mongo.Client, collectionName string) *mongo.Collection {
+	collection := client.Database("Cosmetics-API").Collection(collectionName)
+	return collection
+}
