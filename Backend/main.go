@@ -7,16 +7,13 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-
 func main() {
 	app := fiber.New()
 
 	//run database
 	configs.ConnectDB()
-
-	
 	//routes
 	routes.UserRoute(app) //add this
-    routes.CosmeticRoute(app)
+	routes.CosmeticRoute(app)
 	app.Listen(":8000")
 }
