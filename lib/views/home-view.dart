@@ -12,6 +12,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:ultima/services/service.dart';
 import 'package:ultima/views/camera-view.dart';
 
 class HomepageView extends StatefulWidget {
@@ -27,6 +28,7 @@ class _HomepageViewState extends State<HomepageView> {
   var indicator = 0;
   var imageAds = ['https://theaxo.com/wp-content/uploads/2022/03/Untitled-design-4.jpg','https://www.brandbuffet.in.th/wp-content/uploads/2021/07/Konvy-Free-PR-1.jpg','https://www.truemoney.com/wp-content/uploads/2021/03/truemoneywallet-lazada-shop-pro-031-banner-20220503-1100X550.jpeg'];
   var tabIndex = 0;
+
 
   @override
   Widget build(BuildContext context) {
