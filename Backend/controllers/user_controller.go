@@ -35,6 +35,11 @@ func CreateUser(c *fiber.Ctx) error {
 		return c.Status(http.StatusBadRequest).JSON(responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &fiber.Map{"data": validationErr.Error()}})
 	}
 
+	err := userCollection.FindOne(ctx, bson.M{"username": user.Username}).Decode(&user)
+	if err == nil {
+		return c.Status(http.StatusInternalServerError).JSON(responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &fiber.Map{"data": "This Username already taken."}})
+	}
+
 	newUser := models.User{
 		Id:       primitive.NewObjectID(),
 		Username: user.Username,
