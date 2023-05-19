@@ -6,13 +6,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import 'dart:io';
 
 import '../services/config.dart';
 
 class CameraView extends StatefulWidget {
-  const CameraView({Key? key}) : super(key: key);
+  final List<CameraDescription>? cameras;
+
+  const CameraView({this.cameras,Key? key}) : super(key: key);
 
   @override
   State<CameraView> createState() => _CameraViewState();
@@ -31,10 +35,30 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
   CameraMode cameraMode = config.cameraMode;
   DisplayMode displayMode = config.displayMode;
 
-  late CameraController controller;
+  late CameraController deepController;
   late CameraDeepArController cameraDeepArController;
   late List<CameraDescription> _cameras;
   bool cameraReady = false;
+
+  late CameraController controller;
+  File? import;
+  XFile? pictureFile;
+  bool flash = false;
+
+  Future takePhoto(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.import = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image $e');
+    }
+  }
+
 
   var mySystemTheme= SystemUiOverlayStyle.dark
       .copyWith(systemNavigationBarColor: Colors.red);
@@ -42,9 +66,12 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
   late TabController _tabController;
   @override
   void initState() {
-    // cameraInit();
+
+    cameraInit();
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+
+
     // _tabController.addListener(() {
     //   if(_tabController.indexIsChanging){
     //     setState(() {
@@ -80,26 +107,39 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
 
   cameraInit() async {
     _cameras = await availableCameras();
-    controller = CameraController(_cameras[0], ResolutionPreset.max);
+
+    controller = CameraController(
+      _cameras[0],
+      ResolutionPreset.max,
+      imageFormatGroup: ImageFormatGroup.yuv420,
+    );
     controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
-      setState(() {
-        cameraReady = true;
-      });
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-          // Handle access errors here.
-            break;
-          default:
-          // Handle other errors here.
-            break;
-        }
-      }
+      setState(() {});
     });
+    //
+    // deepController = CameraController(_cameras[0], ResolutionPreset.max);
+    // deepController.initialize().then((_) {
+    //   if (!mounted) {
+    //     return;
+    //   }
+    //   setState(() {
+    //     cameraReady = true;
+    //   });
+    // }).catchError((Object e) {
+    //   if (e is CameraException) {
+    //     switch (e.code) {
+    //       case 'CameraAccessDenied':
+    //       // Handle access errors here.
+    //         break;
+    //       default:
+    //       // Handle other errors here.
+    //         break;
+    //     }
+    //   }
+    // });
   }
 
   @override
@@ -112,7 +152,13 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-
+    if (!controller.value.isInitialized) {
+      return const SizedBox(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Scaffold(
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -122,7 +168,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
             height: 100.h,
             width: 100.w,
             color: Colors.green,
-            // child: DeepArPreview(deepArController),
+            child: modeSelect==0?CameraPreview(controller!):DeepArPreview(deepArController),
             // cameraReady?
             // CameraPreview(
             //   controller!,
@@ -158,6 +204,13 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                       onTap: (index){
                         // _tabController.addListener(() {
                         //   if(_tabController.indexIsChanging){
+                          if(index==0){
+                            controller.pausePreview();
+
+
+                          }else{
+                            controller.resumePreview();
+                          }
                             setState(() {
                               modeSelect = index;
                               animationStart = true;
