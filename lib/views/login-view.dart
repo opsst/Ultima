@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -9,7 +11,8 @@ import 'package:ultima/provider/auth-service.dart';
 import 'package:ultima/services/user-controller.dart';
 import 'package:ultima/views/home-view.dart';
 import 'package:ultima/views/signup-view.dart';
-
+import '../services/service.dart';
+import '../services/user-controller.dart';
 import 'navigation-view.dart';
 
 class LoginpageView extends StatefulWidget {
@@ -20,6 +23,7 @@ class LoginpageView extends StatefulWidget {
 }
 
 class _LoginpageViewState extends State<LoginpageView> {
+  APIService service = APIService();
   bool validate = true;
   String errEmail='', errPassword='';
   TextEditingController _emailController = TextEditingController();
@@ -56,10 +60,21 @@ class _LoginpageViewState extends State<LoginpageView> {
             Align(alignment: Alignment.centerRight,child: Text('Forgot Password?',style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w500,color: Color(0xFF6E7A92)))),
             SizedBox(height: 4.h,),
             GestureDetector(
-              onTap: (){
-                Get.to(
-                    () => NavigationBarView()
-                );
+              onTap: () async {
+                // Get.to(
+                //     () => NavigationBarView()
+                // );
+                var res2 = await service.loginUser(_emailController.text, _passwordController.text);
+
+
+                final data = jsonDecode(res2.toString());
+                print(data['token']);
+
+                //navigator
+
+
+
+
               },
               child: Container(
                   height: 6.5.h,
