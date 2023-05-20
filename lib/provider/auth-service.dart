@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ultima/views/login-view.dart';
 import 'package:ultima/views/navigation-view.dart';
@@ -21,8 +23,8 @@ class AuthService {
       idToken: googleAuth?.idToken,
     );
 
-    Navigator.pop(context);
-
+    // Navigator.pop(context);
+    Get.back();
     try {
       // Once signed in, return the UserCredential
       return await FirebaseAuth.instance.signInWithCredential(credential);

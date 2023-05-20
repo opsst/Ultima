@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
+import '../services/service.dart';
+import '../services/user-controller.dart';
 
 class SignUppageView extends StatefulWidget {
   const SignUppageView({Key? key}) : super(key: key);
@@ -13,6 +17,7 @@ class SignUppageView extends StatefulWidget {
 }
 
 class _SignUppageViewState extends State<SignUppageView> {
+  APIService service = APIService();
   bool validate = true;
   String errFirstname='', errLastname='', errEmail='', errPassword='';
   TextEditingController _firstnameController = TextEditingController();
@@ -106,15 +111,33 @@ class _SignUppageViewState extends State<SignUppageView> {
               ],
             ),
             SizedBox(height: 4.h,),
-            Container(
-                height: 6.5.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Color(0xFF4E82FF),
-                ),
-                child: Center(
-                  child: Text('CREATE ACCOUNT',style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w800,color: Colors.white, letterSpacing: 1)),
-                )
+            GestureDetector(
+              onTap: () async {
+
+                // print(_emailController.text);
+                // print(_passwordController.text);
+                // print(_firstnameController.text);
+                // print(_lastnameController.text);
+                //
+                var register = await service.RegisterUser(_emailController.text, _passwordController.text,
+                    _firstnameController.text, _lastnameController.text);
+
+                print(register);
+
+                // var res2 = await service.loginUser(_emailController.text, _passwordController.text);
+                // final data = jsonDecode(res2.toString());
+                // print(data['token']);
+              },
+              child: Container(
+                  height: 6.5.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Color(0xFF4E82FF),
+                  ),
+                  child: Center(
+                    child: Text('CREATE ACCOUNT',style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w800,color: Colors.white, letterSpacing: 1)),
+                  )
+              ),
             ),
             SizedBox(height: 4.5.h,),
             Row(
