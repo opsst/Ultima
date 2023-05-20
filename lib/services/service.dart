@@ -3,8 +3,8 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class APIService {
 
-  // var public = "http://localhost:8000/";
-  var public = "https://apiservice-d5qtigtmea-as.a.run.app";
+  var public = "http://192.168.2.41:8000";
+  // var public = "https://apiservice-d5qtigtmea-as.a.run.app";
 
   Dio dio = Dio();
 
@@ -13,7 +13,7 @@ class APIService {
   PrettyDioLogger logger = PrettyDioLogger(
     request: false,
     requestHeader: false,
-    requestBody: false,
+    requestBody: true,
     responseBody: true,
     responseHeader: false,
     error: false,
@@ -66,4 +66,26 @@ class APIService {
     }
   }
 
+
+  Future checkIng(String name)async{
+    try{
+      dio.interceptors.add(logger);
+
+      Response response = await dio.post(public + "/ingredient/find", data: {
+        "name" : name,
+      });
+
+      if (response.statusCode == 200){
+        return(response);
+      }
+
+    } on DioError catch (e) {
+      if (e.response != null ){
+        // print(response);
+        return e.response!;
+      } else {
+        print(e.message);
+      }
+    }
+  }
 }

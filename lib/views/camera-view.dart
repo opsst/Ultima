@@ -232,7 +232,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
 
 
                       }else{
-                        deepArController.switchEffect(CameraMode.filter, 'assets/deepar/Untitled2.deepar');
+                        deepArController.switchEffect(CameraMode.filter, 'assets/deepar/B0.deepar');
 
                         // controller!.pausePreview();
                         // deepController!.resumePreview();
