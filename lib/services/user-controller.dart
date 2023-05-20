@@ -6,6 +6,7 @@ class userController extends GetxController{
   var instruction_State = 0.obs;
   PageController? thisControl;
   var statePage = 0.obs;
+  var isScroll = false.obs;
 
   startControl(PageController controller){
     thisControl = controller;

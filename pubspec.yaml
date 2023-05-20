@@ -46,6 +46,7 @@ dependencies:
     git: https://github.com/opsst/FlutterDeepAR.git
   image_picker:
   pretty_dio_logger: ^1.3.1
+  draggable_bottom_sheet: ^1.0.2
 
 #dependency_overrides:
 #  permission_handler: ^8.2.5
@@ -70,3 +71,4 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/deepar/
