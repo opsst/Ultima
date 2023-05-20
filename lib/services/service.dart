@@ -103,9 +103,15 @@ class APIService {
         "name" : name,
       });
 
-      if (response.statusCode == 200){
-                // print(response);
-        return e.response!;
+      if (response.statusCode == 200) {
+        return response;
+        // print(response);
+      }}
+        on DioError catch (e) {
+      if (e.response != null ){
+        print(e.message);
+
+      return e.response!;
             } else {
         print(e.message);
       }
