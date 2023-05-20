@@ -70,11 +70,11 @@ class APIService {
     }
   }
 
-  Future RegisterUser(String username, String password,String firstname, String lastname) async{
+  Future registerUser(String username, String password,String firstname, String lastname) async{
     try{
 
 
-      dio.interceptors.add(logger);
+      // dio.interceptors.add(logger);
 
       Response response = await dio.post(public + "/user/create", data: {
         "username" : username,

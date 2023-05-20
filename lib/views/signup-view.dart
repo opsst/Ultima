@@ -114,19 +114,27 @@ class _SignUppageViewState extends State<SignUppageView> {
             GestureDetector(
               onTap: () async {
 
+
                 // print(_emailController.text);
                 // print(_passwordController.text);
                 // print(_firstnameController.text);
                 // print(_lastnameController.text);
                 //
-                var register = await service.RegisterUser(_emailController.text, _passwordController.text,
+                var register = await service.registerUser(_emailController.text, _passwordController.text,
                     _firstnameController.text, _lastnameController.text);
 
-                print(register);
+                final data = jsonDecode(register.toString());
+                if(data["message"]=="success"){
 
-                // var res2 = await service.loginUser(_emailController.text, _passwordController.text);
-                // final data = jsonDecode(res2.toString());
-                // print(data['token']);
+                  var res2 = await service.loginUser(_emailController.text, _passwordController.text);
+                  final data = jsonDecode(res2.toString());
+                  print(data['token']);
+
+
+                  //navigator
+                }
+
+
               },
               child: Container(
                   height: 6.5.h,

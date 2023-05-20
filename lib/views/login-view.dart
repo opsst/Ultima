@@ -69,8 +69,11 @@ class _LoginpageViewState extends State<LoginpageView> {
 
                 final data = jsonDecode(res2.toString());
                 print(data['token']);
-                // final List<dynamic> dataList = jsonDecode(res2);
-                // print(dataList[0]);
+
+                //navigator
+
+
+
 
               },
               child: Container(
