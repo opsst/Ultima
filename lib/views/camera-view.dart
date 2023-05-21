@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:ultima/services/user-controller.dart';
+import 'package:ultima/widget/colorExtension.dart';
 import 'dart:io';
 import '../services/config.dart';
 import '../widget/dragModal.dart';
@@ -516,7 +517,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                       )
                                     ]
                                   ),
-                                  duration: Duration(milliseconds: 300),
+                                  duration: Duration(milliseconds: 100),
                                   child: Stack(
                                     children: [
                                       Padding(
@@ -530,12 +531,15 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                               child: ListView.builder(
                                                 scrollDirection: Axis.horizontal,
                                                   physics: NeverScrollableScrollPhysics(),
-                                                  itemCount: 3,
-                                                  itemBuilder: (context,index){
+                                                  itemCount: cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_tryon_name.value.length:cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_tryon_name.value.length:cosmeticSelect==3?Get.find<userController>().lipstick.value[index].cos_tryon_name.value.length:0,
+                                                  itemBuilder: (context,colorIndex){
                                                   return
-                                                CircleAvatar(
-                                                  radius: 2.5.w,
-                                                  backgroundColor: Colors.black,
+                                                Padding(
+                                                  padding: EdgeInsets.only(right: 1.w),
+                                                  child: CircleAvatar(
+                                                    radius: 2.5.w,
+                                                    backgroundColor: cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_tryon_color.value[colorIndex].toString().toColor():cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_tryon_name.value[colorIndex].toString().toColor():Get.find<userController>().lipstick.value[index].cos_tryon_color.value[colorIndex].toString().toColor()
+                                                  ),
                                                 );
                                               }),
                                             )
