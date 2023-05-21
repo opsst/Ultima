@@ -7,7 +7,6 @@ class userController extends GetxController{
   PageController? thisControl;
   var statePage = 0.obs;
   var isScroll = false.obs;
-
   startControl(PageController controller){
     thisControl = controller;
   }

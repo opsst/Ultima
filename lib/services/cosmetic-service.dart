@@ -168,5 +168,5 @@ class CosmeticsScrape{
 
 main(){
   // CosmeticsScrape().getSuggest('Bobbi Brown Long-Wear Waterproof Cream Eyeshadow Stick');
-  CosmeticsScrape().getCosmetics('https://www.sephora.co.th/products/fenty-beauty-cheeks-out-freestyle-cream-blush/','Blush on');
+  CosmeticsScrape().getCosmetics('https://www.sephora.co.th/products/rare-beauty-soft-pinch-tinted-lip-oil','Lipstick');
 }

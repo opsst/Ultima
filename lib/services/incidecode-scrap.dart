@@ -550,11 +550,11 @@ Future<void> main() async{
   //   print('${results[i].name} , ${results[i].link}');
   //  }
   //  print(stopwatch.elapsed);
-  List results = [];
+  // List results = [];
   // results = await Scraper.getData2('innisfree');
   // for (var result in results) {
   //   print(result.link);
-  Real x = await Scraper.getBrand('/products/nars-sheer-glow-foundation-2');
+  Real x = await Scraper.getBrand('/products/premiere-beaute-london-eau-de-parfum');
   print(x.p_ing[0]);
   // print('+++++++++');
   // print(x.p_ing[1]);
@@ -563,10 +563,10 @@ Future<void> main() async{
     //   // print(ing);
     List y = await Scraper.getIng(ing);
     // print(y[0].length);
-    int i = 1;
+    // int i = 1;
     for (var all in y[0]){
       // print(i);
-      // print(all);
+      print(all);
       // i++;
     }
   }
