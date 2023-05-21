@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,6 +25,8 @@ class LoginpageView extends StatefulWidget {
 
 class _LoginpageViewState extends State<LoginpageView> {
   APIService service = APIService();
+  final storage = const FlutterSecureStorage();
+
   bool validate = true;
   String errEmail='', errPassword='';
   TextEditingController _emailController = TextEditingController();
@@ -68,7 +71,17 @@ class _LoginpageViewState extends State<LoginpageView> {
 
 
                 final data = jsonDecode(res2.toString());
-                print(data['token']);
+
+
+                if(data['message']== "success"){
+                  await storage.delete(key: "token");
+                  await storage.write(key: "token", value: data['token']);
+                  String? mytoken = await storage.read(key: "token");
+                  print("TOKEN: "+mytoken.toString());
+                  Get.off(
+                      () => NavigationBarView()
+                  );
+                }
 
                 //navigator
 
