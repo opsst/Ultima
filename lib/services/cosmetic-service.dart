@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart';
 import 'package:puppeteer/puppeteer.dart';
@@ -38,7 +40,7 @@ class CosmeticsScrape{
   Future getCosmetics(String product, String cate) async{
     product = product.replaceAll(' ', '%20');
     var browser = await puppeteer.launch(
-      headless: true,
+      headless: false,
       // slowMo: Duration(seconds: 2)
     );
     var page = await browser.newPage();
@@ -60,40 +62,87 @@ class CosmeticsScrape{
     await browser.close();
     var res = parse(pageContent);
     // print(res);
-    var Cos_brand =  res.querySelector('[data-at*="brand_name"]')!.innerHtml;
+    // var Cos_brand =  res.querySelector('[data-at*="brand_name"]')!.innerHtml;
+    var Cos_brand = res.querySelector('.product-brand > a')!.innerHtml;
     print(Cos_brand);
-    var Cos_name =  res.querySelector('[data-at*="product_name"]')!.innerHtml;
+    // var Cos_name =  res.querySelector('[data-at*="product_name"]')!.innerHtml;
+    var Cos_name = res.querySelector('.product-heading > h1')!.innerHtml;
     print(Cos_name);
-    var Cos_desc =  res.querySelector('.css-1540hs > div')!.innerHtml.replaceAll('<b>', '\n').replaceAll('</b>', '').replaceAll('<br>', '');
+
+    var Cos_desc = '';
+    var before_desc =  res.querySelectorAll('.product-description .read-more-block-container > div > div > p');
+    before_desc.removeLast();
+    for(var content in before_desc){
+      Cos_desc = Cos_desc + content.innerHtml.replaceAll('<b>', '\n').replaceAll('</b>', '\n').replaceAll('<br>', ' ');
+    }
+    // var Cos_desc =  res.querySelector('.css-1540hs > div')!.innerHtml.replaceAll('<b>', '\n').replaceAll('</b>', '').replaceAll('<br>', '').trimLeft();
     print(Cos_desc);
     var Cos_cate = cate;
 
+    // var Cos_img = [];
+    // var img = res.querySelectorAll('.css-b8zput');
+    // img.forEach((element) {
+    //   Cos_img.add(parse(element.innerHtml).querySelector('img')!.attributes['src']);
+    // });
+    // print(Cos_img);
+
     var Cos_img = [];
-    var img = res.querySelectorAll('.css-b8zput');
+    var img = res.querySelectorAll('.desktop-image-carousel-container .image-container > img');
+    // // print(Cos_color_img);
     img.forEach((element) {
-      Cos_img.add(parse(element.innerHtml).querySelector('img')!.attributes['src']);
+      Cos_img.add(element.attributes['src']);
+      // Cos_img.add(parse(element.innerHtml).attributes['src']);
     });
     print(Cos_img);
 
+    // var Cos_color_img = [];
+    // var color = res.querySelectorAll('[data-at*="swatch"]');
+    // // print(Cos_color_img);
+    // color.forEach((element) {
+    //   Cos_color_img.add(parse(element.querySelector('div')!.innerHtml).querySelector('img')!.attributes['src']);
+    // });
+
     var Cos_color_img = [];
-    var color = res.querySelectorAll('[data-at*="swatch"]');
+    var color = res.querySelectorAll('.product-variant-swatch > img');
     // print(Cos_color_img);
     color.forEach((element) {
-      Cos_color_img.add(parse(element.querySelector('div')!.innerHtml).querySelector('img')!.attributes['src']);
+      Cos_color_img.add(element.attributes['src']);
     });
+    print(Cos_color_img);
+
+
 
     var Ing_id = [];
-    var ing = res.querySelector('#ingredients > div > div')!.innerHtml;
+    // var ing = res.querySelector('#ingredients > div > div')!.innerHtml;
+    var ing = res.querySelector('.product-ingredients-values')!.innerHtml;
     var list_ing = ing.toString().split(',');
-    // list_ing.forEach((element) async {
-    //   print(element.trimLeft());
-    //   // var check = await service.checkIng(element.trimLeft());
-    //   // if (check.statusCode == 200){
-    //   //   Ing_id.add(check.data);
-    //   // }
-    // });
-    await service.checkIng('Isononyl Isononanoate');
+    for (var element in list_ing){
+      // print(element.trimLeft());
+      var check = await service.checkIng(element.trimLeft());
+      // print(check.statusCode);
+      if (check.statusCode == 200){
+        var x = check.data;
+        // print(x['ing_id']);
+        Ing_id.add(x['ing_id']);
+      }
+    }
+    var Ing_final = Ing_id.toSet().toList();
     print(Ing_id);
+
+    dynamic req =
+      {
+        "cos_brand": Cos_brand,
+        "cos_name": Cos_name,
+        "cos_desc": Cos_desc.trimLeft(),
+        "cos_cate": Cos_cate,
+        "cos_img": Cos_img,
+        "cos_is-try-on": true,
+        "cos_color-img": Cos_color_img,
+        "cos_try-on-name":[],
+        "cos_try-on-color":[],
+        "cos_ing_id": Ing_final
+      };
+    service.addCosmetic(req);
 
 
 
@@ -119,5 +168,5 @@ class CosmeticsScrape{
 
 main(){
   // CosmeticsScrape().getSuggest('Bobbi Brown Long-Wear Waterproof Cream Eyeshadow Stick');
-  CosmeticsScrape().getCosmetics('https://www.sephora.com/product/kind-words-matte-lipstick-P500637?skuId=2589422&icid2=products%20grid:p500637:product','Lipstick');
+  CosmeticsScrape().getCosmetics('https://www.sephora.co.th/products/fenty-beauty-cheeks-out-freestyle-cream-blush/','Blush on');
 }

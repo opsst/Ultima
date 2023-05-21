@@ -95,9 +95,10 @@ class APIService {
     }
   }
 
-    Future checkIng(String name)async{
+  Future checkIng(String name)async{
     try{
-      dio.interceptors.add(logger);
+      // dio.interceptors.add(logger);
+      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
 
       Response response = await dio.post(public + "/ingredient/find", data: {
         "name" : name,
@@ -109,12 +110,33 @@ class APIService {
       }}
         on DioError catch (e) {
       if (e.response != null ){
-        print(e.message);
-
+        // print(e.message);
       return e.response!;
             } else {
-        print(e.message);
+        // print(e.message);
       }
     }
   }
+
+  Future addCosmetic(dynamic data)async{
+    try{
+      // dio.interceptors.add(logger);
+      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
+
+      Response response = await dio.post(public + "/cosmetic/create", data: data);
+
+      if (response.statusCode == 200) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
+
 }
