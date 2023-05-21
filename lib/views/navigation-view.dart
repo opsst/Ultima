@@ -11,6 +11,7 @@ import 'package:ultima/views/discover-view.dart';
 import 'package:ultima/views/home-view.dart';
 import 'package:ultima/views/notification-view.dart';
 
+import '../services/service.dart';
 import '../services/user-controller.dart';
 
 
@@ -22,6 +23,7 @@ class NavigationBarView extends StatefulWidget {
 }
 
 class _NavigationBarViewState extends State<NavigationBarView> {
+  APIService service = APIService();
 
   late PageController _pageController;
   void initState() {
@@ -62,7 +64,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                   ()=> Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(32),
+                      borderRadius: BorderRadius.circular(0),
                       boxShadow: [
                         BoxShadow(offset: Offset(0,18),color: Colors.black.withOpacity(0.1),blurRadius: 100,spreadRadius: 20)
                       ]
@@ -70,13 +72,13 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                 child: SafeArea(
                   top: false,
                   child: Padding(
-                    padding: EdgeInsets.only(top: 1.5.h,bottom: 1.h),
+                    padding: EdgeInsets.only(top: 1.5.h,bottom: .5.h),
                     child: Column(
                       children: [
                         Row(
                           children: [
                             GestureDetector(
-                              onTap: (){
+                              onTap: () async {
                                 Get.find<userController>().changePage(0);
                               },
                               child: Container(

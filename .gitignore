@@ -32,6 +32,7 @@ migrate_working_dir/
 .pub/
 /build/
 
+.local-chromium
 # Symbolication related
 app.*.symbols
 

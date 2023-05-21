@@ -5,6 +5,7 @@
         <package android:name="com.facebook.katana" />
     </queries>
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:label="Ultima"
         android:name="${applicationName}"

@@ -3,9 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ultima/provider/auth-service.dart';
+import 'package:ultima/views/welcome-view.dart';
 
 
 
@@ -17,6 +21,7 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
+  final storage = const FlutterSecureStorage();
   List<ListSetting> list_setting = [
     ListSetting(title: "Reward", icon: Icon(FeatherIcons.award,size: 19.sp,color: Color(0xFF0B1F4F),)),
     ListSetting(title: "Favourite Items", icon: Icon(FeatherIcons.heart,size: 19.sp,color: Color(0xFF0B1F4F),)),
@@ -85,7 +90,7 @@ class _AccountViewState extends State<AccountView> {
                           children: [
                             CircleAvatar(),
                             SizedBox(width: 2.5.w,),
-                            Text(FirebaseAuth.instance.currentUser!.displayName!,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 18.sp,letterSpacing: 0.3,color: Color(0xFF0B1F4F)),),
+                            // Text(FirebaseAuth.instance.currentUser!.displayName!,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 18.sp,letterSpacing: 0.3,color: Color(0xFF0B1F4F)),),
                             // Text(FirebaseAuth.instance.currentUser!.displayName!.toString(),style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 18.sp,letterSpacing: 0.3,color: Color(0xFF0B1F4F)),),
                             Spacer(),
                             IconButton(onPressed: (){}, icon: Icon(FeatherIcons.moreVertical,size: 20.sp,))
@@ -258,8 +263,12 @@ class _AccountViewState extends State<AccountView> {
             ),
           ),
           GestureDetector(
-            onTap: () {
+            onTap: () async {
               AuthService().logout();
+              await storage.delete(key: "token");
+              Get.off(
+                      () => WelcomepageView()
+              );
             },
             child: Container(
               width: 10.w,
