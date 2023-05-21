@@ -19,6 +19,8 @@ class _SplashViewState extends State<SplashView> {
 
   FlutterSecureStorage storage = FlutterSecureStorage();
   APIService service = APIService();
+
+  var checkFirebase = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -30,11 +32,14 @@ class _SplashViewState extends State<SplashView> {
     String? mytoken = await storage.read(key: "token");
     print(mytoken);
     if(mytoken == null){
-      Future.delayed(Duration(milliseconds: 1000)).then((value) => Get.off(
-              () => AuthService().handleAuthState()
-      ));
+
+      setState(() {
+        checkFirebase = true;
+      });
+
 
     }else{
+
       await Get.find<userController>().initData();
 
     }
@@ -43,14 +48,14 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return !checkFirebase?Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(35.w),
-          child: Image.asset('assets/icons/icon.png'),
+          child: Padding(
+            padding: EdgeInsets.all(35.w),
+            child: Image.asset('assets/icons/icon.png'),
+          ),
         ),
-      ),
-    );
+    ):AuthService().handleAuthState();
   }
 }
