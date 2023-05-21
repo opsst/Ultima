@@ -79,12 +79,6 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                var res = await service.checkAllUser();
-                                print(res);
-                                //
-                                // var res2 = await service.loginUser('Frank', "123456");
-                                // print(res2);
-
                                 Get.find<userController>().changePage(0);
                               },
                               child: Container(

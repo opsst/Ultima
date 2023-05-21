@@ -9,6 +9,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import 'package:ultima/services/user-controller.dart';
 import 'dart:io';
 import '../services/config.dart';
 import '../widget/dragModal.dart';
@@ -59,8 +60,6 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
   //     print('Failed to pick image $e');
   //   }
   // }
-
-
   var mySystemTheme= SystemUiOverlayStyle.dark
       .copyWith(systemNavigationBarColor: Colors.red);
 
@@ -232,7 +231,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
 
 
                       }else{
-                        deepArController.switchEffect(CameraMode.filter, 'assets/deepar/B0.deepar');
+                        // deepArController.switchEffect(CameraMode.filter, 'assets/deepar/B0.deepar');
 
                         // controller!.pausePreview();
                         // deepController!.resumePreview();
@@ -402,7 +401,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                   children: [
                                     SvgPicture.asset('assets/icons/brush-on.svg',color: cosmeticSelect==2?Color(0xFF4E82FF):Colors.white,),
                                     SizedBox(width: 2.w,),
-                                    Text('Brush on',style: TextStyle(color: cosmeticSelect==2?Color(0xFF4E82FF):Colors.white,fontWeight: FontWeight.w600,fontSize: 15.sp),),
+                                    Text('Blush on',style: TextStyle(color: cosmeticSelect==2?Color(0xFF4E82FF):Colors.white,fontWeight: FontWeight.w600,fontSize: 15.sp),),
                                     cosmeticSelect==2?SizedBox(width: 7.w,):Container()
                                   ],
                                 ),
@@ -500,7 +499,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                           Expanded(
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.symmetric(horizontal: 2.h),itemCount: 4,itemBuilder: (context, index){
+                                padding: EdgeInsets.symmetric(horizontal: 2.h),itemCount: cosmeticSelect==1?Get.find<userController>().eyeshadow.value.length:cosmeticSelect==2?Get.find<userController>().blush_on.value.length:cosmeticSelect==3?Get.find<userController>().lipstick.value.length:0,itemBuilder: (context, index){
                               return Padding(
                                 padding: EdgeInsets.only(right: 4.w,top: 2.w,bottom: 2.w),
                                 child: AnimatedContainer(
@@ -523,9 +522,10 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                       Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 3.w),
                                         child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Container(width: 30.w,height: 30.w,child: Image.network('https://static.beautytocare.com/media/catalog/product/cache/global/image/1300x1300/85e4522595efc69f496374d01ef2bf13/m/a/makeup-revolution-reloaded-eyeshadow-palette-newtrals-3-1-1g-x15.jpg')),
-                                            Text('Nars Summer Unrated',maxLines: 2,overflow: TextOverflow.ellipsis,style: TextStyle(color: Color(0xFF0B1F4F),fontSize: 16.sp,fontWeight: FontWeight.w700),),
+                                            Container(width: 30.w,height: 30.w,child: Image.network(cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_img[0]:cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_img[0]:Get.find<userController>().lipstick.value[index].cos_img[0])),
+                                            Text(cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_name.value  :cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_name.value:Get.find<userController>().lipstick.value[index].cos_name.value,maxLines: 2,overflow: TextOverflow.ellipsis,style: TextStyle(color: Color(0xFF0B1F4F),fontSize: 16.sp,fontWeight: FontWeight.w700),),
                                             Expanded(
                                               child: ListView.builder(
                                                 scrollDirection: Axis.horizontal,
