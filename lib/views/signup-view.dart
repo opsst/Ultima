@@ -3,11 +3,15 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 import '../services/service.dart';
 import '../services/user-controller.dart';
+import 'navigation-view.dart';
 
 class SignUppageView extends StatefulWidget {
   const SignUppageView({Key? key}) : super(key: key);
@@ -18,6 +22,7 @@ class SignUppageView extends StatefulWidget {
 
 class _SignUppageViewState extends State<SignUppageView> {
   APIService service = APIService();
+  final storage = const FlutterSecureStorage();
   bool validate = true;
   String errFirstname='', errLastname='', errEmail='', errPassword='';
   TextEditingController _firstnameController = TextEditingController();
@@ -127,9 +132,20 @@ class _SignUppageViewState extends State<SignUppageView> {
                 if(data["message"]=="success"){
 
                   var res2 = await service.loginUser(_emailController.text, _passwordController.text);
-                  final data = jsonDecode(res2.toString());
-                  print(data['token']);
+                  final data2 = jsonDecode(res2.toString());
+                   if(data2["message"]=="success"){
+                     await storage.delete(key: "token");
 
+                     await storage.write(key: "token", value: data['token']);
+                     String? mytoken = await storage.read(key: "token");
+                     print("TOKEN: "+mytoken.toString());
+
+                     Get.off(
+                             () => NavigationBarView()
+                     );
+                   }
+
+                  //navigator
 
                   //navigator
                 }
