@@ -9,11 +9,15 @@ import '../views/navigation-view.dart';
 class userController extends GetxController{
   var instruction_State = 0.obs;
   PageController? thisControl;
+
   var statePage = 0.obs;
   var isScroll = false.obs;
 
   var cosmetic = [].obs;
+  var skincare = [].obs;
+  var fragrance = [].obs;
 
+  // ใช้เรียกเครื่องสำอางแบ่งประเภทแล้ว
   var eyeshadow = [].obs;
   var blush_on = [].obs;
   var lipstick = [].obs;
