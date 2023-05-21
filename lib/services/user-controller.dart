@@ -62,7 +62,12 @@ class userController extends GetxController{
     }
     // print(lipstick.value[0].cos_name);
     // print(lipstick.value[1].cos_name);
-    print(Get.find<userController>().eyeshadow.value[0].cos_tryon_color.value[0]);
+    // Get.find<userController>().lipstick.value.forEach((element) {
+    //   print(element.cos_tryon_name);
+    //   print(element.cos_tryon_color);
+    //
+    // });
+    // print(Get.find<userController>().blush_on.value);
 
 
     // print(res.data['data'].length);

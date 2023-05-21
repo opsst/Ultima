@@ -31,6 +31,27 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
 
   var cosmeticSelect = 0;
 
+  var lipSelect = '';
+  var lipIndex = -1;
+  var blushSelect = '';
+  var blushIndex = -1;
+
+  var eyeSelect = '';
+  var eyeIndex = -1;
+
+  selectFilter(){
+    var filterFinal = 'assets/deepar/'+lipSelect + blushSelect + eyeSelect +'.deepar';
+    print(filterFinal);
+    if(lipSelect.isEmpty && blushSelect.isEmpty && eyeSelect.isEmpty){
+      deepArController.switchEffect(CameraMode.filter, 'assets/deepar/default.deepar');
+
+    }else{
+      deepArController.switchEffect(CameraMode.filter, filterFinal);
+
+    }
+
+  }
+
   var deepArController = CameraDeepArController(config);
   String _platformVersion = 'Unknown';
   bool isRecording = false;
@@ -503,50 +524,108 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                 padding: EdgeInsets.symmetric(horizontal: 2.h),itemCount: cosmeticSelect==1?Get.find<userController>().eyeshadow.value.length:cosmeticSelect==2?Get.find<userController>().blush_on.value.length:cosmeticSelect==3?Get.find<userController>().lipstick.value.length:0,itemBuilder: (context, index){
                               return Padding(
                                 padding: EdgeInsets.only(right: 4.w,top: 2.w,bottom: 2.w),
-                                child: AnimatedContainer(
-                                  height: 6.h,
-                                  width: 32.w,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.01),
-                                        blurRadius: 6,
-                                        spreadRadius: 2
-                                      )
-                                    ]
-                                  ),
-                                  duration: Duration(milliseconds: 100),
-                                  child: Stack(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 3.w),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Container(width: 30.w,height: 30.w,child: Image.network(cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_img[0]:cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_img[0]:Get.find<userController>().lipstick.value[index].cos_img[0])),
-                                            Text(cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_name.value  :cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_name.value:Get.find<userController>().lipstick.value[index].cos_name.value,maxLines: 2,overflow: TextOverflow.ellipsis,style: TextStyle(color: Color(0xFF0B1F4F),fontSize: 16.sp,fontWeight: FontWeight.w700),),
-                                            Expanded(
-                                              child: ListView.builder(
-                                                scrollDirection: Axis.horizontal,
-                                                  physics: NeverScrollableScrollPhysics(),
-                                                  itemCount: cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_tryon_name.value.length:cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_tryon_name.value.length:cosmeticSelect==3?Get.find<userController>().lipstick.value[index].cos_tryon_name.value.length:0,
-                                                  itemBuilder: (context,colorIndex){
-                                                  return
-                                                Padding(
-                                                  padding: EdgeInsets.only(right: 1.w),
-                                                  child: CircleAvatar(
-                                                    radius: 2.5.w,
-                                                    backgroundColor: cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_tryon_color.value[colorIndex].toString().toColor():cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_tryon_name.value[colorIndex].toString().toColor():Get.find<userController>().lipstick.value[index].cos_tryon_color.value[colorIndex].toString().toColor()
-                                                  ),
-                                                );
-                                              }),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
+                                child: GestureDetector(
+                                  onTap: (){
+                                    print(cosmeticSelect);
+                                    print(index);
+                                    if(cosmeticSelect==1){
+                                      // print(Get.find<userController>().eyeshadow.value[index].cos_tryon_name.value[0]);
+                                      if(eyeSelect == Get.find<userController>().eyeshadow.value[index].cos_tryon_name.value[0]){
+                                        setState(() {
+                                          eyeSelect = '';
+                                          eyeIndex = -1;
+
+                                        });
+                                      }else{
+                                        setState(() {
+                                          eyeSelect = Get.find<userController>().eyeshadow.value[index].cos_tryon_name.value[0];
+                                          eyeIndex = index;
+
+                                        });
+                                      }
+                                      selectFilter();
+
+                                    }else if(cosmeticSelect==2){
+                                      // print(Get.find<userController>().blush_on.value[index].cos_tryon_name.value[0]);
+                                      if(blushSelect == Get.find<userController>().blush_on.value[index].cos_tryon_name.value[0]){
+                                        setState(() {
+                                          blushSelect = '';
+                                          blushIndex = -1;
+
+                                        });
+                                      }else{
+                                        setState(() {
+                                          blushSelect = Get.find<userController>().blush_on.value[index].cos_tryon_name.value[0];
+                                          blushIndex = index;
+
+                                        });
+                                      }
+                                      selectFilter();
+                                    }else if(cosmeticSelect==3){
+                                      // print(Get.find<userController>().lipstick.value[index].cos_tryon_name.value[0]);
+                                      if(lipSelect == Get.find<userController>().lipstick.value[index].cos_tryon_name.value[0]){
+                                        setState(() {
+                                          lipSelect = '';
+                                          lipIndex = -1;
+
+                                        });
+                                      }else{
+                                        setState(() {
+                                          lipSelect = Get.find<userController>().lipstick.value[index].cos_tryon_name.value[0];
+                                          lipIndex = index;
+
+                                        });
+                                      }
+                                      selectFilter();
+                                    }
+
+                                  },
+                                  child: AnimatedContainer(
+                                    height: 6.h,
+                                    width: 32.w,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: (cosmeticSelect==1&&eyeIndex==index)||(cosmeticSelect==2&&blushIndex==index)||(cosmeticSelect==3&&lipIndex==index)?Border.all(color: Color(0xFF4E82FF),width: 3,strokeAlign: BorderSide.strokeAlignInside):null,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.01),
+                                          blurRadius: 6,
+                                          spreadRadius: 2
+                                        )
+                                      ]
+                                    ),
+                                    duration: Duration(milliseconds: 100),
+                                    child: Stack(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 3.w),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Container(width: 30.w,height: 30.w,child: Image.network(cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_img[0]:cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_img[0]:Get.find<userController>().lipstick.value[index].cos_img[0])),
+                                              Text(cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_name.value  :cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_name.value:Get.find<userController>().lipstick.value[index].cos_name.value,maxLines: 2,overflow: TextOverflow.ellipsis,style: TextStyle(color: Color(0xFF0B1F4F),fontSize: 16.sp,fontWeight: FontWeight.w700),),
+                                              Expanded(
+                                                child: ListView.builder(
+                                                  scrollDirection: Axis.horizontal,
+                                                    physics: NeverScrollableScrollPhysics(),
+                                                    itemCount: cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_tryon_name.value.length:cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_tryon_name.value.length:Get.find<userController>().lipstick.value[index].cos_tryon_name.value.length,
+                                                    itemBuilder: (context,colorIndex){
+                                                    return
+                                                  Padding(
+                                                    padding: EdgeInsets.only(right: 1.w),
+                                                    child: CircleAvatar(
+                                                      radius: 2.5.w,
+                                                      backgroundColor: cosmeticSelect==1?Get.find<userController>().eyeshadow.value[index].cos_tryon_color.value[colorIndex].toString().toColor():cosmeticSelect==2?Get.find<userController>().blush_on.value[index].cos_tryon_color.value[colorIndex].toString().toColor():Get.find<userController>().lipstick.value[index].cos_tryon_color.value[colorIndex].toString().toColor()
+                                                    ),
+                                                  );
+                                                }),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
