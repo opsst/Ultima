@@ -1,9 +1,9 @@
-import 'package:camera_deep_ar/camera_deep_ar.dart';
-
-DeepArConfig config = DeepArConfig(
-  androidKey:
-  "c8bf1967539e160f37858e2228f1175b1a253deccaac9a0a53608c671bc4271faedab3e624107295",
-  ioskey:
-  "827bdf971108865b2b0cedffd86c79af755c57e480685cfa11f61c33074d44c25e47dd124b69189d",
-  displayMode: DisplayMode.camera,
-);
+// import 'package:camera_deep_ar/camera_deep_ar.dart';
+//
+// DeepArConfig config = DeepArConfig(
+//   androidKey:
+//   "a08dcc7e27c80ee1daaeab600bc7d28892388050a29e4f1327369489f6ef025d8dec7635ac0dcf29",
+//   ioskey:
+//   "7fd8276127f7729ab29b0b3ba765eacc4f62b06d7dcba40c2709e8f29edaa206214e4e717157ff14",
+//   displayMode: DisplayMode.camera,
+// );

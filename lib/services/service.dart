@@ -54,7 +54,7 @@ class APIService {
     try{
       // dio.interceptors.add(logger);
       Response response = await dio.post(public + "/user/login", data: {
-        "username" : username,
+        "email" : username,
         "password" : password
       });
 
@@ -78,12 +78,12 @@ class APIService {
       // dio.interceptors.add(logger);
 
       Response response = await dio.post(public + "/user/create", data: {
-        "username" : username,
+        "email" : username,
         "password" : password,
         "firstname": firstname,
         "lastname": lastname
       });
-
+      print(response);
       if (response.statusCode == 201){
         return(response);
       }

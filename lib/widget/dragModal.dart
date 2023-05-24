@@ -52,6 +52,8 @@ class DraggableBottomSheet extends StatefulWidget {
 
   final controller;
 
+
+
   const DraggableBottomSheet({
     Key? key,
     required this.previewWidget,
@@ -80,13 +82,13 @@ class DraggableBottomSheet extends StatefulWidget {
 }
 
 class DraggableBottomSheetState extends State<DraggableBottomSheet> {
-  double _currentExtent = 0.0;
+  // double Get.find<userController>().currentExtent.value = 0.0;
   bool isdrag = false;
 
   @override
   void initState() {
     super.initState();
-    _currentExtent = widget.collapsed ? widget.minExtent : widget.maxExtent;
+    Get.find<userController>().currentExtent.value = widget.collapsed ? widget.minExtent : widget.maxExtent;
   }
 
   @override
@@ -101,7 +103,7 @@ class DraggableBottomSheetState extends State<DraggableBottomSheet> {
         // background widget
         widget.backgroundWidget,
         // barrier
-        if (_currentExtent.roundToDouble() > widget.minExtent + 2)
+        if (Get.find<userController>().currentExtent.value.roundToDouble() > widget.minExtent + 2)
           Positioned.fill(child: _barrier()),
         // sheet
         Align(alignment: widget.alignment, child: _sheet()),
@@ -115,7 +117,7 @@ class DraggableBottomSheetState extends State<DraggableBottomSheet> {
       ignoring: !widget.barrierDismissible,
       child: GestureDetector(
         onTap: widget.barrierDismissible
-            ? () => setState(() => _currentExtent = widget.minExtent)
+            ? () => setState(() => Get.find<userController>().currentExtent.value = widget.minExtent)
             : null,
         child: Container(color: widget.barrierColor),
       ),
@@ -132,12 +134,12 @@ class DraggableBottomSheetState extends State<DraggableBottomSheet> {
         curve: widget.curve,
         // duration: widget.duration,
         duration: !isdrag?Duration(milliseconds:0):widget.duration,
-        width: _axis() == Axis.horizontal ? _currentExtent : null,
-        height: _axis() == Axis.horizontal ? null : _currentExtent,
+        width: _axis() == Axis.horizontal ? Get.find<userController>().currentExtent.value : null,
+        height: _axis() == Axis.horizontal ? null : Get.find<userController>().currentExtent.value,
         child: AnimatedSwitcher(
           switchOutCurve: Curves.bounceInOut,
           duration: Duration(milliseconds: 150),
-          child: _currentExtent >= widget.minExtent + widget.expansionExtent
+          child: Get.find<userController>().currentExtent.value >= widget.minExtent + widget.expansionExtent
               ? widget.expandedWidget
               : widget.previewWidget,
         ),
@@ -165,10 +167,10 @@ class DraggableBottomSheetState extends State<DraggableBottomSheet> {
 
     // delta dx is positive when dragged towards right &
     // negative when dragged towards left
-    final newExtent = (_currentExtent + details.delta.dx).roundToDouble();
+    final newExtent = (Get.find<userController>().currentExtent.value + details.delta.dx).roundToDouble();
     if (newExtent >= widget.minExtent && newExtent <= widget.maxExtent) {
-      setState(() => _currentExtent = newExtent);
-      widget.onDragging(_currentExtent);
+      setState(() => Get.find<userController>().currentExtent.value = newExtent);
+      widget.onDragging(Get.find<userController>().currentExtent.value);
     }
   }
 
@@ -178,36 +180,37 @@ class DraggableBottomSheetState extends State<DraggableBottomSheet> {
 
     // delta dy is positive when dragged downward &
     // negetive when dragged upward
-    final newExtent = (_currentExtent - details.delta.dy).roundToDouble();
+    final newExtent = (Get.find<userController>().currentExtent.value - details.delta.dy).roundToDouble();
     if (newExtent >= widget.minExtent && newExtent <= widget.maxExtent) {
-      setState(() => _currentExtent = newExtent);
-      widget.onDragging(_currentExtent);
+      setState(() => Get.find<userController>().currentExtent.value = newExtent);
+      widget.onDragging(Get.find<userController>().currentExtent.value);
     }
   }
   void _onVerticalDragEnd(DragEndDetails details){
     // print(details.velocity);
-    // final newExtent = (_currentExtent - ).roundToDouble();
+    // final newExtent = (_Get.find<userController>().currentExtent.value - ).roundToDouble();
     setState(() {
       isdrag = true;
     });
+
     print('end');
     print(isdrag);
 
     print(widget.maxExtent);
-    print(_currentExtent);
-    if(_currentExtent>=widget.maxExtent/1.5){
-      setState(() => _currentExtent = widget.maxExtent);
+    print(Get.find<userController>().currentExtent.value);
+    if(Get.find<userController>().currentExtent.value>=widget.maxExtent/1.5){
+      setState(() => Get.find<userController>().currentExtent.value = widget.maxExtent);
       widget.controller.animateBack(1.0);
       widget.controller.reset();
-      widget.onDragging(_currentExtent);
+      widget.onDragging(Get.find<userController>().currentExtent.value);
       Get.find<userController>().isScroll.value = false;
 
 
     }else{
-      setState(() => _currentExtent = widget.minExtent);
+      setState(() => Get.find<userController>().currentExtent.value = widget.minExtent);
       widget.controller.reset();
       widget.controller.animateBack(0.4);
-      widget.onDragging(_currentExtent);
+      widget.onDragging(Get.find<userController>().currentExtent.value);
       Get.find<userController>().isScroll.value = true;
 
     }

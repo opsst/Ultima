@@ -129,6 +129,7 @@ class _SignUppageViewState extends State<SignUppageView> {
                     _firstnameController.text, _lastnameController.text);
 
                 final data = jsonDecode(register.toString());
+                print(data);
                 if(data["message"]=="success"){
 
                   var res2 = await service.loginUser(_emailController.text, _passwordController.text);
