@@ -4,8 +4,8 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class APIService {
 
-  var public = "http://172.20.10.2:8000";
-  // var public = "https://apiservice-d5qtigtmea-as.a.run.app";
+  // var public = "http://172.20.10.2:8000";
+  var public = "https://apiservice-d5qtigtmea-as.a.run.app";
   FlutterSecureStorage storage = FlutterSecureStorage();
 
   Dio dio = Dio();

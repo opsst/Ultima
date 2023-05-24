@@ -92,6 +92,12 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
+  - TensorFlowLiteC (2.12.0):
+    - TensorFlowLiteC/Core (= 2.12.0)
+  - TensorFlowLiteC/Core (2.12.0)
+  - tflite (1.1.2):
+    - Flutter
+    - TensorFlowLiteC
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
@@ -110,6 +116,7 @@ DEPENDENCIES:
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - tflite (from `.symlinks/plugins/tflite/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
@@ -130,6 +137,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - MTBBarcodeScanner
     - PromisesObjC
+    - TensorFlowLiteC
 
 EXTERNAL SOURCES:
   camera_avfoundation:
@@ -160,6 +168,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/qr_code_scanner/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
+  tflite:
+    :path: ".symlinks/plugins/tflite/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
@@ -194,6 +204,8 @@ SPEC CHECKSUMS:
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  TensorFlowLiteC: 20785a69299185a379ba9852b6625f00afd7984a
+  tflite: 7acd11db0915e2d90ab90474413068568eb605f0
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
 PODFILE CHECKSUM: 2c68679582df6ba6cbe58dcb765d8e56896541cd

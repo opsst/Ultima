@@ -12,6 +12,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import 'package:tflite/tflite.dart';
+// import 'package:tflite/tflite.dart';
 import 'package:ultima/services/user-controller.dart';
 import 'package:ultima/widget/colorExtension.dart';
 import 'dart:io';
@@ -43,9 +45,18 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
   var onCustomize = false;
   var customizeIndex = 0;
 
+  String _name = "";
+
+
   var cosmeticList = Get.find<userController>().cosmetic.value;
   var searchList = Get.find<userController>().cosmetic.value;
   var searchWord = '';
+
+  static const modelPath = 'assets/mobilenet/mobilenet_v1_1.0_224_quant.tflite';
+  static const labelsPath = 'assets/mobilenet/labels.txt';
+
+
+  Map<String, int>? classification;
 
   selectFilter(){
     var filterFinal = 'assets/deepar/'+lipSelect + blushSelect + eyeSelect +'.deepar';
@@ -58,6 +69,15 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
     }
 
 
+  }
+
+  loadModel() async{
+
+    var resultant = await Tflite.loadModel(
+        labels: 'assets/model/labels.txt',
+        model: 'assets/model/model_unquant.tflite'
+    );
+    print("Result : $resultant");
   }
 
   late final DeepArController deepArController;
@@ -90,95 +110,33 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
   //     print('Failed to pick image $e');
   //   }
   // }
+  checkState(){
+    setState(() {
+      modeSelect=0;
+    });
+  }
+
   var mySystemTheme= SystemUiOverlayStyle.dark
       .copyWith(systemNavigationBarColor: Colors.red);
 
   late TabController _tabController;
   @override
   void initState() {
+    // loadModel();
 
     deepArController = DeepArController();
-    deepArController.initialize(androidLicenseKey: 'a08dcc7e27c80ee1daaeab600bc7d28892388050a29e4f1327369489f6ef025d8dec7635ac0dcf29', iosLicenseKey: '7fd8276127f7729ab29b0b3ba765eacc4f62b06d7dcba40c2709e8f29edaa206214e4e717157ff14',resolution: Resolution.veryHigh).then((value) => print(''));
+    deepArController.initialize(
+        androidLicenseKey: 'a08dcc7e27c80ee1daaeab600bc7d28892388050a29e4f1327369489f6ef025d8dec7635ac0dcf29',
+        iosLicenseKey: '7fd8276127f7729ab29b0b3ba765eacc4f62b06d7dcba40c2709e8f29edaa206214e4e717157ff14',
+        resolution: Resolution.veryHigh).then((value) => checkState());
 
     // cameraInit();
     super.initState();
 
     _tabController = TabController(length: 2, vsync: this);
-    pageController = AnimationController(vsync: this, duration: Duration(milliseconds: 800));
-
-
-    // _tabController.addListener(() {
-    //   if(_tabController.indexIsChanging){
-    //     setState(() {
-    //       modeSelect = (modeSelect+1)%2;
-    //       animationStart = true;
-    //     });
-    //
-    //     // Future.delayed(Duration(seconds: 2));
-    //     //
-    //     // setState(() {
-    //     //   animationStart = false;
-    //     // });
-    //   }
-    // });
-
-
-    // CameraDeepArController.checkPermissions();
-    // deepArController.setEventHandler(
-    //     DeepArEventHandler(
-    //         onCameraReady: (v) {
-    //   _platformVersion = "onCameraReady $v";
-    //   setState(() {});
-    // }, onSnapPhotoCompleted: (v) {
-    //   _platformVersion = "onSnapPhotoCompleted $v";
-    //   setState(() {});
-    // }, onVideoRecordingComplete: (v) {
-    //   _platformVersion = "onVideoRecordingComplete $v";
-    //   setState(() {});
-    // }, onSwitchEffect: (v) {
-    //   _platformVersion = "onSwitchEffect $v";
-    //   setState(() {});
-    // }));
-
+    pageController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 800));
   }
-
-
-  // cameraInit() async {
-  //   _cameras = await availableCameras();
-  //
-  //   controller = CameraController(
-  //     _cameras[0],
-  //     ResolutionPreset.max,
-  //     imageFormatGroup: ImageFormatGroup.yuv420,
-  //   );
-  //   controller!.initialize().then((_) {
-  //     if (!mounted) {
-  //       return;
-  //     }
-  //     setState(() {});
-  //   });
-  //   //
-  //   // deepController = CameraController(_cameras[0], ResolutionPreset.max);
-  //   // deepController.initialize().then((_) {
-  //   //   if (!mounted) {
-  //   //     return;
-  //   //   }
-  //   //   setState(() {
-  //   //     cameraReady = true;
-  //   //   });
-  //   // }).catchError((Object e) {
-  //   //   if (e is CameraException) {
-  //   //     switch (e.code) {
-  //   //       case 'CameraAccessDenied':
-  //   //       // Handle access errors here.
-  //   //         break;
-  //   //       default:
-  //   //       // Handle other errors here.
-  //   //         break;
-  //   //     }
-  //   //   }
-  //   // });
-  // }
 
   @override
   void dispose() {
@@ -186,6 +144,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
     deepArController.destroy();
     super.dispose();
   }
+
 
 
   @override
@@ -198,11 +157,20 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
     //   );
     // }
     return Scaffold(
+      backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
-      body: DraggableBottomSheet(
-        duration: Duration(milliseconds: 50),
-        minExtent: 50.h,
-          useSafeArea: false,maxExtent: 90.h, previewWidget: _previewWidget(pageController), backgroundWidget: _backgroundWidget(), expandedWidget: _expandedWidget(), onDragging: (res){}, controller: pageController,)
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: Platform.isAndroid? 80.h : 100.h,
+            child: DraggableBottomSheet(
+              duration: Duration(milliseconds: 50),
+              minExtent: 50.h,
+                useSafeArea: false,maxExtent: 90.h, previewWidget: _previewWidget(pageController), backgroundWidget: _backgroundWidget(), expandedWidget: _expandedWidget(), onDragging: (res){}, controller: pageController,),
+          ),
+        ],
+      )
           // :
           // Center(child: CircularProgressIndicator())
 
@@ -212,18 +180,24 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
 
   Widget _backgroundWidget() {
     return Stack(
+
       alignment: Alignment.bottomCenter,
       children: [
 
-        Container(
-          height: 100.h,
-          width: 100.w,
-          color: Colors.black,
-          child:DeepArPreview(deepArController,key: Key('Camera')),
-          // cameraReady?
-          // CameraPreview(
-          //   controller!,
-          // ):Container()
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: Platform.isAndroid? 80.h: 100.h,
+              // width: 100.w,
+              color: Colors.black,
+              child:DeepArPreview(deepArController,key: Key('Camera')),
+              // cameraReady?
+              // CameraPreview(
+              //   controller!,
+              // ):Container()
+            ),
+          ],
         ),
         Positioned(
           top: 0,
@@ -237,7 +211,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
           ),
         ),
         Positioned(
-          top:40.h,
+          top: Platform.isAndroid? 30.h:40.h,
           left: 3.w,
           child: Container(
             decoration: BoxDecoration(
@@ -333,7 +307,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
           ),
         ),
         Positioned(
-          top: 40.h,
+          top: Platform.isAndroid?30.h:40.h,
           left: 20.w,
           child: AnimatedSwitcher(
               duration: Duration(milliseconds: 200),
@@ -359,17 +333,16 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
               )
           ),
         ),
-        modeSelect==0?Positioned(bottom: 8.h,child: GestureDetector(
-          onTap: (){
+        modeSelect==0?Positioned(bottom:Platform.isAndroid?4.h: 8.h,child: GestureDetector(
+          onTap: () async {
             HapticFeedback.selectionClick();
-            dynamic file = deepArController.takeScreenshot();
-            print(file.runtimeType);
+             // deepArController.takeScreenshot().then((file) => applyModelOnImage(file.path));
           },
             child: SvgPicture.asset('assets/icons/capture.svg',width: 22.w,))
         ):Container(),
         modeSelect==0?Positioned(
           right: 10.w,
-          bottom: 8.h,
+          bottom: Platform.isAndroid?4.h:8.h,
           child:    Padding(
           padding: EdgeInsets.only(right: 5.w,bottom: 4.w),
           child: GestureDetector(
@@ -865,17 +838,17 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                               });
 
                                             }, child: Padding(
-                                              padding: EdgeInsets.all(2.h),
+                                              padding: EdgeInsets.only(left: 2.h,top: 2.h),
                                               child: Icon(Icons.arrow_back_ios_new,size: 17.sp,),
                                             )),
                                             Padding(
-                                              padding: EdgeInsets.only(top: 1.h,bottom: 1.h),
+                                              padding: EdgeInsets.only(top: 1.h,bottom: 1.h,left: 1.w),
                                               child: Center(child: Image.network(cosmeticSelect==1?Get.find<userController>().eyeshadow.value[customizeIndex].cos_img[0]:cosmeticSelect==2?Get.find<userController>().blush_on.value[customizeIndex].cos_img[0]:Get.find<userController>().lipstick.value[customizeIndex].cos_img[0])),
                                             ),
 
                                             Expanded(
                                               child: Padding(
-                                                padding: EdgeInsets.only(left: 1.w,top: 2.h,bottom: 2.h,right: 2.h),
+                                                padding: EdgeInsets.only(left: 2.h,top: 2.h,bottom: 2.h,right: 2.h),
                                                 child: Column(
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: [
@@ -1312,4 +1285,5 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
 
 
 }
+
 
