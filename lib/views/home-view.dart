@@ -15,6 +15,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:ultima/services/service.dart';
 import 'package:ultima/services/user-controller.dart';
 import 'package:ultima/views/camera-view.dart';
+import 'package:ultima/views/cosmetic-view.dart';
 import 'package:ultima/views/search-view.dart';
 import 'package:ultima/views/web-view.dart';
 import 'package:ultima/widget/colorExtension.dart';
@@ -252,9 +253,17 @@ class _HomepageViewState extends State<HomepageView> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset('assets/images/menu1.png',height: 4.h,),
+                                Image.asset('assets/images/hot-deal 1.png',height: 4.h,),
+                                // SvgPicture.asset('assets/icons/hot-deal.svg'),
                                 SizedBox(height: 2.w,),
-                                Text('Ingredient\nInvestigator',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('All Deals ',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
+                                    Icon(Icons.arrow_forward_ios_rounded,size: 14.sp,)
+
+                                  ],
+                                ),
 
                         ],
                             ),
@@ -263,23 +272,37 @@ class _HomepageViewState extends State<HomepageView> {
 
                           SizedBox(width:4.w,),
 
-                          Expanded(child: Container(
-                            height: 13.h,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(color: Color(0xFFA5A5A5).withOpacity(0.11),offset: Offset(1,2),blurRadius: 10)
-                                ]
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset('assets/images/menu2.png',height: 4.h,),
-                                SizedBox(height: 2.w,),
-                                Text('Compare\nProduct',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
+                          Expanded(child: GestureDetector(
+                            onTap: (){
+                              Get.to(
+                                      ()=> WebView(),
+                                  arguments:"https://popcat.click/"
+                              );
+                            },
+                            child: Container(
+                              height: 13.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(color: Color(0xFFA5A5A5).withOpacity(0.11),offset: Offset(1,2),blurRadius: 10)
+                                  ]
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset('assets/images/puzzle-2 1.png',height: 4.h,),
+                                  SizedBox(height: 2.w,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text('Activity ',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
+                                      Icon(Icons.arrow_forward_ios_rounded,size: 14.sp,)
+                                    ],
+                                  ),
 
-                              ],
+                                ],
+                              ),
                             ),
                           )),
 
@@ -296,9 +319,17 @@ class _HomepageViewState extends State<HomepageView> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset('assets/images/menu3.png',height: 4.h,),
+                                Image.asset('assets/images/trophy 1.png',height: 4.h,),
                                 SizedBox(height: 2.w,),
-                                Text('Similar\nFinder',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+
+                                  children: [
+                                    Text('Claim Reward ',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
+                                    Icon(Icons.arrow_forward_ios_rounded,size: 14.sp,)
+
+                                  ],
+                                ),
 
                               ],
                             ),
@@ -372,51 +403,56 @@ class _HomepageViewState extends State<HomepageView> {
                           itemCount: Get.find<userController>().skincare.value.length, itemBuilder: (context,index,pageView){
                         return Padding(
                           padding: EdgeInsets.only(right: 4.w),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.01),blurRadius: 40,spreadRadius: 20)
-                              ]
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 3.w,top: 3.w,bottom: 3.w),
-                              child: Row(
-                                children: [
-                                  Expanded(flex: 4,child: Padding(
-                                    padding: EdgeInsets.only(top: 3.h,bottom: 3.h,left: 5.w,right: 3.w),
+                          child: GestureDetector(
+                            onTap: (){
+                              // ไปหาโพรดัค
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.01),blurRadius: 40,spreadRadius: 20)
+                                ]
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 3.w,top: 3.w,bottom: 3.w),
+                                child: Row(
+                                  children: [
+                                    Expanded(flex: 4,child: Padding(
+                                      padding: EdgeInsets.only(top: 3.h,bottom: 3.h,left: 5.w,right: 3.w),
 
 
-                                    child: CachedNetworkImage(imageUrl: Get.find<userController>().skincare.value[index].p_img.value,),
-                                  )),
+                                      child: CachedNetworkImage(imageUrl: Get.find<userController>().skincare.value[index].p_img.value,),
+                                    )),
 
-                                  Expanded(flex: 7,child: Padding(
-                                    padding: EdgeInsets.only(top: 5.w,right: 2.w,bottom: 3.w),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(Get.find<userController>().skincare.value[index].p_brand.value.toString().capitalize! + " " + Get.find<userController>().skincare.value[index].p_name.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                        SizedBox(height: 1.5.h,),
-                                        Text(Get.find<userController>().skincare.value[index].p_desc.value,overflow: TextOverflow.ellipsis,maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
-                                        Spacer(),
-                                        Container(
-                                          height: 3.h,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xFFDBE9F7),
-                                            borderRadius: BorderRadius.circular(20)
+                                    Expanded(flex: 7,child: Padding(
+                                      padding: EdgeInsets.only(top: 5.w,right: 2.w,bottom: 3.w),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(Get.find<userController>().skincare.value[index].p_brand.value.toString().capitalize! + " " + Get.find<userController>().skincare.value[index].p_name.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
+                                          SizedBox(height: 1.5.h,),
+                                          Text(Get.find<userController>().skincare.value[index].p_desc.value,overflow: TextOverflow.ellipsis,maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
+                                          Spacer(),
+                                          Container(
+                                            height: 3.h,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xFFDBE9F7),
+                                              borderRadius: BorderRadius.circular(20)
+                                            ),
+                                            child: Center(child: Text(Get.find<userController>().skincare.value[index].p_cate.value,style: GoogleFonts.inter(fontSize: 14.sp,color: Color(0xFF4E82FF),fontWeight: FontWeight.w800),)),
                                           ),
-                                          child: Center(child: Text(Get.find<userController>().skincare.value[index].p_cate.value,style: GoogleFonts.inter(fontSize: 14.sp,color: Color(0xFF4E82FF),fontWeight: FontWeight.w800),)),
-                                        ),
-                                        Spacer(),
+                                          Spacer(),
 
 
 
-                                      ],
-                                    ),
-                                  )),
+                                        ],
+                                      ),
+                                    )),
 
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -436,86 +472,94 @@ class _HomepageViewState extends State<HomepageView> {
                               itemCount: Get.find<userController>().cosmetic.value.length, itemBuilder: (context,index,pageView){
                             return Padding(
                               padding: EdgeInsets.only(right: 4.w),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.01),blurRadius: 40,spreadRadius: 20)
-                                    ]
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.only(right: 3.w,top: 3.w,bottom: 3.w),
-                                  child: Row(
-                                    children: [
-                                      Expanded(flex: 4,child: Padding(
-                                        padding: EdgeInsets.only(top: 3.h,bottom: 3.h,left: 5.w,right: 3.w),
-                                        child: CachedNetworkImage(imageUrl: Get.find<userController>().cosmetic.value[index].cos_img.value[0],),
-                                      )),
-                                      SizedBox(width: 1.w,),
-                                      Expanded(flex: 7,child: Padding(
-                                        padding: EdgeInsets.only(top: 5.w,right: 2.w,bottom: 3.w),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(Get.find<userController>().cosmetic.value[index].cos_brand.value+" "+Get.find<userController>().cosmetic.value[index].cos_name.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                            SizedBox(height: 1.h,),
-                                            Text(Get.find<userController>().cosmetic.value[index].cos_desc.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
-                                            SizedBox(height: 1.h,),
-                                            Expanded(child: ListView.builder(padding: EdgeInsets.zero
-                                                ,scrollDirection: Axis.horizontal,itemCount: Get.find<userController>().cosmetic.value[index].cos_color_img.value.length ,itemBuilder: (context,colorIndex){
+                              child: GestureDetector(
+                                onTap: (){
+                                  Get.to(
+                                      () => CosmeticView(),
+                                    arguments: index
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.01),blurRadius: 40,spreadRadius: 20)
+                                      ]
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(right: 3.w,top: 3.w,bottom: 3.w),
+                                    child: Row(
+                                      children: [
+                                        Expanded(flex: 4,child: Padding(
+                                          padding: EdgeInsets.only(top: 3.h,bottom: 3.h,left: 5.w,right: 3.w),
+                                          child: CachedNetworkImage(imageUrl: Get.find<userController>().cosmetic.value[index].cos_img.value[0],),
+                                        )),
+                                        SizedBox(width: 1.w,),
+                                        Expanded(flex: 7,child: Padding(
+                                          padding: EdgeInsets.only(top: 5.w,right: 2.w,bottom: 3.w),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(Get.find<userController>().cosmetic.value[index].cos_brand.value+" "+Get.find<userController>().cosmetic.value[index].cos_name.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
+                                              SizedBox(height: 1.h,),
+                                              Text(Get.find<userController>().cosmetic.value[index].cos_desc.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
+                                              SizedBox(height: 1.h,),
+                                              Expanded(child: ListView.builder(padding: EdgeInsets.zero
+                                                  ,scrollDirection: Axis.horizontal,itemCount: Get.find<userController>().cosmetic.value[index].cos_color_img.value.length ,itemBuilder: (context,colorIndex){
 
-                                              return colorIndex==4?Center(child: Text("  +${Get.find<userController>().cosmetic.value[index].cos_color_img.value.length-4}",style: GoogleFonts.inter(color: Color(0xFF9FA2A8),fontWeight: FontWeight.w600),)):colorIndex>3?Container():Padding(
-                                                padding: EdgeInsets.all(0.3.w),
-                                                child: CircleAvatar(
-                                                  // backgroundColor: Get.find<userController>().cosmetic.value[index].cos_color_img.value[index],
-                                                  backgroundColor: Colors.white,
-                                                  foregroundImage: NetworkImage(Get.find<userController>().cosmetic.value[index].cos_color_img.value[colorIndex]),
-                                                  radius: 4.w,
-                                                ),
-                                              );
-                                            })),
-                                            SizedBox(height: 1.h,),
-                                            Get.find<userController>().cosmetic.value[index].cos_istryon.value?Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                  width: 50.w,
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xFF4E82FF),
-                                                    borderRadius: BorderRadius.circular(20)
+                                                return colorIndex==4?Center(child: Text("  +${Get.find<userController>().cosmetic.value[index].cos_color_img.value.length-4}",style: GoogleFonts.inter(color: Color(0xFF9FA2A8),fontWeight: FontWeight.w600),)):colorIndex>3?Container():Padding(
+                                                  padding: EdgeInsets.all(0.3.w),
+                                                  child: CircleAvatar(
+                                                    // backgroundColor: Get.find<userController>().cosmetic.value[index].cos_color_img.value[index],
+                                                    backgroundColor: Colors.white,
+                                                    foregroundImage: NetworkImage(Get.find<userController>().cosmetic.value[index].cos_color_img.value[colorIndex]),
+                                                    radius: 4.w,
                                                   ),
-                                                  child: Padding(
-                                                    padding: EdgeInsets.symmetric(vertical: .5.h),
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
-                                                        SizedBox(width: 1.w,),
-                                                        Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
-                                                      ],
+                                                );
+                                              })),
+                                              SizedBox(height: 1.h,),
+                                              Get.find<userController>().cosmetic.value[index].cos_istryon.value?Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: 50.w,
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0xFF4E82FF),
+                                                      borderRadius: BorderRadius.circular(20)
                                                     ),
-                                                  ),
-                                                )
-                                                // RawChip(backgroundColor:Color(0xFF4E82FF),label: Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
-                                                //   , avatar: InkWell(
-                                                //     onTap: () {},
-                                                //     child: Padding(
-                                                //       padding: EdgeInsets.only(left: 1.w),
-                                                //       child: Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
-                                                //     ),
-                                                //   ),
-                                                // )
-                                              ],
-                                            ):Container()
+                                                    child: Padding(
+                                                      padding: EdgeInsets.symmetric(vertical: .5.h),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
+                                                          SizedBox(width: 1.w,),
+                                                          Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                  // RawChip(backgroundColor:Color(0xFF4E82FF),label: Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
+                                                  //   , avatar: InkWell(
+                                                  //     onTap: () {},
+                                                  //     child: Padding(
+                                                  //       padding: EdgeInsets.only(left: 1.w),
+                                                  //       child: Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
+                                                  //     ),
+                                                  //   ),
+                                                  // )
+                                                ],
+                                              ):Container()
 
 
 
-                                          ],
-                                        ),
-                                      )),
+                                            ],
+                                          ),
+                                        )),
 
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

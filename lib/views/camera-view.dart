@@ -206,7 +206,8 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
       }else{
         print(deepArController.cameraDirection.toString());
         if(deepArController.cameraDirection.toString() == "CameraDirection.front"){
-          deepArController.flipCamera();
+          Future.delayed(Duration(milliseconds: 100)).then((value) => deepArController.flipCamera());
+
         }
 
         // print(res);
@@ -354,6 +355,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                       if(index==0){
                         deepArController.switchEffect('assets/deepar/default.deepar');
                         if(deepArController.cameraDirection.toString() == "CameraDirection.front"){
+
                           deepArController.flipCamera();
                         }
                         setState(() {

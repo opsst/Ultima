@@ -14,7 +14,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "889329332221-qdqa5snih132h8tg33oqijqntd5go1ph.apps.googleusercontent.com",
+          "client_id": "889329332221-4td8jbhebo5qkrcea6t4quavv31r9p1g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ultima.ultima",
+            "certificate_hash": "b3989d4d0cfbe7a986136c879b02b54b15f06636"
+          }
+        },
+        {
+          "client_id": "889329332221-p95c74k9eq45jpbbhoatk0gu0qi8pknf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ultima.ultima",
+            "certificate_hash": "e2e6f30fd48b32552fe06f3b530b55f46b9244da"
+          }
+        },
+        {
+          "client_id": "889329332221-o2ssbkcdmqt3386lnta99jk6b2sni7ub.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +43,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "889329332221-qdqa5snih132h8tg33oqijqntd5go1ph.apps.googleusercontent.com",
+              "client_id": "889329332221-o2ssbkcdmqt3386lnta99jk6b2sni7ub.apps.googleusercontent.com",
               "client_type": 3
             },
             {

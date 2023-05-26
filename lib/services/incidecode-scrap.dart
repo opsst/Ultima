@@ -493,7 +493,21 @@ class Scraper {
     // print(body);
     return (ingReturn);
   }
+  getSuggest(String product) async {
+    var response = await http.get(Uri.parse(product),headers: {
+      "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
+    });
+    var body = response.body;
+    var parse_body = parse(body);
+    // var ingname = parse_body.querySelector('.ICdUp > div');
+    // print(body);
+    // print(parse_body);
+    return body;
+
+  }
 }
+
+
 
 
 

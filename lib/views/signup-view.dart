@@ -9,6 +9,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
+import 'package:ultima/views/splash-view.dart';
 import '../services/service.dart';
 import '../services/user-controller.dart';
 import 'navigation-view.dart';
@@ -142,7 +143,7 @@ class _SignUppageViewState extends State<SignUppageView> {
                      print("TOKEN: "+mytoken.toString());
 
                      Get.off(
-                             () => NavigationBarView()
+                             () => SplashView()
                      );
                    }
 

@@ -9,5 +9,7 @@ class ProductModel{
   var p_cate = ''.obs;
   var p_img = ''.obs;
   var ing_id = [].obs;
+  var l_link = [].obs;
+
 
 }

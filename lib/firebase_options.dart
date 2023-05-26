@@ -50,20 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBluI5NGiTKZnr0KIs0S8o6VbK-DPfJO7I',
-    appId: '1:710359658843:android:0e5a80683d83aab2e2ea7e',
-    messagingSenderId: '710359658843',
-    projectId: 'ultima-2989f',
-    storageBucket: 'ultima-2989f.appspot.com',
+    apiKey: 'AIzaSyChjM6At47DmEllhl028Vd4u-xeFcPd5UY',
+    appId: '1:889329332221:android:2a7ea79248d6244ba7f394',
+    messagingSenderId: '889329332221',
+    projectId: 'ultima-b32f3',
+    storageBucket: 'ultima-b32f3.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD07y0P4CUXlzL1OSdSRlyaK0FxCL2aP5Y',
-    appId: '1:710359658843:ios:305393fd23a63866e2ea7e',
-    messagingSenderId: '710359658843',
-    projectId: 'ultima-2989f',
-    storageBucket: 'ultima-2989f.appspot.com',
-    iosClientId: '710359658843-ae730sr00hqa0h70etrtmtpnvaf62fp1.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCgCRaQUR5A2dMzHVSWZ6zzMgMPHUfiiDU',
+    appId: '1:889329332221:ios:367868b305f8e16ea7f394',
+    messagingSenderId: '889329332221',
+    projectId: 'ultima-b32f3',
+    storageBucket: 'ultima-b32f3.appspot.com',
+    androidClientId: '889329332221-4td8jbhebo5qkrcea6t4quavv31r9p1g.apps.googleusercontent.com',
+    iosClientId: '889329332221-1g6dq92pkpunq67khssccvrb9060g532.apps.googleusercontent.com',
     iosBundleId: 'com.ultima.ultima',
   );
 }

@@ -14,6 +14,8 @@ class IngredientModel{
   var detail = ''.obs;
   var proof = [].obs;
   var link = ''.obs;
+  var l_link = [].obs;
+
 
 
 

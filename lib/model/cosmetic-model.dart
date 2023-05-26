@@ -13,6 +13,7 @@ class CosmeticModel{
   var cos_tryon_name = [].obs;
   var cos_tryon_color = [].obs;
   var ing_id = [].obs;
+  var l_link = [].obs;
 
 
   //

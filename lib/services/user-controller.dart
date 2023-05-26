@@ -68,6 +68,7 @@ class userController extends GetxController{
         cosmeticModel.ing_id.value = element['ing_id']??[];
         cosmeticModel.cos_tryon_name.value = element['cos_tryon_name']??[];
         cosmeticModel.cos_tryon_color.value = element['cos_tryon_color']??[];
+        cosmeticModel.l_link.value = element['l_link']??[];
 
         if(element['cos_istryon']==true){
 
