@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'dart:io';
+
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../services/user-controller.dart';
 
@@ -135,7 +138,7 @@ class DraggableBottomSheetState extends State<DraggableBottomSheet> {
         // duration: widget.duration,
         duration: !isdrag?Duration(milliseconds:0):widget.duration,
         width: _axis() == Axis.horizontal ? Get.find<userController>().currentExtent.value : null,
-        height: _axis() == Axis.horizontal ? null : Get.find<userController>().currentExtent.value,
+        height: _axis() == Axis.horizontal ? null :Get.find<userController>().currentExtent.value+10.h,
         child: AnimatedSwitcher(
           switchOutCurve: Curves.bounceInOut,
           duration: Duration(milliseconds: 150),
@@ -207,7 +210,10 @@ class DraggableBottomSheetState extends State<DraggableBottomSheet> {
 
 
     }else{
-      setState(() => Get.find<userController>().currentExtent.value = widget.minExtent);
+      setState(() {
+        Get.find<userController>().currentExtent.value = widget.minExtent;
+        Get.find<userController>().cosmeticSelect.value = 0;
+      });
       widget.controller.reset();
       widget.controller.animateBack(0.4);
       widget.onDragging(Get.find<userController>().currentExtent.value);

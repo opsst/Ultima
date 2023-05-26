@@ -83,6 +83,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                               },
                               child: Container(
                                 width: 25.w,
+                                color: Colors.transparent,
                                 // height: 5.h,
                                 child: Column(
                                   children: [
@@ -100,6 +101,8 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                               },
                               child: Container(
                                 width: 25.w,
+                                color: Colors.transparent,
+
                                 // height: 5.h,
                                 child: Column(
                                   children: [
@@ -117,6 +120,8 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                               },
                               child: Container(
                                 width: 25.w,
+                                color: Colors.transparent,
+
                                 // height: 5.h,
                                 child: Column(
                                   children: [
@@ -134,6 +139,8 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                               },
                               child: Container(
                                 width: 25.w,
+                                color: Colors.transparent,
+
                                 // height: 5.h,
                                 child: Column(
                                   children: [

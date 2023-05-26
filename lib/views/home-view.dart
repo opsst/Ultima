@@ -13,7 +13,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:ultima/services/service.dart';
+import 'package:ultima/services/user-controller.dart';
 import 'package:ultima/views/camera-view.dart';
+import 'package:ultima/views/search-view.dart';
+import 'package:ultima/views/web-view.dart';
+import 'package:ultima/widget/colorExtension.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class HomepageView extends StatefulWidget {
   const HomepageView({Key? key}) : super(key: key);
@@ -27,6 +33,8 @@ class _HomepageViewState extends State<HomepageView> {
   CarouselController carouselController = CarouselController();
   var indicator = 0;
   var imageAds = ['https://theaxo.com/wp-content/uploads/2022/03/Untitled-design-4.jpg','https://www.brandbuffet.in.th/wp-content/uploads/2021/07/Konvy-Free-PR-1.jpg','https://www.truemoney.com/wp-content/uploads/2021/03/truemoneywallet-lazada-shop-pro-031-banner-20220503-1100X550.jpeg'];
+  var imageLink = ['https://shopee.co.th/m/payday-sale','https://www.konvy.com/m/promo/?sign=New_User_Only_20180622&user_group_ids=-1,-2','https://pages.lazada.co.th/wow/gcp/route/lazada/th/upr_1000345_lazada/channel/th/upr-router/th?spm=a2o4m.home.feature_nav.2.7b077f6dEtDthQ&hybrid=1&data_prefetch=true&at_iframe=1&wh_pid=/lazada/channel/th/voucher/claimvoucher&scm=1003.4.icms-zebra-5000381-2586275.OTHER_6501017912_7654419&prefetch_replace=1'];
+
   var tabIndex = 0;
 
 
@@ -51,58 +59,80 @@ class _HomepageViewState extends State<HomepageView> {
                     SizedBox(height: 3.h,),
                     Padding(
                       padding: EdgeInsets.all(2.h),
-                      child:TextFormField(
-                        textInputAction: TextInputAction.search,
-
-                        cursorHeight: 15.sp,
-                        // keyboardType: keyboadType,
-                        cursorColor: Color(0xFF858585),
-                        style: GoogleFonts.inter(color: Color(0xFF858585),fontSize: 15.sp),
-                        decoration: InputDecoration(
-                          prefixIconConstraints: BoxConstraints(minHeight: 50,minWidth:13.w,),
-                          prefixIcon: Icon(EvaIcons.searchOutline,size: 20.sp,color: Color(0xFF858585),),
-                          prefixIconColor: Colors.white,
-                          // prefix: SvgPicture.asset('assets/images/search.svg',width: 12),
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red, width: 2),
-                              borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                              gapPadding: (4)
-                          ),
-                          isDense: true,
-                          contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(30.0),
+                      child:GestureDetector(
+                        onTap: (){
+                          Get.to(
+                              () => SearchView()
+                          );
+                        },
+                        child: TextFormField(
+                          textInputAction: TextInputAction.search,
+                          enabled: false,
+                          cursorHeight: 15.sp,
+                          // keyboardType: keyboadType,
+                          cursorColor: Color(0xFF858585),
+                          style: GoogleFonts.inter(color: Color(0xFF858585),fontSize: 15.sp),
+                          decoration: InputDecoration(
+                            prefixIconConstraints: BoxConstraints(minHeight: 50,minWidth:13.w,),
+                            prefixIcon: Icon(EvaIcons.searchOutline,size: 20.sp,color: Color(0xFF858585),),
+                            prefixIconColor: Colors.white,
+                            // prefix: SvgPicture.asset('assets/images/search.svg',width: 12),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red, width: 2),
+                                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                gapPadding: (4)
                             ),
-                            borderSide: BorderSide(color: Colors.white, width: 1),
+                            isDense: true,
+                            contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30.0),
+                              ),
+                              borderSide: BorderSide(color: Colors.white, width: 1),
 
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(30.0),
                             ),
-                            borderSide: BorderSide(
-                                color: Color(0xff3779B9),
-                                width: 2
-                            ),
-                          ),
-                          // focusColor: Color(0xff1B1E64),
-                          // fillColor: Colors.white,
-                          label: Text("Search"),
-                          labelStyle: GoogleFonts.inter(color: Color(0xFF858585),fontSize: 15.sp),
-                          filled: true,
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30.0),
+                              ),
+                              borderSide: BorderSide(color: Colors.white, width: 1),
 
-                          // hoverColor: Color(0xff1B1E64),
-                          // floatingLabelBehavior: FloatingLabelBehavior.never,
+                            ) ,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30.0),
+                              ),
+                              borderSide: BorderSide(
+                                  color: Color(0xff3779B9),
+                                  width: 2
+                              ),
+                            ),
+                            // focusColor: Color(0xff1B1E64),
+                            // fillColor: Colors.white,
+                            label: Text("Search"),
+                            labelStyle: GoogleFonts.inter(color: Color(0xFF858585),fontSize: 15.sp),
+                            filled: true,
+
+                            // hoverColor: Color(0xff1B1E64),
+                            // floatingLabelBehavior: FloatingLabelBehavior.never,
+                          ),
                         ),
                       ),
                     ),
                     CarouselSlider.builder(
                         carouselController: carouselController,
                         itemCount: 3, itemBuilder: (context,index,pageView){
-                      return CachedNetworkImage(imageUrl: imageAds[index],fit: BoxFit.fill,  placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) => Icon(Icons.error),);
+                      return GestureDetector(
+                        onTap: (){
+                          Get.to(
+                              ()=> WebView(),
+                              arguments:imageLink[index]
+                          );
+                        },
+                        child: CachedNetworkImage(imageUrl: imageAds[index],fit: BoxFit.fill,  placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => Icon(Icons.error),),
+                      );
                     }, options: CarouselOptions(
                       autoPlay: true,autoPlayAnimationDuration: Duration(seconds: 1),
                       viewportFraction: 1,
@@ -122,59 +152,82 @@ class _HomepageViewState extends State<HomepageView> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Stack(
-                              alignment: Alignment.bottomRight,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 2.h),
-                                  child: Container(height: 13.h,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFF4E82FF),
-                                      borderRadius: BorderRadius.circular(12),
-                                        boxShadow: [
-                                          BoxShadow(color: Color(0xFFA5A5A5).withOpacity(0.11),offset: Offset(1,2),blurRadius: 30)
+                            child: GestureDetector(
+                              onTap: (){
+                                setState((){
+                                  Get.find<userController>().modeSelect.value = 1;
 
-                                        ]
-                                    ),),
-                                ),
-                                Image.asset('assets/images/cosmetic-tryon.png',height: 15.h),
-                                Positioned(
-                                    top: 0,
-                                    left: 0,
-                                    child: Padding(
-                                        padding: EdgeInsets.only(top: 4.h,left: 3.w),
-                                        child: Text('Cosmetic\nTry-on',style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Colors.white),))),
-                              ],
+                                });
+                                Get.to(
+                                    () => CameraView()
+                                );
+                              },
+                              child: Stack(
+                                alignment: Alignment.bottomRight,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 2.h),
+                                    child: Container(height: 13.h,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFF4E82FF),
+                                        borderRadius: BorderRadius.circular(12),
+                                          boxShadow: [
+                                            BoxShadow(color: Color(0xFFA5A5A5).withOpacity(0.11),offset: Offset(1,2),blurRadius: 30)
+
+                                          ]
+                                      ),),
+                                  ),
+                                  Image.asset('assets/images/cosmetic-tryon.png',height: 15.h),
+                                  Positioned(
+                                      top: 0,
+                                      left: 0,
+                                      child: Padding(
+                                          padding: EdgeInsets.only(top: 4.h,left: 3.w),
+                                          child: Text('Cosmetic\nTry-on',style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Colors.white),))),
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(width: 4.w,),
                           Expanded(
-                            child: Stack(
-                              alignment: Alignment.bottomLeft,
+                            child: GestureDetector(
+                              onTap: (){
+                                setState((){
+                                  Get.find<userController>().modeSelect.value = 0;
 
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 2.h),
-                                  child: Container(height: 13.h,
-                                    decoration: BoxDecoration(
-                                        color: Color(0xFFBBDDFF),
-                                        borderRadius: BorderRadius.circular(12),
-                                      boxShadow: [
-                                        BoxShadow(color: Color(0xFFA5A5A5).withOpacity(0.11),offset: Offset(1,2),blurRadius: 30)
+                                });
+                                Get.to(
+                                      () => CameraView(),
 
-                                      ]
+                                );
+                              },
+                              child: Stack(
+                                alignment: Alignment.bottomLeft,
 
-                                    ),),
-                                ),
-                                Image.asset('assets/images/product-discovery.png',height: 15.h,),
-                                Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: Padding(
-                                        padding: EdgeInsets.only(top: 4.h,right: 3.w),
-                                        child: Text('Product\nDiscovery',textAlign: TextAlign.right,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Colors.white),))),
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 2.h),
+                                    child: Container(height: 13.h,
+                                      decoration: BoxDecoration(
+                                          color: Color(0xFFBBDDFF),
+                                          borderRadius: BorderRadius.circular(12),
+                                        boxShadow: [
+                                          BoxShadow(color: Color(0xFFA5A5A5).withOpacity(0.11),offset: Offset(1,2),blurRadius: 30)
 
-                              ],
+                                        ]
+
+                                      ),),
+                                  ),
+                                  Image.asset('assets/images/product-discovery.png',height: 15.h,),
+                                  Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: Padding(
+                                          padding: EdgeInsets.only(top: 4.h,right: 3.w),
+                                          child: Text('Scan\nProduct',textAlign: TextAlign.right,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Colors.white),))),
+
+                                ],
+                              ),
                             ),
                           ),
 
@@ -277,7 +330,7 @@ class _HomepageViewState extends State<HomepageView> {
                       ),
                     ),
                     Container(
-                      height: 32.h,
+                      height: 34.h,
                       child: ContainedTabBarView(
                         onChange: (index){
                           print(index);
@@ -299,7 +352,7 @@ class _HomepageViewState extends State<HomepageView> {
                           width: 70.w,
                           indicatorColor: Color(0xFF4E82FF),
                           indicator: ContainerTabIndicator(
-                            padding: EdgeInsets.only(top: 0.5.h),
+                            padding: EdgeInsets.only(top: .1.h),
                             width: 20.w,
                             height: 0.4.h,
                             radius: BorderRadius.circular(8.0),
@@ -316,7 +369,7 @@ class _HomepageViewState extends State<HomepageView> {
                         views: [
                           CarouselSlider.builder(
                           carouselController: carouselController,
-                          itemCount: 3, itemBuilder: (context,index,pageView){
+                          itemCount: Get.find<userController>().skincare.value.length, itemBuilder: (context,index,pageView){
                         return Padding(
                           padding: EdgeInsets.only(right: 4.w),
                           child: Container(
@@ -328,52 +381,34 @@ class _HomepageViewState extends State<HomepageView> {
                               ]
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(3.w),
+                              padding: EdgeInsets.only(right: 3.w,top: 3.w,bottom: 3.w),
                               child: Row(
                                 children: [
-                                  Expanded(flex: 4,child: CachedNetworkImage(imageUrl: 'https://perfumestore.ph/wp-content/uploads/2020/07/3-185.jpg',)),
+                                  Expanded(flex: 4,child: Padding(
+                                    padding: EdgeInsets.only(top: 3.h,bottom: 3.h,left: 5.w,right: 3.w),
+
+
+                                    child: CachedNetworkImage(imageUrl: Get.find<userController>().skincare.value[index].p_img.value,),
+                                  )),
+
                                   Expanded(flex: 7,child: Padding(
                                     padding: EdgeInsets.only(top: 5.w,right: 2.w,bottom: 3.w),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text('Pixi Skintreasts Makeup Fixing Mist',overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                        SizedBox(height: 1.w,),
-                                        Text('Lorem Ipsum is simply 🍌 of the printing and typesetting and doing but I love you. ',overflow: TextOverflow.ellipsis,maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                            Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                            Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                            Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                            Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107).withOpacity(0.35),),
-                                            SizedBox(width: 0.5.w,),
-                                            Text('4.5',maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFFFFC107))),
-                                            Spacer(),
-                                            Opacity(
-                                              opacity: 0,
-                                              child: RawChip(backgroundColor:Color(0xFF4E82FF),label: Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
-                                                , avatar: InkWell(
-                                                  onTap: () {},
-                                                  child: Padding(
-                                                    padding: EdgeInsets.only(left: 1.w),
-                                                    child: Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
-                                                ),
-                                              ),
-                                              ),
-                                            )
-                                          ],
+                                        Text(Get.find<userController>().skincare.value[index].p_brand.value.toString().capitalize! + " " + Get.find<userController>().skincare.value[index].p_name.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
+                                        SizedBox(height: 1.5.h,),
+                                        Text(Get.find<userController>().skincare.value[index].p_desc.value,overflow: TextOverflow.ellipsis,maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
+                                        Spacer(),
+                                        Container(
+                                          height: 3.h,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xFFDBE9F7),
+                                            borderRadius: BorderRadius.circular(20)
+                                          ),
+                                          child: Center(child: Text(Get.find<userController>().skincare.value[index].p_cate.value,style: GoogleFonts.inter(fontSize: 14.sp,color: Color(0xFF4E82FF),fontWeight: FontWeight.w800),)),
                                         ),
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
-                                            SizedBox(width: 1.w,),
-                                            Text('1,200-1,750 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
-
-                                          ],
-                                        ),
+                                        Spacer(),
 
 
 
@@ -398,7 +433,7 @@ class _HomepageViewState extends State<HomepageView> {
                       )),
                           CarouselSlider.builder(
                               carouselController: carouselController,
-                              itemCount: 3, itemBuilder: (context,index,pageView){
+                              itemCount: Get.find<userController>().cosmetic.value.length, itemBuilder: (context,index,pageView){
                             return Padding(
                               padding: EdgeInsets.only(right: 4.w),
                               child: Container(
@@ -410,49 +445,69 @@ class _HomepageViewState extends State<HomepageView> {
                                     ]
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsets.all(3.w),
+                                  padding: EdgeInsets.only(right: 3.w,top: 3.w,bottom: 3.w),
                                   child: Row(
                                     children: [
-                                      Expanded(flex: 4,child: CachedNetworkImage(imageUrl: 'https://s2.konvy.com/static/team/2022/0913/16630588358685.jpg',)),
+                                      Expanded(flex: 4,child: Padding(
+                                        padding: EdgeInsets.only(top: 3.h,bottom: 3.h,left: 5.w,right: 3.w),
+                                        child: CachedNetworkImage(imageUrl: Get.find<userController>().cosmetic.value[index].cos_img.value[0],),
+                                      )),
+                                      SizedBox(width: 1.w,),
                                       Expanded(flex: 7,child: Padding(
                                         padding: EdgeInsets.only(top: 5.w,right: 2.w,bottom: 3.w),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text('Bobbi Brown Skin Full Cover Concealer',overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                            SizedBox(height: 1.w,),
-                                            Text('Lorem Ipsum is simply 🍌 of the printing and typesetting and doing but I love you. ',overflow: TextOverflow.ellipsis,maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
-                                            Row(
+                                            Text(Get.find<userController>().cosmetic.value[index].cos_brand.value+" "+Get.find<userController>().cosmetic.value[index].cos_name.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
+                                            SizedBox(height: 1.h,),
+                                            Text(Get.find<userController>().cosmetic.value[index].cos_desc.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
+                                            SizedBox(height: 1.h,),
+                                            Expanded(child: ListView.builder(padding: EdgeInsets.zero
+                                                ,scrollDirection: Axis.horizontal,itemCount: Get.find<userController>().cosmetic.value[index].cos_color_img.value.length ,itemBuilder: (context,colorIndex){
+
+                                              return colorIndex==4?Center(child: Text("  +${Get.find<userController>().cosmetic.value[index].cos_color_img.value.length-4}",style: GoogleFonts.inter(color: Color(0xFF9FA2A8),fontWeight: FontWeight.w600),)):colorIndex>3?Container():Padding(
+                                                padding: EdgeInsets.all(0.3.w),
+                                                child: CircleAvatar(
+                                                  // backgroundColor: Get.find<userController>().cosmetic.value[index].cos_color_img.value[index],
+                                                  backgroundColor: Colors.white,
+                                                  foregroundImage: NetworkImage(Get.find<userController>().cosmetic.value[index].cos_color_img.value[colorIndex]),
+                                                  radius: 4.w,
+                                                ),
+                                              );
+                                            })),
+                                            SizedBox(height: 1.h,),
+                                            Get.find<userController>().cosmetic.value[index].cos_istryon.value?Row(
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
-                                                Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                                Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                                Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                                Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                                Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                                SizedBox(width: 0.5.w,),
-                                                Text('4.8',maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFFFFC107))),
-                                                Spacer(),
-                                                RawChip(backgroundColor:Color(0xFF4E82FF),label: Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
-                                                  , avatar: InkWell(
-                                                    onTap: () {},
-                                                    child: Padding(
-                                                      padding: EdgeInsets.only(left: 1.w),
-                                                      child: Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
+                                                Container(
+                                                  width: 50.w,
+                                                  decoration: BoxDecoration(
+                                                    color: Color(0xFF4E82FF),
+                                                    borderRadius: BorderRadius.circular(20)
+                                                  ),
+                                                  child: Padding(
+                                                    padding: EdgeInsets.symmetric(vertical: .5.h),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
+                                                        SizedBox(width: 1.w,),
+                                                        Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
+                                                      ],
                                                     ),
                                                   ),
                                                 )
+                                                // RawChip(backgroundColor:Color(0xFF4E82FF),label: Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
+                                                //   , avatar: InkWell(
+                                                //     onTap: () {},
+                                                //     child: Padding(
+                                                //       padding: EdgeInsets.only(left: 1.w),
+                                                //       child: Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
+                                                //     ),
+                                                //   ),
+                                                // )
                                               ],
-                                            ),
-                                            Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
-                                                SizedBox(width: 1.w,),
-                                                Text('1,100-1.200 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
-
-                                              ],
-                                            ),
+                                            ):Container()
 
 
 
@@ -478,7 +533,7 @@ class _HomepageViewState extends State<HomepageView> {
 
                           CarouselSlider.builder(
                               carouselController: carouselController,
-                              itemCount: 3, itemBuilder: (context,index,pageView){
+                              itemCount: Get.find<userController>().fragrance.value.length, itemBuilder: (context,index,pageView){
                             return Padding(
                               padding: EdgeInsets.only(right: 4.w),
                               child: Container(
@@ -490,52 +545,55 @@ class _HomepageViewState extends State<HomepageView> {
                                     ]
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsets.all(3.w),
+                                  padding: EdgeInsets.only(right: 3.w,top: 3.w,bottom: 3.w),
                                   child: Row(
                                     children: [
-                                      Expanded(flex: 4,child: CachedNetworkImage(imageUrl: 'https://img.kingpowerclick.com/cdn-cgi/image/format=auto/kingpower-com/image/upload/w_1400,h_1400,f_auto/prod/779967-L1.jpg',)),
+                                      Expanded(flex: 4,child: Padding(
+                                        padding: EdgeInsets.only(top: 3.h,bottom: 3.h,left: 5.w,right: 3.w),
+                                        child: CachedNetworkImage(imageUrl: Get.find<userController>().fragrance.value[index].p_img.value,),
+                                      )),
                                       Expanded(flex: 7,child: Padding(
                                         padding: EdgeInsets.only(top: 5.w,right: 2.w,bottom: 3.w),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Text('Dior Savage Eau De Parfum',overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                            SizedBox(height: 1.w,),
-                                            Text('Lorem Ipsum is simply 🍌 of the printing and typesetting and doing but I love you. ',overflow: TextOverflow.ellipsis,maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
-                                            Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                                Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                                Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                                Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                                Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107).withOpacity(0.35),),
-                                                SizedBox(width: 0.5.w,),
-                                                Text('4.5',maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFFFFC107))),
-                                                Spacer(),
-                                                Opacity(
-                                                  opacity: 0,
-                                                  child: RawChip(backgroundColor:Color(0xFF4E82FF),label: Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
-                                                    , avatar: InkWell(
-                                                      onTap: () {},
-                                                      child: Padding(
-                                                        padding: EdgeInsets.only(left: 1.w),
-                                                        child: Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                            Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
-                                                SizedBox(width: 1.w,),
-                                                Text('5,600-7,050 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
-
-                                              ],
-                                            ),
+                                            Text(Get.find<userController>().fragrance.value[index].p_brand.value+" "+Get.find<userController>().fragrance.value[index].p_name.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
+                                            SizedBox(height: 2.h,),
+                                            Text(Get.find<userController>().fragrance.value[index].p_desc.value,overflow: TextOverflow.ellipsis,maxLines: 5,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
+                                            // Row(
+                                            //   crossAxisAlignment: CrossAxisAlignment.center,
+                                            //   children: [
+                                            //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
+                                            //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
+                                            //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
+                                            //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
+                                            //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107).withOpacity(0.35),),
+                                            //     SizedBox(width: 0.5.w,),
+                                            //     Text('4.5',maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFFFFC107))),
+                                            //     Spacer(),
+                                            //     Opacity(
+                                            //       opacity: 0,
+                                            //       child: RawChip(backgroundColor:Color(0xFF4E82FF),label: Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
+                                            //         , avatar: InkWell(
+                                            //           onTap: () {},
+                                            //           child: Padding(
+                                            //             padding: EdgeInsets.only(left: 1.w),
+                                            //             child: Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
+                                            //           ),
+                                            //         ),
+                                            //       ),
+                                            //     )
+                                            //   ],
+                                            // ),
+                                            // Row(
+                                            //   crossAxisAlignment: CrossAxisAlignment.center,
+                                            //   children: [
+                                            //     Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
+                                            //     SizedBox(width: 1.w,),
+                                            //     Text('5,600-7,050 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
+                                            //
+                                            //   ],
+                                            // ),
 
 
 
@@ -569,54 +627,23 @@ class _HomepageViewState extends State<HomepageView> {
                         children: [
                           Text('Hot Deal',style: GoogleFonts.inter(fontSize: 18.sp,fontWeight: FontWeight.w800,color: Color(0xFF0B1F4F))),
                           SizedBox(width: 2.w,),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xFF4E82FF),
-                              borderRadius: BorderRadius.circular(3)
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(1.w),
-                              child: Text('21',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w600),),
-                            ),
-                          ),
-                          SizedBox(width: 1.w,),
-                          Text(':',style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w800,color: Color(0xFF0B1F4F))),
-                          SizedBox(width: 1.w,),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xFF4E82FF),
-                                borderRadius: BorderRadius.circular(3)
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(1.w),
-                              child: Text('10',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w600),),
-                            ),
-                          ),
-
-                          SizedBox(width: 1.w,),
-                          Text(':',style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w800,color: Color(0xFF0B1F4F))),
-                          SizedBox(width: 1.w,),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xFF4E82FF),
-                                borderRadius: BorderRadius.circular(3)
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(1.w),
-                              child: Text('35',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w600),),
-                            ),
-                          ),
-
                         ],
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 2.h),
-                      child: Container(
-                        height: 16.h,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(image: ExactAssetImage('assets/images/ads.png'),fit: BoxFit.contain,),
-                          borderRadius: BorderRadius.circular(15),
+                      child: GestureDetector(
+                        onTap: (){
+                          launchUrl(Uri.parse('https://www.watsons.co.th/th/นู-ฟอร์มูล่า-พอร์-ดีพ-แคลริฟายอิ้ง-โฟม-150-กรัม-โฟมล้างหน้า-ลดสิว-ผิวกระจ่างใส/p/BP_302412'),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        },
+                        child: Container(
+                          height: 16.h,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(image: ExactAssetImage('assets/images/ads.png'),fit: BoxFit.contain,),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                         ),
                       ),
                     ),
@@ -643,23 +670,44 @@ class _HomepageViewState extends State<HomepageView> {
                       padding: EdgeInsets.symmetric(horizontal: 2.h),
                       child: Row(
                         children: [
-                          Expanded(child: Container(
-                            height: 10.h,
-                            decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(12),image: DecorationImage(image: ExactAssetImage('assets/images/laz.png'))),
+                          Expanded(child: GestureDetector(
+                            onTap: (){
+                              launchUrl(Uri.parse('https://www.lazada.co.th'),
+                                mode: LaunchMode.externalApplication,
+                              );
+                            },
+                            child: Container(
+                              height: 10.h,
+                              decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(12),image: DecorationImage(image: ExactAssetImage('assets/images/laz.png'))),
+                            ),
                           )),
                           SizedBox(width: 3.w,),
-                          Expanded(child: Container(
-                            height: 10.h,
-                            decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(12),image: DecorationImage(image: ExactAssetImage('assets/images/shopee.png'))),
+                          Expanded(child: GestureDetector(
+                            onTap: (){
+                              launchUrl(Uri.parse('https://shopee.co.th'),
+                                mode: LaunchMode.externalApplication,
+                              );
+                            },
+                            child: Container(
+                              height: 10.h,
+                              decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(12),image: DecorationImage(image: ExactAssetImage('assets/images/shopee.png'))),
 
+                            ),
                           )),
 
                           SizedBox(width: 3.w,),
 
-                          Expanded(child: Container(
-                            height: 10.h,
-                            decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(12),image: DecorationImage(image: ExactAssetImage('assets/images/konvy.png'))),
+                          Expanded(child: GestureDetector(
+                            onTap: (){
+                              launchUrl(Uri.parse('https://www.konvy.com'),
+                                mode: LaunchMode.externalApplication,
+                              );
+                            },
+                            child: Container(
+                              height: 10.h,
+                              decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(12),image: DecorationImage(image: ExactAssetImage('assets/images/konvy.png'))),
 
+                            ),
                           )),
 
 
@@ -677,215 +725,39 @@ class _HomepageViewState extends State<HomepageView> {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 2.h),
-                      child: GridView.count(childAspectRatio: 0.8, crossAxisCount: 2,crossAxisSpacing: 3.w,mainAxisSpacing: 3.w,physics: NeverScrollableScrollPhysics(),padding: EdgeInsets.zero,shrinkWrap: true,children: [
-                        Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15),boxShadow: [BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.02),blurRadius: 40,spreadRadius: 20)]),child: Column(
-                          children: [
-                            Expanded(flex:3,child: Padding(
-                              padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
-                              child: CachedNetworkImage(imageUrl: 'https://perfumestore.ph/wp-content/uploads/2020/07/3-185.jpg',),
-                            )),
-                            Expanded(flex:2,child: Padding(
-                              padding: EdgeInsets.only(left: 2.h,right: 2.h),
+                      child: GridView.count(childAspectRatio: 0.8, crossAxisCount: 2,crossAxisSpacing: 3.w,mainAxisSpacing: 3.w,physics: NeverScrollableScrollPhysics(),padding: EdgeInsets.zero,shrinkWrap: true,
+                        children: List.generate(Get.find<userController>().skincare.value.length, (index) {
+                          return Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15),boxShadow: [BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.02),blurRadius: 40,spreadRadius: 20)]),child: Column(
+                            children: [
+                              Expanded(flex:3,child: Padding(
+                                padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
+                                child: CachedNetworkImage(imageUrl: Get.find<userController>().skincare.value[index].p_img.value,),
+                              )),
+                              Expanded(flex:2,child: Padding(
+                                padding: EdgeInsets.only(left: 2.h,right: 2.h,bottom: 2.h),
 
-                              child: Column(
-                                children: [
-                                  Text('Bobbi Brown Crushed Lip',maxLines: 2,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                  SizedBox(height: 1.h,),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
-                                      SizedBox(width: 1.w,),
-                                      Text('1,200-1,750 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
+                                child: Column(
+                                  children: [
+                                    Text(Get.find<userController>().skincare.value[index].p_brand.value.toString().capitalize!+" "+Get.find<userController>().skincare.value[index].p_name.value,maxLines: 2,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
+                                    Spacer(),
+                                    Container(
+                                      width: 100.w,
+                                      height: 3.h,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFFDBE9F7),
+                                        borderRadius: BorderRadius.circular(200)
+                                      ),
+                                      child: Center(child: Text(Get.find<userController>().skincare.value[index].p_cate.value ,style: GoogleFonts.inter(color: Color(0xFF1E439B),fontWeight: FontWeight.w700,fontSize: 13.sp),)),
+                                    )
+                                  ],
+                                ),
+                              )),
 
-                                    ],
-                                  ),
+                            ],
+                          ),);
 
-                                ],
-                              ),
-                            )),
-
-                          ],
-                        ),),
-                        Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15),boxShadow: [BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.02),blurRadius: 40,spreadRadius: 20)]),child: Column(
-                          children: [
-                            Expanded(flex:3,child: Padding(
-                              padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
-                              child: CachedNetworkImage(imageUrl: 'https://perfumestore.ph/wp-content/uploads/2020/07/3-185.jpg',),
-                            )),
-                            Expanded(flex:2,child: Padding(
-                              padding: EdgeInsets.only(left: 2.h,right: 2.h),
-
-                              child: Column(
-                                children: [
-                                  Text('Bobbi Brown Crushed Lip',maxLines: 2,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                  SizedBox(height: 1.h,),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
-                                      SizedBox(width: 1.w,),
-                                      Text('1,200-1,750 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
-
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                            )),
-
-                          ],
-                        ),),
-                        Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15),boxShadow: [BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.02),blurRadius: 40,spreadRadius: 20)]),child: Column(
-                          children: [
-                            Expanded(flex:3,child: Padding(
-                              padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
-                              child: CachedNetworkImage(imageUrl: 'https://perfumestore.ph/wp-content/uploads/2020/07/3-185.jpg',),
-                            )),
-                            Expanded(flex:2,child: Padding(
-                              padding: EdgeInsets.only(left: 2.h,right: 2.h),
-
-                              child: Column(
-                                children: [
-                                  Text('Bobbi Brown Crushed Lip',maxLines: 2,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                  SizedBox(height: 1.h,),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
-                                      SizedBox(width: 1.w,),
-                                      Text('1,200-1,750 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
-
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                            )),
-
-                          ],
-                        ),),
-                        Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15),boxShadow: [BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.02),blurRadius: 40,spreadRadius: 20)]),child: Column(
-                          children: [
-                            Expanded(flex:3,child: Padding(
-                              padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
-                              child: CachedNetworkImage(imageUrl: 'https://perfumestore.ph/wp-content/uploads/2020/07/3-185.jpg',),
-                            )),
-                            Expanded(flex:2,child: Padding(
-                              padding: EdgeInsets.only(left: 2.h,right: 2.h),
-
-                              child: Column(
-                                children: [
-                                  Text('Bobbi Brown Crushed Lip',maxLines: 2,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                  SizedBox(height: 1.h,),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
-                                      SizedBox(width: 1.w,),
-                                      Text('1,200-1,750 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
-
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                            )),
-
-                          ],
-                        ),),
-                        Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15),boxShadow: [BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.02),blurRadius: 40,spreadRadius: 20)]),child: Column(
-                          children: [
-                            Expanded(flex:3,child: Padding(
-                              padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
-                              child: CachedNetworkImage(imageUrl: 'https://perfumestore.ph/wp-content/uploads/2020/07/3-185.jpg',),
-                            )),
-                            Expanded(flex:2,child: Padding(
-                              padding: EdgeInsets.only(left: 2.h,right: 2.h),
-
-                              child: Column(
-                                children: [
-                                  Text('Bobbi Brown Crushed Lip',maxLines: 2,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                  SizedBox(height: 1.h,),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
-                                      SizedBox(width: 1.w,),
-                                      Text('1,200-1,750 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
-
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                            )),
-
-                          ],
-                        ),),
-                        Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15),boxShadow: [BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.02),blurRadius: 40,spreadRadius: 20)]),child: Column(
-                          children: [
-                            Expanded(flex:3,child: Padding(
-                              padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
-                              child: CachedNetworkImage(imageUrl: 'https://perfumestore.ph/wp-content/uploads/2020/07/3-185.jpg',),
-                            )),
-                            Expanded(flex:2,child: Padding(
-                              padding: EdgeInsets.only(left: 2.h,right: 2.h),
-
-                              child: Column(
-                                children: [
-                                  Text('Bobbi Brown Crushed Lip',maxLines: 2,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                  SizedBox(height: 1.h,),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
-                                      SizedBox(width: 1.w,),
-                                      Text('1,200-1,750 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
-
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                            )),
-
-                          ],
-                        ),),
-                        Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15),boxShadow: [BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.02),blurRadius: 40,spreadRadius: 20)]),child: Column(
-                          children: [
-                            Expanded(flex:3,child: Padding(
-                              padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
-                              child: CachedNetworkImage(imageUrl: 'https://perfumestore.ph/wp-content/uploads/2020/07/3-185.jpg',),
-                            )),
-                            Expanded(flex:2,child: Padding(
-                              padding: EdgeInsets.only(left: 2.h,right: 2.h),
-
-                              child: Column(
-                                children: [
-                                  Text('Bobbi Brown Crushed Lip',maxLines: 2,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                  SizedBox(height: 1.h,),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
-                                      SizedBox(width: 1.w,),
-                                      Text('1,200-1,750 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
-
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                            )),
-
-                          ],
-                        ),),
-
-
-
-
-                      ],),
+                        })
+                      ),
                     ),
 
                     SizedBox(height: 5.h,)
@@ -898,7 +770,7 @@ class _HomepageViewState extends State<HomepageView> {
               height: 14.h,
               decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(32),
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0), bottomRight:Radius.circular(0)),
                   boxShadow: [
                     BoxShadow(blurRadius: 24,spreadRadius: 1,color: Colors.black.withOpacity(0.20),offset: Offset(13,-13))
                   ]
@@ -914,8 +786,13 @@ class _HomepageViewState extends State<HomepageView> {
                         Text('Ultima',style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 22.sp,letterSpacing: 1,color: Color(0xFF0B1F4F)),),
                         Spacer(),
                         IconButton(onPressed: (){
+                          setState((){
+                            Get.find<userController>().modeSelect.value = 0;
+
+                          });
                           Get.to(
-                              () => CameraView()
+                              () => CameraView(),
+
                           );
                         }, icon: Icon(FeatherIcons.maximize,size: 20.sp,))
 
@@ -929,6 +806,27 @@ class _HomepageViewState extends State<HomepageView> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CustomChipLabel extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        elevation: 4.0,
+        child: Row(
+          children: <Widget>[
+            IconButton(
+                iconSize: 40.0,
+                icon: Icon(Icons.person),
+                onPressed: null),
+            Text("My Custom Chip", style: TextStyle(
+              fontSize: 20.0,
+
+            ),),
+          ],
+        )
     );
   }
 }

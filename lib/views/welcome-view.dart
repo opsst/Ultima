@@ -59,7 +59,7 @@ class _WelcomepageViewState extends State<WelcomepageView> {
                         bottom: 17.h,
                         left: 0,
                         right: 0,
-                        child: Text('Lorem Ipsum is simply dummy text of the\nprinting and typesetting industry. Lorem Ipsum',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w500,color: Colors.white))
+                        child: Text('Decode ingredient like a professional.\nLife easier with Augmented Reality.',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w500,color: Colors.white))
                     ),
                   ],
                 ),

@@ -9,6 +9,8 @@ PODS:
     - Flutter
   - deepar_flutter (0.0.5):
     - Flutter
+  - external_app_launcher (0.0.1):
+    - Flutter
   - FBAEMKit (15.1.0):
     - FBSDKCoreKit_Basics (= 15.1.0)
   - FBSDKCoreKit (15.1.0):
@@ -92,18 +94,19 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
-  - TensorFlowLiteC (2.12.0):
-    - TensorFlowLiteC/Core (= 2.12.0)
-  - TensorFlowLiteC/Core (2.12.0)
+  - TensorFlowLiteC (2.2.0)
   - tflite (1.1.2):
     - Flutter
     - TensorFlowLiteC
+  - url_launcher_ios (0.0.1):
+    - Flutter
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - deepar_flutter (from `.symlinks/plugins/deepar_flutter/ios`)
+  - external_app_launcher (from `.symlinks/plugins/external_app_launcher/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
@@ -117,6 +120,7 @@ DEPENDENCIES:
   - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - tflite (from `.symlinks/plugins/tflite/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
@@ -144,6 +148,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/camera_avfoundation/ios"
   deepar_flutter:
     :path: ".symlinks/plugins/deepar_flutter/ios"
+  external_app_launcher:
+    :path: ".symlinks/plugins/external_app_launcher/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -170,6 +176,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   tflite:
     :path: ".symlinks/plugins/tflite/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
@@ -177,6 +185,7 @@ SPEC CHECKSUMS:
   AppAuth: e48b432bb4ba88b10cb2bcc50d7f3af21e78b9c2
   camera_avfoundation: 3125e8cd1a4387f6f31c6c63abb8a55892a9eeeb
   deepar_flutter: e89060abce0c460f36a0bf73802f8a5443f1fdb5
+  external_app_launcher: ad55ac844aa21f2d2197d7cec58ff0d0dc40bbc0
   FBAEMKit: c7f82b5145d446bcbbcd50485c032689032fc6a2
   FBSDKCoreKit: 7542746fc63a2a38dd6a865eeb54268341f37b83
   FBSDKCoreKit_Basics: 92d6b26c0bed30ab09bbdd96dccaa26e6c9978d1
@@ -204,8 +213,9 @@ SPEC CHECKSUMS:
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  TensorFlowLiteC: 20785a69299185a379ba9852b6625f00afd7984a
+  TensorFlowLiteC: b3ab9e867b0b71052ca102a32a786555b330b02e
   tflite: 7acd11db0915e2d90ab90474413068568eb605f0
+  url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
 PODFILE CHECKSUM: 2c68679582df6ba6cbe58dcb765d8e56896541cd

@@ -1,12 +1,14 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class APIService {
 
-  // var public = "http://172.20.10.2:8000";
-  var public = "https://apiservice-d5qtigtmea-as.a.run.app";
-  FlutterSecureStorage storage = FlutterSecureStorage();
+  var public = "http://172.20.10.2:8000";
+  // var public = "https://apiservice-d5qtigtmea-as.a.run.app";
+  // FlutterSecureStorage storage = FlutterSecureStorage();
 
   Dio dio = Dio();
 
@@ -100,9 +102,9 @@ class APIService {
   Future checkIng(String name)async{
     try{
       // dio.interceptors.add(logger);
-      String? token = '';
-      token = await storage.read(key: 'TOKEN');
-      dio.options.headers["authorization"] = "Bearer "+ token!;
+      // String? token = '';
+      // token = await storage.read(key: 'TOKEN');
+      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
 
       Response response = await dio.post(public + "/ingredient/find", data: {
         "name" : name,
@@ -122,12 +124,36 @@ class APIService {
     }
   }
 
+  Future addIng(dynamic data)async{
+    try{
+      // dio.interceptors.add(logger);
+      print(data);
+      // String? token = '';
+      // token = await storage.read(key: 'TOKEN');
+      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
+
+      Response response = await dio.post(public + "/ingredient/create", data:data);
+
+      if (response.statusCode == 200) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
+
   Future addCosmetic(dynamic data)async{
     try{
       // dio.interceptors.add(logger);
       String? token = '';
-      token = await storage.read(key: 'TOKEN');
-      dio.options.headers["authorization"] = "Bearer "+ token!;
+      // token = await storage.read(key: 'TOKEN');
+      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
 
       Response response = await dio.post(public + "/cosmetic/create", data: data);
 
@@ -145,12 +171,58 @@ class APIService {
     }
   }
 
+  Future addSkincare(dynamic data)async{
+    try{
+      // dio.interceptors.add(logger);
+      String? token = '';
+      // token = await storage.read(key: 'TOKEN');
+      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
+
+      Response response = await dio.post(public + "/skincare/create", data: data);
+
+      if (response.statusCode == 201) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
+  Future addFragrance(dynamic data)async{
+    try{
+      // dio.interceptors.add(logger);
+      String? token = '';
+      // token = await storage.read(key: 'TOKEN');
+      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
+
+      Response response = await dio.post(public + "/fragrance/create", data: data);
+
+      if (response.statusCode == 201) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
+
+
   Future getAllCosmetic()async{
     try{
       // dio.interceptors.add(logger);
       String? token = '';
-      token = await storage.read(key: 'token');
-      dio.options.headers["authorization"] = "Bearer "+ token!;
+      // token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
 
       Response response = await dio.get(public + "/cosmetic/checkall");
 
@@ -167,4 +239,50 @@ class APIService {
       }
     }
   }
+  Future getAllSkincare()async{
+    try{
+      // dio.interceptors.add(logger);
+      String? token = '';
+      // token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
+
+      Response response = await dio.get(public + "/skincare/checkall");
+
+      if (response.statusCode == 200) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
+  Future getAllFragrance()async{
+    try{
+      // dio.interceptors.add(logger);
+      String? token = '';
+      // token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
+
+      Response response = await dio.get(public + "/fragrance/checkall");
+
+      if (response.statusCode == 200) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
+
+
 }

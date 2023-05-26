@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart';
+import 'package:ultima/services/service.dart';
+// import 'package:ultima/services/service.dart';
 
 // import 'package:Florxy/NetworkHandler.dart';
 
@@ -138,8 +140,11 @@ class Scraper {
     else if(detail_low.contains("lip balm")){
       category = "Lip Moisturizers";
     }
-    else if(detail_low.contains("cleanser")||detail_low.contains("cleansing")||detail_low.contains("micellar")||detail_low.contains("makeup remover")||detail_low.contains("facial foam")){
-      category = "Cleanser & Makeup Remover";
+    else if(detail_low.contains("cleanser")||detail_low.contains("facial foam")){
+      category = "Cleanser";
+    }
+    else if(detail_low.contains("cleansing")||detail_low.contains("micellar")||detail_low.contains("makeup remover")){
+      category = "Cleansing";
     }
     else if(detail_low.contains("cream")|| detail_low.contains("lotion")|| detail_low.contains("gel") ||detail_low.contains("balm")||detail_low.contains("oil")){
       category = "Moisturizers & Oil";
@@ -554,7 +559,10 @@ Future<void> main() async{
   // results = await Scraper.getData2('innisfree');
   // for (var result in results) {
   //   print(result.link);
-  Real x = await Scraper.getBrand('/products/premiere-beaute-london-eau-de-parfum');
+  APIService service = APIService();
+  Real x = await Scraper.getBrand('/products/the-inkey-list-retinol-serum');
+  var ing = [];
+  var Ing_id = [];
   print(x.p_ing[0]);
   // print('+++++++++');
   // print(x.p_ing[1]);
@@ -562,14 +570,73 @@ Future<void> main() async{
   for (var ing in x.p_ing[1]){
     //   // print(ing);
     List y = await Scraper.getIng(ing);
-    // print(y[0].length);
-    // int i = 1;
-    for (var all in y[0]){
-      // print(i);
-      print(all);
-      // i++;
+    // print(y[0]);
+    var data = jsonEncode({
+      "name": y[0][0],
+      "rate": y[0][1],
+      "calling": y[0][2],
+      "func":y[0][3],
+      "irr": y[0][4],
+      "come": y[0][5],
+      "cosing": y[0][6],
+      "quick": y[0][7],
+      "detail": y[0][8],
+      "proof":y[0][9],
+      "link": ing
+    });
+    // print(data);
+    var check = await service.addIng(data);
+    print(check.statusCode);
+    if (check.statusCode == 200){
+      var k = check.data;
+      // print(x['ing_id']);
+      Ing_id.add(k['ing_id']);
     }
+    // int i = 1;
+
+    // for (var all in y[0]){
+    //   // print(i);
+    //   // print(all);
+    //   ing.add(all);
+    //   // i++;
+    // }
   }
+
+  // print(Ing_id);
+  var fin_data = jsonEncode({
+    "p_name": x.p_name,
+    "p_brand": x.p_brand,
+    "p_desc": x.p_desc,
+    "p_cate": x.p_cate,
+    "p_img": x.p_img,
+    "ing_id": Ing_id
+  });
+  print(fin_data);
+  if (x.p_cate=="Fragrance"){
+    var fin =  await service.addFragrance(fin_data);
+
+  }else{
+    var fin =  await service.addSkincare(fin_data);
+
+  }
+
+  // print(fin.statusCode);
+
+  // var list_ing = ing.toString().split(',');
+  // for (var element in list_ing){
+  //
+  //   // print(element.trimLeft());
+  //   var check = await service.addIng(element.trimLeft());
+  //   // print(check.statusCode);
+  //   if (check.statusCode == 200){
+  //     var x = check.data;
+  //
+  //     // print(x['ing_id']);
+  //     Ing_id.add(x['ing_id']);
+  //   }
+  // }
+  // var Ing_final = Ing_id.toSet().toList();
+  // print(Ing_id);
   // List y = await Scraper.getIng(x.p_ing[1]);
   // print(x.p_name+y.length.toString());
   // var i = 0;
