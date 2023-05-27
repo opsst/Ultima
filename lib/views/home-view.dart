@@ -232,7 +232,7 @@ class _HomepageViewState extends State<HomepageView> {
                                       right: 0,
                                       child: Padding(
                                           padding: EdgeInsets.only(top: 4.h,right: 3.w),
-                                          child: Text('Scan\nProduct',textAlign: TextAlign.right,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Colors.white),))),
+                                          child: Text('Product\nInspector',textAlign: TextAlign.right,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF0057E6)),))),
 
                                 ],
                               ),
@@ -260,14 +260,14 @@ class _HomepageViewState extends State<HomepageView> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset('assets/images/hot-deal 1.png',height: 4.h,),
+                                Image.asset('assets/images/hot-deal.png',height: 3.h,),
                                 // SvgPicture.asset('assets/icons/hot-deal.svg'),
                                 SizedBox(height: 2.w,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('All Deals ',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
-                                    Icon(Icons.arrow_forward_ios_rounded,size: 14.sp,)
+                                    Text('All Deals ',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color:  Color(0xFF0b1f4f))),
+                                    Icon(Icons.arrow_forward_ios_rounded,size: 15.sp,color: Color(0xFF0b1f4f),)
 
                                   ],
                                 ),
@@ -298,13 +298,13 @@ class _HomepageViewState extends State<HomepageView> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Image.asset('assets/images/puzzle-2 1.png',height: 4.h,),
+                                  Image.asset('assets/images/puzzle-2.png',height: 3.h,),
                                   SizedBox(height: 2.w,),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text('Activity ',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
-                                      Icon(Icons.arrow_forward_ios_rounded,size: 14.sp,)
+                                      Text('Activity ',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color:  Color(0xFF0b1f4f))),
+                                      Icon(Icons.arrow_forward_ios_rounded,size: 15.sp,color: Color(0xFF0b1f4f))
                                     ],
                                   ),
 
@@ -326,14 +326,14 @@ class _HomepageViewState extends State<HomepageView> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset('assets/images/trophy 1.png',height: 4.h,),
+                                Image.asset('assets/images/trophy.png',height: 3.h,),
                                 SizedBox(height: 2.w,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
 
                                   children: [
-                                    Text('Claim Reward ',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF576580))),
-                                    Icon(Icons.arrow_forward_ios_rounded,size: 14.sp,)
+                                    Text('Reward ',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color: Color(0xFF0b1f4f))),
+                                    Icon(Icons.arrow_forward_ios_rounded,size: 15.sp,color: Color(0xFF0b1f4f))
 
                                   ],
                                 ),
@@ -354,16 +354,16 @@ class _HomepageViewState extends State<HomepageView> {
                         children: [
                           Text('Top Pick',style: GoogleFonts.inter(fontSize: 18.sp,fontWeight: FontWeight.w800,color: Color(0xFF0B1F4F))),
                           Spacer(),
-                          Container(
-                            color: Colors.transparent,
-                            child: Row(
-                              children: [
-                                Text('See more',style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w600,color: Color(0xFF0B1F4F))),
-                                SizedBox(width: 1.w,),
-                                Icon(Icons.arrow_forward_ios,size: 16.sp,)
-                              ],
-                            ),
-                          )
+                          // Container(
+                          //   color: Colors.transparent,
+                          //   child: Row(
+                          //     children: [
+                          //       Text('See more',style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w600,color: Color(0xFF0B1F4F))),
+                          //       SizedBox(width: 1.w,),
+                          //       Icon(Icons.arrow_forward_ios,size: 16.sp,)
+                          //     ],
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
@@ -516,7 +516,7 @@ class _HomepageViewState extends State<HomepageView> {
                                                   ,scrollDirection: Axis.horizontal,itemCount: Get.find<userController>().cosmetic.value[index].cos_color_img.value.length ,itemBuilder: (context,colorIndex){
 
                                                 return colorIndex==4?Center(child: Text("  +${Get.find<userController>().cosmetic.value[index].cos_color_img.value.length-4}",style: GoogleFonts.inter(color: Color(0xFF9FA2A8),fontWeight: FontWeight.w600),)):colorIndex>3?Container():Padding(
-                                                  padding: EdgeInsets.all(0.3.w),
+                                                  padding: EdgeInsets.all(.8.w),
                                                   child: CircleAvatar(
                                                     // backgroundColor: Get.find<userController>().cosmetic.value[index].cos_color_img.value[index],
                                                     backgroundColor: Colors.white,
@@ -529,21 +529,74 @@ class _HomepageViewState extends State<HomepageView> {
                                               Get.find<userController>().cosmetic.value[index].cos_istryon.value?Row(
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
-                                                  Container(
-                                                    width: 50.w,
-                                                    decoration: BoxDecoration(
-                                                      color: Color(0xFF4E82FF),
-                                                      borderRadius: BorderRadius.circular(20)
-                                                    ),
-                                                    child: Padding(
-                                                      padding: EdgeInsets.symmetric(vertical: .5.h),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
-                                                          SizedBox(width: 1.w,),
-                                                          Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
-                                                        ],
+                                                  GestureDetector(
+                                                    onTap : (){
+                                                      setState(() {
+                                                      if (Get.find<userController>().cosmetic.value[index].cos_cate.value == 'Lipstick'){
+                                                        for(var i = 0; i<Get.find<userController>().lipstick.value.length; i++){
+                                                          if(Get.find<userController>().cosmetic.value[index].id.value==Get.find<userController>().lipstick.value[i].id.value){
+                                                            Get.find<userController>().currentExtent.value = 50.h;
+                                                            Get.find<userController>().lipSelect.value = Get.find<userController>().cosmetic.value[index].cos_tryon_name.value[0];
+                                                            Get.find<userController>().lipIndex.value = i;
+                                                            Get.find<userController>().cosmeticSelect.value = 3;
+                                                            Get.find<userController>().modeSelect.value = 1;
+                                                            Get.to(
+                                                                    () => CameraView()
+                                                            );
+                                                          }
+                                                        }
+                                                      }
+                                                      else if (Get.find<userController>().cosmetic.value[index].cos_cate.value == 'Eyeshadows'){
+                                                        for(var i = 0; i<Get.find<userController>().eyeshadow.value.length; i++){
+                                                          if(Get.find<userController>().cosmetic.value[index].id.value==Get.find<userController>().eyeshadow.value[i].id.value){
+                                                            Get.find<userController>().currentExtent.value = 50.h;
+                                                            Get.find<userController>().eyeSelect.value = Get.find<userController>().cosmetic.value[index].cos_tryon_name.value[0];
+                                                            Get.find<userController>().eyeIndex.value = i;
+                                                            Get.find<userController>().cosmeticSelect.value = 1;
+                                                            Get.find<userController>().modeSelect.value = 1;
+                                                            Get.to(
+                                                                    () => CameraView()
+                                                            );
+                                                          }
+                                                        }
+                                                      }
+                                                      else if (Get.find<userController>().cosmetic.value[index].cos_cate.value == 'Blush on'){
+                                                        for(var i = 0; i<Get.find<userController>().blushOn.value.length; i++){
+                                                          if(Get.find<userController>().cosmetic.value[index].id.value==Get.find<userController>().blushOn.value[i].id.value){
+                                                            Get.find<userController>().currentExtent.value = 50.h;
+                                                            Get.find<userController>().blushSelect.value = Get.find<userController>().cosmetic.value[index].cos_tryon_name.value[0];
+                                                            Get.find<userController>().blushIndex.value = i;
+                                                            Get.find<userController>().cosmeticSelect.value = 2;
+                                                            Get.find<userController>().modeSelect.value = 1;
+                                                            Get.to(
+                                                                    () => CameraView()
+                                                            );
+                                                          }
+                                                        }
+                                                      }
+
+
+
+
+                                                      });
+
+                                                    },
+                                                    child: Container(
+                                                      width: 50.w,
+                                                      decoration: BoxDecoration(
+                                                        color: Color(0xFF4E82FF),
+                                                        borderRadius: BorderRadius.circular(20)
+                                                      ),
+                                                      child: Padding(
+                                                        padding: EdgeInsets.symmetric(vertical: .5.h),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
+                                                            SizedBox(width: 1.w,),
+                                                            Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   )
@@ -704,16 +757,16 @@ class _HomepageViewState extends State<HomepageView> {
                         children: [
                           Text('Official Mall',style: GoogleFonts.inter(fontSize: 18.sp,fontWeight: FontWeight.w800,color: Color(0xFF0B1F4F))),
                           Spacer(),
-                          Container(
-                            color: Colors.transparent,
-                            child: Row(
-                              children: [
-                                Text('See more',style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w600,color: Color(0xFF0B1F4F))),
-                                SizedBox(width: 1.w,),
-                                Icon(Icons.arrow_forward_ios,size: 16.sp,)
-                              ],
-                            ),
-                          )
+                          // Container(
+                          //   color: Colors.transparent,
+                          //   child: Row(
+                          //     children: [
+                          //       Text('See more',style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w600,color: Color(0xFF0B1F4F))),
+                          //       SizedBox(width: 1.w,),
+                          //       Icon(Icons.arrow_forward_ios,size: 16.sp,)
+                          //     ],
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
@@ -810,6 +863,7 @@ class _HomepageViewState extends State<HomepageView> {
                         })
                       ),
                     ),
+
 
                     SizedBox(height: 5.h,)
 

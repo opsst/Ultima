@@ -165,6 +165,12 @@ class _UltimaAppState extends State<UltimaApp> {
             theme: _buildTheme(Brightness.light),
             debugShowCheckedModeBanner: false,
             home: SplashView(),
+            builder: (context, child) {
+              return MediaQuery(
+                child: child!,
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              );
+            },
             // home: AuthService().handleAuthState()
             // home: NavigationBarView(),
         );

@@ -284,5 +284,27 @@ class APIService {
     }
   }
 
+  Future getIngCos(String id) async{
 
+    try{
+      // dio.interceptors.add(logger);
+      String? token = '';
+      // token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
+
+      Response response = await dio.get(public + "/cosmetic/ingredient/"+id);
+
+      if (response.statusCode == 200) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
 }

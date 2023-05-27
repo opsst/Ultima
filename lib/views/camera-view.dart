@@ -9,7 +9,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart' as frame;
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:tflite/tflite.dart';
@@ -19,7 +22,7 @@ import 'package:ultima/widget/colorExtension.dart';
 import 'dart:io';
 import '../services/config.dart';
 import '../widget/dragModal.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+// import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class CameraView extends StatefulWidget {
   final List<CameraDescription>? cameras;
@@ -33,13 +36,18 @@ class CameraView extends StatefulWidget {
 class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
 
   // var Get.find<userController>().modeSelect.value = 0;
-  var animationStart = true;
+  late final InputImage inputImage;
 
-  QRViewController? controller;
+  var count = 0;
+  var animationStart = true;
 
   var streamResult = true;
 
   var isShowModal = true;
+
+  var onLoad= false;
+
+
 
   // var Get.find<userController>().cosmeticSelect.value = 0;
 
@@ -59,6 +67,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
   var searchList = Get.find<userController>().t_cosmetic.value;
   var searchWord = '';
 
+  var foundBarcode = false;
 
   Map<String, int>? classification;
 
@@ -68,7 +77,12 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
     if(Get.find<userController>().lipSelect.value.isEmpty && Get.find<userController>().blushSelect.value.isEmpty && Get.find<userController>().eyeSelect.value.isEmpty){
       deepArController.switchEffect('assets/deepar/default.deepar');
     }else{
-      deepArController.switchEffect(filterFinal);
+      for(var i = 0; i<10 ;i++){
+        if(deepArController.isInitialized){
+          deepArController.switchEffect(filterFinal);
+          break;
+        }
+      }
 
     }
 
@@ -274,6 +288,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
         iosLicenseKey: '7fd8276127f7729ab29b0b3ba765eacc4f62b06d7dcba40c2709e8f29edaa206214e4e717157ff14',
         resolution: Resolution.veryHigh).whenComplete(() {
       checkState();
+      selectFilter();
     });
 
     _tabController = TabController(length: 3, vsync: this);
@@ -354,11 +369,34 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
               height: Platform.isAndroid? 85.h: 100.h,
               // width: 100.w,
               color: Colors.black,
-              child: Get.find<userController>().modeSelect==0&&!animationStart?CameraPreview(cameraController):
-              Get.find<userController>().modeSelect==0?Center(
-                child: Image.asset('assets/images/loading.gif',width: 3.w,),
-              ):Get.find<userController>().modeSelect==1?DeepArPreview(deepArController,key: Key('Camera')):
-              Container(),
+
+              child:
+              Get.find<userController>().modeSelect==0&&cameraController.value.isInitialized?CameraPreview(cameraController):
+              Get.find<userController>().modeSelect==1?DeepArPreview(deepArController,key: Key('Camera')):
+              Get.find<userController>().modeSelect==2&&cameraController.value.isInitialized?Stack(
+                children: [
+                  Positioned.fill(child: CameraPreview(cameraController)),
+                  Positioned(
+                    child: Container(
+                      decoration: ShapeDecoration(shape: frame.QrScannerOverlayShape(
+                        borderColor: Colors.white,
+                        borderRadius: 15,
+                        borderLength: 30,
+                        borderWidth: 12,
+                        cutOutSize: 60.w,
+                      )
+
+                      ),
+                    ),
+                  )
+                ],
+              ):
+              Center(
+                child: LoadingAnimationWidget.fourRotatingDots(
+                  color: Colors.white,
+                  size: 10.w,
+                ),
+              )
               // cameraReady?
               // CameraPreview(
               //   controller!,
@@ -378,15 +416,16 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
           ),
         ),
         Positioned(
-          top: Platform.isAndroid? 30.h:38.h,
-          left: 3.w,
+          top: Get.find<userController>().modeSelect.value ==2?80.h:Platform.isAndroid? 30.h:38.h,
+          // bottom: ,
+          left: Get.find<userController>().modeSelect.value ==2?null:3.w,
           child: Container(
             decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(60)
             ),
             child: RotatedBox(
-              quarterTurns: 1,
+              quarterTurns: Get.find<userController>().modeSelect.value ==2?0: 1,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal:1.w,vertical: 1.w),
                 child: SizedBox(
@@ -399,7 +438,8 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                       //   if(_tabController.indexIsChanging){
                       // deepArController.showStats(enabled: true);
 
-                      if(index==0 && Get.find<userController>().modeSelect.value != index){
+                      if((index==0||index==2) && Get.find<userController>().modeSelect.value != index){
+                        print('ccaacac');
                         deepArController.destroy();
                         cameraInit();
 
@@ -463,6 +503,8 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                       }
                       HapticFeedback.selectionClick();
 
+
+
                       setState(() {
                         Get.find<userController>().modeSelect.value = index;
                         animationStart = true;
@@ -484,11 +526,11 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                         child: Get.find<userController>().modeSelect.value==0?Image.asset('assets/icons/barcode-scanner-2 1-2.png',width: 4.w):Image.asset('assets/icons/barcode-scanner-21.png',width: 4.w),
                       ),
                       Tab(
-                        child: RotatedBox(quarterTurns:2,child: SvgPicture.asset('assets/icons/star.svg',width: 5.w,color: Get.find<userController>().modeSelect.value==1?Colors.black:Colors.white,)),
+                        child: RotatedBox(quarterTurns:Get.find<userController>().modeSelect.value ==2?1:2,child: SvgPicture.asset('assets/icons/star.svg',width: 5.w,color: Get.find<userController>().modeSelect.value==1?Colors.black:Colors.white,)),
 
                       ),
                       Tab(
-                        child: SvgPicture.asset('assets/icons/barcode.svg',width: 3.5.w,color: Get.find<userController>().modeSelect.value==2?Colors.black:Colors.white,),
+                        child: RotatedBox(quarterTurns:Get.find<userController>().modeSelect.value ==2?1:2,child: SvgPicture.asset('assets/icons/barcode.svg',width: 3.5.w,color: Get.find<userController>().modeSelect.value==2?Colors.black:Colors.white,)),
 
                       ),
                     ],
@@ -511,7 +553,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
             ),
           ),
         ),
-        Positioned(
+        Get.find<userController>().modeSelect.value ==2?Container():Positioned(
           top: Platform.isAndroid?32.h:38.h,
           left: 20.w,
           child: AnimatedSwitcher(
@@ -540,6 +582,12 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
               )
           ),
         ),
+        onLoad?Center(
+          child: LoadingAnimationWidget.fourRotatingDots(
+            color: Colors.white,
+            size: 10.w,
+          ),
+        ):Container()
         // Get.find<userController>().modeSelect.value==0?Positioned(bottom:Platform.isAndroid?4.h: 8.h,child: GestureDetector(
         //   onTap: () async {
         //     HapticFeedback.selectionClick();
@@ -579,7 +627,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
         begin: Offset.zero,
         end: const Offset(0.0, 1.5),
       ).animate(CurvedAnimation(parent: controller, curve: Curves.elasticIn)),
-      child: Get.find<userController>().modeSelect.value==0?Container():
+      child: Get.find<userController>().modeSelect.value!=1?Container():
       Stack(
         children: [
           Flex(
@@ -961,7 +1009,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                                         flex: 3,
                                                         child: Row(
                                                           children: [
-                                                            Expanded(flex: 2,child: Text(Get.find<userController>().cosmeticSelect.value==1?Get.find<userController>().eyeshadow.value[index].cos_name.value  :Get.find<userController>().cosmeticSelect.value==2?Get.find<userController>().blushOn.value[index].cos_name.value:Get.find<userController>().lipstick.value[index].cos_name.value,maxLines: 2,overflow: TextOverflow.ellipsis,style: GoogleFonts.inter(color: Color(0xFF0B1F4F),fontSize: 16.sp,fontWeight: FontWeight.w700),)),
+                                                            Expanded(flex: 2,child: Text(Get.find<userController>().cosmeticSelect.value==1?Get.find<userController>().eyeshadow.value[index].cos_name.value  :Get.find<userController>().cosmeticSelect.value==2?Get.find<userController>().blushOn.value[index].cos_name.value:Get.find<userController>().lipstick.value[index].cos_name.value,maxLines: 2,overflow: TextOverflow.ellipsis,style: GoogleFonts.inter(color: Color(0xFF0B1F4F),fontSize: 15.sp,fontWeight: FontWeight.w700),)),
                                                             Expanded(
                                                               child: Padding(
                                                                 padding: EdgeInsets.only(left: 1.w),
@@ -1009,7 +1057,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                                                 children: [
                                                                   SvgPicture.asset('assets/icons/star2.svg',color: Colors.white,width: 4.w,),
                                                                   SizedBox(width: 2.w,),
-                                                                  Text('Customize',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 15.sp),)
+                                                                  Text('Customize',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 14.5.sp),)
                                                                 ],
                                                               ),
                                                             ),
@@ -1033,7 +1081,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                                         flex: 3,
                                                           child: Padding(
                                                             padding: EdgeInsets.only(top: 1.h),
-                                                            child: Text(Get.find<userController>().cosmeticSelect.value==1?Get.find<userController>().eyeshadow.value[index].cos_name.value  :Get.find<userController>().cosmeticSelect.value==2?Get.find<userController>().blushOn.value[index].cos_name.value:Get.find<userController>().lipstick.value[index].cos_name.value,maxLines: 2,overflow: TextOverflow.ellipsis,style: GoogleFonts.inter(color: Color(0xFF0B1F4F),fontSize: 16.sp,fontWeight: FontWeight.w700),),
+                                                            child: Text(Get.find<userController>().cosmeticSelect.value==1?Get.find<userController>().eyeshadow.value[index].cos_name.value  :Get.find<userController>().cosmeticSelect.value==2?Get.find<userController>().blushOn.value[index].cos_name.value:Get.find<userController>().lipstick.value[index].cos_name.value,maxLines: 2,overflow: TextOverflow.ellipsis,style: GoogleFonts.inter(color: Color(0xFF0B1F4F),fontSize: 15.sp,fontWeight: FontWeight.w700),),
                                                           )),
                                                       Expanded(
                                                         flex: 2,
@@ -1107,18 +1155,18 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                                     padding: EdgeInsets.only(left: 2.h,top: 2.h,bottom: 2.h,right: 2.h),
                                                     child: Column(
                                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Text(Get.find<userController>().cosmeticSelect.value==1?Get.find<userController>().eyeshadow.value[customizeIndex].cos_name.value  :Get.find<userController>().cosmeticSelect.value==2?Get.find<userController>().blushOn.value[customizeIndex].cos_name.value:Get.find<userController>().lipstick.value[customizeIndex].cos_name.value,maxLines: 2,overflow: TextOverflow.ellipsis,style: GoogleFonts.inter(color: Color(0xFF0B1F4F),fontSize: 16.sp,fontWeight: FontWeight.w700),),
+                                                        Text(Get.find<userController>().cosmeticSelect.value==1?Get.find<userController>().eyeshadow.value[customizeIndex].cos_name.value  :Get.find<userController>().cosmeticSelect.value==2?Get.find<userController>().blushOn.value[customizeIndex].cos_name.value:Get.find<userController>().lipstick.value[customizeIndex].cos_name.value,maxLines: 2,overflow: TextOverflow.ellipsis,style: GoogleFonts.inter(color: Color(0xFF0B1F4F),fontSize: 14.sp,fontWeight: FontWeight.w700),),
                                                         Spacer(),
-                                                        Expanded(
-                                                          flex: 2,
+                                                        GestureDetector(
+                                                          onTap: (){
+                                                            setState(() {
+                                                            });
+                                                          },
                                                           child: GestureDetector(
-                                                            onTap: (){
-                                                              setState(() {
-                                                              });
-                                                            },
                                                             child: Container(
-                                                              // height: 3.h,
+                                                              height: 3.h,
                                                               // width: 100.w,
                                                               decoration: BoxDecoration(
                                                                   color: Color(0xFF4E82FF),
@@ -1128,7 +1176,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                                 children: [
 
-                                                                  Text('See more',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 15.sp),)
+                                                                  Text('See more',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 14.sp),)
                                                                 ],
                                                               ),
                                                             ),
@@ -1485,9 +1533,9 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                                   borderRadius: BorderRadius.circular(200)
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 1.w
+                                                  padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 1.5.w
                                                   ),
-                                                  child: Text(searchList[index].cos_cate.value,style: GoogleFonts.inter(color: Colors.white,fontWeight: FontWeight.w500),),
+                                                  child: Text(searchList[index].cos_cate.value,style: GoogleFonts.inter(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 14.sp),),
                                                 ),
 
                                               )
@@ -1551,202 +1599,468 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
     });
     _cameras = await availableCameras();
     cameraController = CameraController(_cameras[0], ResolutionPreset.high);
+    final List<BarcodeFormat> formats = [BarcodeFormat.all];
+    final barcodeScanner = BarcodeScanner(formats: formats);
     cameraController.initialize().then((value) {
       if (!mounted) return;
       setState(() {
-        cameraController.startImageStream((imageStream) {
+        cameraController.startImageStream((imageStream) async {
           
           cameraImage = imageStream;
-          runModel();
 
-          if(streamResult == true && isShowModal == false){
-            print('kuykuy');
-            // cameraController.stopImageStream();
-            for(var i = 0; i< Get.find<userController>().cosmetic.value.length; i++){
+          if(count>1&&foundBarcode){
+            setState(() {
+              count = 0;
+              foundBarcode = false;
+            });
+          }
 
-              if(Get.find<userController>().cosmetic.value[i].id.value==result){
+          if(Get.find<userController>().modeSelect.value==0){
+            runModel();
 
-                showModalBottomSheet(backgroundColor: Colors.transparent,context: context, builder: (context){
-                  return Column(
-                    children: [
-                      Spacer(flex: 5,),
-                      Padding(
-                        padding: EdgeInsets.only(right: 5.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              // width: 25.w,
-                              height: 4.h,
-                              decoration: BoxDecoration(
-                                  color: Color(0xFF4E82FF),
-                                  borderRadius: BorderRadius.circular(18)
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal:5.w),
-                                child: GestureDetector(
-                                  onTap: (){
+            if(streamResult == true && isShowModal == false){
+              // cameraController.stopImageStream();
+              for(var i = 0; i< Get.find<userController>().cosmetic.value.length; i++){
 
-                                  },
+                if(Get.find<userController>().cosmetic.value[i].id.value==result){
+
+                  showModalBottomSheet(backgroundColor: Colors.transparent,context: context, builder: (context){
+                    return Column(
+                      children: [
+                        Spacer(flex: 5,),
+                        Padding(
+                          padding: EdgeInsets.only(right: 5.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Get.find<userController>().cosmetic.value[i].cos_istryon.value?Container(
+                                // width: 25.w,
+                                height: 4.h,
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF4E82FF),
+                                    borderRadius: BorderRadius.circular(18)
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal:5.w),
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      print(Get.find<userController>().cosmetic.value[i].cos_tryon_name.value[0]);
+                                      Get.close(1);
+                                      setState(() {
+                                        if(Get.find<userController>().cosmetic.value[i].cos_cate.value == 'Eyeshadows'){
+                                          for(var x = 0; x<Get.find<userController>().eyeshadow.value.length; x++){
+                                            if(Get.find<userController>().cosmetic.value[i].id.value == Get.find<userController>().eyeshadow.value[x].id.value){
+                                              onLoad =true;
+                                              cameraController.dispose();
+                                              deepArController.initialize(
+                                                  androidLicenseKey: 'a08dcc7e27c80ee1daaeab600bc7d28892388050a29e4f1327369489f6ef025d8dec7635ac0dcf29',
+                                                  iosLicenseKey: '7fd8276127f7729ab29b0b3ba765eacc4f62b06d7dcba40c2709e8f29edaa206214e4e717157ff14',
+                                                  resolution: Resolution.veryHigh).whenComplete(() {
+                                                selectFilter();
+
+                                              });
+
+                                              Get.find<userController>().currentExtent.value = 50.h;
+                                              Get.find<userController>().eyeSelect.value = Get.find<userController>().cosmetic.value[i].cos_tryon_name.value[0];
+                                              Get.find<userController>().eyeIndex.value = x;
+                                              Get.find<userController>().cosmeticSelect.value = 1;
+
+                                              _tabController.animateTo(1);
+                                              Get.find<userController>().modeSelect.value = 1;
+
+
+                                              Future.delayed(Duration(seconds: 2)).then((value){
+
+                                                selectFilter();
+                                                onLoad =false;
+
+                                              });
+                                            }
+                                          }
+
+
+
+                                        }
+                                        else if(Get.find<userController>().cosmetic.value[i].cos_cate.value == 'Blush on'){
+                                          for(var x = 0; x<Get.find<userController>().blushOn.value.length; x++){
+                                            if(Get.find<userController>().cosmetic.value[i].id.value == Get.find<userController>().blushOn.value[x].id.value){
+                                              onLoad =true;
+                                              cameraController.dispose();
+                                              deepArController.initialize(
+                                                  androidLicenseKey: 'a08dcc7e27c80ee1daaeab600bc7d28892388050a29e4f1327369489f6ef025d8dec7635ac0dcf29',
+                                                  iosLicenseKey: '7fd8276127f7729ab29b0b3ba765eacc4f62b06d7dcba40c2709e8f29edaa206214e4e717157ff14',
+                                                  resolution: Resolution.veryHigh).whenComplete(() {
+                                                selectFilter();
+
+                                              });
+
+                                              Get.find<userController>().currentExtent.value = 50.h;
+                                              Get.find<userController>().blushSelect.value = Get.find<userController>().cosmetic.value[i].cos_tryon_name.value[0];
+                                              Get.find<userController>().blushIndex.value = x;
+                                              Get.find<userController>().cosmeticSelect.value = 2;
+
+                                              _tabController.animateTo(1);
+                                              Get.find<userController>().modeSelect.value = 1;
+
+
+                                              Future.delayed(Duration(seconds: 2)).then((value){
+
+                                                selectFilter();
+                                                onLoad =false;
+
+                                              });
+                                            }
+                                          }
+
+
+
+
+                                        }
+                                        else if(Get.find<userController>().cosmetic.value[i].cos_cate.value == 'Lipstick'){
+                                          for(var x = 0; x<Get.find<userController>().lipstick.value.length; x++){
+                                            if(Get.find<userController>().cosmetic.value[i].id.value == Get.find<userController>().lipstick.value[x].id.value){
+                                              onLoad =true;
+                                              cameraController.dispose();
+                                              deepArController.initialize(
+                                                  androidLicenseKey: 'a08dcc7e27c80ee1daaeab600bc7d28892388050a29e4f1327369489f6ef025d8dec7635ac0dcf29',
+                                                  iosLicenseKey: '7fd8276127f7729ab29b0b3ba765eacc4f62b06d7dcba40c2709e8f29edaa206214e4e717157ff14',
+                                                  resolution: Resolution.veryHigh).whenComplete(() {
+                                                selectFilter();
+
+                                              });
+
+                                              Get.find<userController>().currentExtent.value = 50.h;
+                                              Get.find<userController>().lipSelect.value = Get.find<userController>().cosmetic.value[i].cos_tryon_name.value[0];
+                                              Get.find<userController>().lipIndex.value = x;
+                                              Get.find<userController>().cosmeticSelect.value = 3;
+
+                                              _tabController.animateTo(1);
+                                              Get.find<userController>().modeSelect.value = 1;
+
+
+                                              Future.delayed(Duration(seconds: 2)).then((value){
+
+                                                selectFilter();
+                                                onLoad =false;
+
+                                              });
+                                            }
+                                          }
+
+
+
+
+                                        }
+
+                                        // var blushSelect = ''.obs;
+                                        // var blushIndex = 0.obs;
+
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset('assets/icons/brush-on.svg'),
+                                        SizedBox(width: 1.w,),
+                                        Text('Try-on',style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Colors.white),)
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ):Container()
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.w),
+                          child: Container(
+                            height: 18.h,
+                            width: 90.w,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: Stack(
+                              alignment: Alignment.topRight,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
+
                                   child: Row(
                                     children: [
-                                      SvgPicture.asset('assets/icons/brush-on.svg'),
-                                      SizedBox(width: 1.w,),
-                                      Text('Try-on',style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Colors.white),)
+                                      Expanded(
+                                          flex:3,
+                                          child: Center(child: Image.network(Get.find<userController>().cosmetic.value[i].cos_img.value[0]))),
+                                      SizedBox(width: 3.w,),
+                                      Expanded(
+                                          flex:5,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(height: 1.h,),
+                                              Text(Get.find<userController>().cosmetic.value[i].cos_brand.value+" : "+Get.find<userController>().cosmetic.value[i].cos_name.value,maxLines: 3,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 16.sp),),
+                                              Spacer(),
+                                              Row(
+                                                children: [
+                                                  Text('Tap to see more',style: GoogleFonts.inter(fontSize: 13.sp,color: Color(0xFF717171)),),
+                                                  Icon(Icons.arrow_forward_ios_rounded,size: 12.sp,color: Color(0xFF717171),)
+                                                ],
+                                              ),
+                                              SizedBox(height: 1.h,),
+
+
+                                            ],
+                                          )),
+                                      Spacer()
+
                                     ],
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5.w),
-                        child: Container(
-                          height: 18.h,
-                          width: 90.w,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
-
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        flex:3,
-                                        child: Center(child: Image.network(Get.find<userController>().cosmetic.value[i].cos_img.value[0]))),
-                                    SizedBox(width: 3.w,),
-                                    Expanded(
-                                        flex:5,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(height: 1.h,),
-                                            Text(Get.find<userController>().cosmetic.value[i].cos_brand.value+" : "+Get.find<userController>().cosmetic.value[i].cos_name.value,maxLines: 3,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 16.sp),),
-                                            Spacer(),
-                                            Row(
-                                              children: [
-                                                Text('Tap to see more',style: GoogleFonts.inter(fontSize: 13.sp,color: Color(0xFF717171)),),
-                                                Icon(Icons.arrow_forward_ios_rounded,size: 12.sp,color: Color(0xFF717171),)
-                                              ],
-                                            ),
-                                            SizedBox(height: 1.h,),
-
-
-                                          ],
-                                        )),
-                                    Spacer()
-
-                                  ],
-                                ),
-                              ),
-                              Positioned(top: 1.h,right: 1.w,child: IconButton(onPressed: (){
-                                Get.back();
-                              }, icon: Icon(Icons.close,color: Colors.black,size: 20.sp,)))
-                            ],
+                                Positioned(top: 1.h,right: 1.w,child: IconButton(onPressed: (){
+                                  Get.back();
+                                }, icon: Icon(Icons.close,color: Colors.black,size: 20.sp,)))
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Spacer(),
+                        Spacer(),
 
-                    ],
-                  );
-                }).whenComplete(() {
-                  Future.delayed(Duration(seconds: 3)).whenComplete(() {
-                    setState(() {
-                      isShowModal = false;
-                      streamResult = false;
-                    });
-                  });
-                });
-
-              }
-            }
-            for(var j= 0; j< Get.find<userController>().skincare.value.length;j++ ){
-              if(Get.find<userController>().skincare.value[j].id.value==result){
-                showModalBottomSheet(backgroundColor: Colors.transparent,context: context, builder: (context){
-                  return Column(
-                    children: [
-                      Spacer(flex: 5,),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5.w),
-                        child: Container(
-                          height: 18.h,
-                          width: 90.w,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
-
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        flex:3,
-                                        child: Center(child: Image.network(Get.find<userController>().skincare.value[j].p_img.value))),
-                                    SizedBox(width: 3.w,),
-                                    Expanded(
-                                        flex:5,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(height: 1.h,),
-                                            Text(Get.find<userController>().skincare.value[j].p_brand.value+" : "+Get.find<userController>().skincare.value[j].p_name.value,maxLines: 3,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 16.sp),),
-                                            Spacer(),
-                                            Row(
-                                              children: [
-                                                Text('Tap to see more',style: GoogleFonts.inter(fontSize: 13.sp,color: Color(0xFF717171)),),
-                                                Icon(Icons.arrow_forward_ios_rounded,size: 12.sp,color: Color(0xFF717171),)
-                                              ],
-                                            ),
-                                            SizedBox(height: 1.h,),
-
-
-                                          ],
-                                        )),
-                                    Spacer()
-
-                                  ],
-                                ),
-                              ),
-                              Positioned(top: 1.h,right: 1.w,child: IconButton(onPressed: (){
-                                Get.back();
-                              }, icon: Icon(Icons.close,color: Colors.black,size: 20.sp,)))
-                            ],
-                          ),
-                        ),
-                      ),
-                      Spacer(),
-
-                    ],
-                  );
-                }).whenComplete(() {
-                  Future.delayed(Duration(seconds: 3)).whenComplete(() {
-                    setState(() {
-                      isShowModal = false;
-                      streamResult = false;
+                      ],
+                    );
+                  }).whenComplete(() {
+                    Future.delayed(Duration(seconds: 3)).whenComplete(() {
+                      setState(() {
+                        isShowModal = false;
+                        streamResult = false;
+                      });
                     });
                   });
 
-                });
-
+                }
               }
+              for(var j= 0; j< Get.find<userController>().skincare.value.length;j++ ){
+                if(Get.find<userController>().skincare.value[j].id.value==result){
+                  showModalBottomSheet(backgroundColor: Colors.transparent,context: context, builder: (context){
+                    return Column(
+                      children: [
+                        Spacer(flex: 5,),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.w),
+                          child: Container(
+                            height: 18.h,
+                            width: 90.w,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: Stack(
+                              alignment: Alignment.topRight,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
+
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          flex:3,
+                                          child: Center(child: Image.network(Get.find<userController>().skincare.value[j].p_img.value))),
+                                      SizedBox(width: 3.w,),
+                                      Expanded(
+                                          flex:5,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(height: 1.h,),
+                                              Text(Get.find<userController>().skincare.value[j].p_brand.value+" : "+Get.find<userController>().skincare.value[j].p_name.value,maxLines: 3,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 16.sp),),
+                                              Spacer(),
+                                              Row(
+                                                children: [
+                                                  Text('Tap to see more',style: GoogleFonts.inter(fontSize: 13.sp,color: Color(0xFF717171)),),
+                                                  Icon(Icons.arrow_forward_ios_rounded,size: 12.sp,color: Color(0xFF717171),)
+                                                ],
+                                              ),
+                                              SizedBox(height: 1.h,),
+
+
+                                            ],
+                                          )),
+                                      Spacer()
+
+                                    ],
+                                  ),
+                                ),
+                                Positioned(top: 1.h,right: 1.w,child: IconButton(onPressed: (){
+                                  Get.back();
+                                }, icon: Icon(Icons.close,color: Colors.black,size: 20.sp,)))
+                              ],
+                            ),
+                          ),
+                        ),
+                        Spacer(),
+
+                      ],
+                    );
+                  }).whenComplete(() {
+                    Future.delayed(Duration(seconds: 3)).whenComplete(() {
+                      setState(() {
+                        isShowModal = false;
+                        streamResult = false;
+                      });
+                    });
+
+                  });
+
+                }
+              }
+              setState(() {
+                isShowModal = true;
+                result="";
+              });
             }
-            setState(() {
-              isShowModal = true;
-              result="";
-            });
           }
+          else if (Get.find<userController>().modeSelect.value==2 && !foundBarcode){
+            final WriteBuffer allBytes = WriteBuffer();
+            for (final Plane plane in cameraImage.planes) {
+              allBytes.putUint8List(plane.bytes);
+            }
+            final bytes = allBytes.done().buffer.asUint8List();
+
+            final Size imageSize = Size(cameraImage.width.toDouble(), cameraImage.height.toDouble());
+
+            final InputImageRotation imageRotation =
+            InputImageRotationValue.fromRawValue(_cameras[0].sensorOrientation)!;
+
+            final InputImageFormat inputImageFormat =
+            InputImageFormatValue.fromRawValue(cameraImage.format.raw)!;
+
+            final planeData = cameraImage.planes.map(
+                  (Plane plane) {
+                return InputImagePlaneMetadata(
+                  bytesPerRow: plane.bytesPerRow,
+                  height: plane.height,
+                  width: plane.width,
+                );
+              },
+            ).toList();
+
+            final inputImageData = InputImageData(
+              size: imageSize,
+              imageRotation: imageRotation,
+              inputImageFormat: inputImageFormat,
+              planeData: planeData,
+            );
+
+            final inputImage = InputImage.fromBytes(bytes: bytes, inputImageData: inputImageData);
+            final List<Barcode> barcodes = await barcodeScanner.processImage(inputImage);
+
+            for (Barcode barcode in barcodes) {
+              final BarcodeType type = barcode.type;
+              final Rect? boundingBox = barcode.boundingBox;
+              final String? displayValue = barcode.displayValue;
+              final String? rawValue = barcode.rawValue;
+              print(barcode.type.toString()+" " + displayValue! +" " + rawValue! );
+
+              if(displayValue.isNotEmpty){
+                setState(() {
+                  count = ++count;
+                });
+                if(displayValue=='655439020107'){
+                  setState(() {
+                    foundBarcode = true;
+                    result = "646f54cdcb8da7f6d098b571";
+                  });
+                }
+                print(count);
+                for(var j= 0; j< Get.find<userController>().skincare.value.length;j++ ){
+                  if(Get.find<userController>().skincare.value[j].id.value==result && count==1){
+                    showModalBottomSheet(backgroundColor: Colors.transparent,context: context, builder: (context){
+                      return Column(
+                        children: [
+                          Spacer(flex: 5,),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.w),
+                            child: Container(
+                              height: 18.h,
+                              width: 90.w,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
+
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                            flex:3,
+                                            child: Center(child: Image.network(Get.find<userController>().skincare.value[j].p_img.value))),
+                                        SizedBox(width: 3.w,),
+                                        Expanded(
+                                            flex:5,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(height: 1.h,),
+                                                Text(Get.find<userController>().skincare.value[j].p_brand.value+" : "+Get.find<userController>().skincare.value[j].p_name.value,maxLines: 3,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 16.sp),),
+                                                Spacer(),
+                                                Row(
+                                                  children: [
+                                                    Text('Tap to see more',style: GoogleFonts.inter(fontSize: 13.sp,color: Color(0xFF717171)),),
+                                                    Icon(Icons.arrow_forward_ios_rounded,size: 12.sp,color: Color(0xFF717171),)
+                                                  ],
+                                                ),
+                                                SizedBox(height: 1.h,),
+
+
+                                              ],
+                                            )),
+                                        Spacer()
+
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(top: 1.h,right: 1.w,child: IconButton(onPressed: (){
+                                    Get.back();
+                                  }, icon: Icon(Icons.close,color: Colors.black,size: 20.sp,)))
+                                ],
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+
+                        ],
+                      );
+                    }).whenComplete(() {
+                      Future.delayed(Duration(seconds: 2)).whenComplete(() {
+                        setState(() {
+                          result = '';
+                          foundBarcode = false;
+                          count = 0;
+                        });
+                      });
+
+                    });
+
+                  }
+                }
+
+              }
+
+              // print(barcode.value);
+
+              // See API reference for complete list of supported types
+              // switch (type) {
+              //   case BarcodeType.product:
+              //     BarcodeValue? barcodeWifi = barcode.value;
+              //     print(barcode.value);
+              //     break;
+              // }
+            }
+
+          }
+
 
         });
       });
@@ -1768,8 +2082,8 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
           threshold: 0.1,
           asynch: true);
       recognitions!.forEach((element) {
-        print(element["confidence"]);
-        print(streamResult);
+        // print(element["confidence"]);
+        // print(streamResult);
         if(element["confidence"]>0.99&&!streamResult){
           setState(() {
             result = element["label"].toString().split(' ')[1];

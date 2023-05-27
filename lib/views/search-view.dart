@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../services/user-controller.dart';
 import 'camera-view.dart';
@@ -159,15 +160,23 @@ class _SearchViewState extends State<SearchView> {
                   children: [
                     Row(
                       children: [
-                        Container(
-                          height: 5.h,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF3A3A).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8)
+                        InkWell(
+                          customBorder: RoundedRectangleBorder(
+                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 3.w),
-                            child: Center(child: Text('Loreal’s ร่วมกับ Shopee วันนี้ลดสูงสุด 80%',style: GoogleFonts.notoSansThai(color: Color(0xFFFB3737),fontWeight: FontWeight.w600),)),
+                          onTap: (){
+                            launchUrl(Uri.parse('https://shopee.co.th/lorealparis') ,mode: LaunchMode.externalApplication,);
+                          },
+                          child: Container(
+                            height: 5.h,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF3A3A).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8)
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 3.w),
+                              child: Center(child: Text('Loreal’s ร่วมกับ Shopee วันนี้ลดสูงสุด 80%',style: GoogleFonts.notoSansThai(color: Color(0xFFFB3737),fontWeight: FontWeight.w600),)),
+                            ),
                           ),
                         ),
                         Spacer()
@@ -176,15 +185,23 @@ class _SearchViewState extends State<SearchView> {
                     SizedBox(height: 1.h,),
                     Row(
                       children: [
-                        Container(
-                          height: 5.h,
-                          decoration: BoxDecoration(
-                              color: Color(0xFFF3A3A).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8)
+                        InkWell(
+                          customBorder: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 3.w),
-                            child: Center(child: Text('ส่วนลดพิเศษบน Sephora เพียงใช้งานผ่าน Ultima',style: GoogleFonts.notoSansThai(color: Color(0xFFFB3737),fontWeight: FontWeight.w600),)),
+                          onTap: (){
+                            launchUrl(Uri.parse('https://www.sephora.com/beauty/pick-up-delivery-options?icid2=homepage_reassurancebanner2_multi-world_program_ease&convenience_us_rwd_banner_122622') ,mode: LaunchMode.externalApplication,);
+                          },
+                          child: Container(
+                            height: 5.h,
+                            decoration: BoxDecoration(
+                                color: Color(0xFFF3A3A).withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8)
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 3.w),
+                              child: Center(child: Text('ส่วนลดพิเศษบน Sephora เพียงใช้งานผ่าน Ultima',style: GoogleFonts.notoSansThai(color: Color(0xFFFB3737),fontWeight: FontWeight.w600),)),
+                            ),
                           ),
                         ),
                         Spacer()
