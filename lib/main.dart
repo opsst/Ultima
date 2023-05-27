@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,7 +22,9 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNo
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    // options: DefaultFirebaseOptions.currentPlatform,
+  );
   // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   // FlutterLocalNotificationsPlugin();
   print("Handling a background message: ${message.messageId}");
@@ -54,8 +57,8 @@ void main() async {
   Get.put(userController(),permanent: true);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    name: "Ultima",
-    options: DefaultFirebaseOptions.currentPlatform,
+    // name: "Ultima",
+    // options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   // if(Platform.isAndroid){
@@ -94,6 +97,7 @@ class _UltimaAppState extends State<UltimaApp> {
     var baseTheme = ThemeData(brightness: brightness);
 
     return baseTheme.copyWith(
+      
       textTheme: GoogleFonts.interTextTheme(baseTheme.textTheme),
     );
   }
@@ -159,20 +163,24 @@ class _UltimaAppState extends State<UltimaApp> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveSizer(
+
       builder: (context, orientation, screenType){
-        return  GetMaterialApp(
-            title: "Ultima",
-            theme: _buildTheme(Brightness.light),
-            debugShowCheckedModeBanner: false,
-            home: SplashView(),
-            builder: (context, child) {
-              return MediaQuery(
-                child: child!,
-                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-              );
-            },
-            // home: AuthService().handleAuthState()
-            // home: NavigationBarView(),
+        return  AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark,
+          child: GetMaterialApp(
+              title: "Ultima",
+              theme: _buildTheme(Brightness.light),
+              debugShowCheckedModeBanner: false,
+              home: SplashView(),
+              builder: (context, child) {
+                return MediaQuery(
+                  child: child!,
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                );
+              },
+              // home: AuthService().handleAuthState()
+              // home: NavigationBarView(),
+          ),
         );
       },
     );

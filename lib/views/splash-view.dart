@@ -7,6 +7,7 @@ import 'package:ultima/provider/auth-service.dart';
 import 'package:ultima/services/service.dart';
 import 'package:ultima/services/user-controller.dart';
 import 'package:ultima/views/navigation-view.dart';
+import 'package:ultima/views/welcome-view.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -56,6 +57,6 @@ class _SplashViewState extends State<SplashView> {
             child: Image.asset('assets/icons/icon.png'),
           ),
         ),
-    ):AuthService().handleAuthState();
+    ):WelcomepageView();
   }
 }

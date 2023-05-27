@@ -103,10 +103,10 @@ class userController extends GetxController{
 
 
     // print(res.data['data'].length);
-      Get.off(
-              () => NavigationBarView(),
-          transition: Transition.rightToLeftWithFade
-      );
+    //   Get.off(
+    //           () => NavigationBarView(),
+    //       transition: Transition.rightToLeftWithFade
+    //   );
     // }
     });
     service.getAllSkincare().then((res) {
@@ -143,10 +143,10 @@ class userController extends GetxController{
 
 
       // print(res.data['data'].length);
-      Get.off(
-              () => NavigationBarView(),
-          transition: Transition.rightToLeftWithFade
-      );
+      // Get.off(
+      //         () => NavigationBarView(),
+      //     transition: Transition.rightToLeftWithFade
+      // );
       // }
     });
     service.getAllFragrance().then((res) {

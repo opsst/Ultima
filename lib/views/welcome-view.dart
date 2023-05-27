@@ -88,7 +88,7 @@ class _WelcomepageViewState extends State<WelcomepageView> {
                     SizedBox(height: 3.5.h,),
                     GestureDetector(
                       onTap: () {
-                        showModalBottomSheet<dynamic>(context: context, isScrollControlled: true, backgroundColor: Colors.transparent, builder: (context) => LoginpageView());
+                        showModalBottomSheet<dynamic>(context: context, isScrollControlled: true, backgroundColor: Colors.transparent, builder: (context) => LoginView());
                       },
                       child: Container(
                           height: 6.5.h,

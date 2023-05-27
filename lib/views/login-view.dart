@@ -16,14 +16,14 @@ import '../services/service.dart';
 import '../services/user-controller.dart';
 import 'navigation-view.dart';
 
-class LoginpageView extends StatefulWidget {
-  const LoginpageView({Key? key}) : super(key: key);
+class LoginView extends StatefulWidget {
+  const LoginView({Key? key}) : super(key: key);
 
   @override
-  State<LoginpageView> createState() => _LoginpageViewState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginpageViewState extends State<LoginpageView> {
+class _LoginViewState extends State<LoginView> {
   APIService service = APIService();
   final storage = const FlutterSecureStorage();
 
@@ -78,9 +78,8 @@ class _LoginpageViewState extends State<LoginpageView> {
                   await storage.write(key: "token", value: data['token']);
                   String? mytoken = await storage.read(key: "token");
                   print("TOKEN: "+mytoken.toString());
-                  Get.off(
-                      () => NavigationBarView()
-                  );
+                  await Get.find<userController>().initData();
+                  
                 }
 
                 //navigator
@@ -127,16 +126,19 @@ class _LoginpageViewState extends State<LoginpageView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: () {
-                    AuthService().signInWithGoogle(context);
+                  onTap: () async {
+                    var result = await AuthService().signInWithGoogle(context);
+                    print(result);
+
                     // Navigator.pop(context);
                   },
                   child: Image.asset('assets/images/google-icon.png',height: 6.5.h)
                 ),
                 SizedBox(width: 3.h,),
                 GestureDetector(
-                    onTap: () {
-                      AuthService().signInWithFacebook(context);
+                    onTap: () async {
+                      var result =  await AuthService().signInWithFacebook(context);
+                      print(result);
                       // Navigator.pop(context);
                     },
                   child: Image.asset('assets/images/facebook-icon.png',height: 6.5.h)

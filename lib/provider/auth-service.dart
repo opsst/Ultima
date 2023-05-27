@@ -25,7 +25,7 @@ class AuthService {
     );
 
     // Navigator.pop(context);
-    Get.back();
+    // Get.back();
     try {
       // Once signed in, return the UserCredential
       return await FirebaseAuth.instance.signInWithCredential(credential);
@@ -44,9 +44,13 @@ class AuthService {
 
     if (loginResult.status == LoginStatus.success) {
       final AccessToken accessToken = loginResult.accessToken!;
+      print(accessToken.token);
       final OAuthCredential credential = FacebookAuthProvider.credential(accessToken.token);
-      Navigator.pop(context);
+      print(credential.toString());
+      // Navigator.pop(context);
+      // Get.back();
       try {
+        // FirebaseAuth.instance.si
         return await FirebaseAuth.instance.signInWithCredential(credential);
       } on FirebaseAuthException catch (e) {
         print('Error Firebase authentication exceptions');

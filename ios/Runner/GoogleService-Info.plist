@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>710359658843-ae730sr00hqa0h70etrtmtpnvaf62fp1.apps.googleusercontent.com</string>
+	<string>889329332221-1g6dq92pkpunq67khssccvrb9060g532.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.710359658843-ae730sr00hqa0h70etrtmtpnvaf62fp1</string>
+	<string>com.googleusercontent.apps.889329332221-1g6dq92pkpunq67khssccvrb9060g532</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>889329332221-4td8jbhebo5qkrcea6t4quavv31r9p1g.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyD07y0P4CUXlzL1OSdSRlyaK0FxCL2aP5Y</string>
+	<string>AIzaSyCgCRaQUR5A2dMzHVSWZ6zzMgMPHUfiiDU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>710359658843</string>
+	<string>889329332221</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.ultima.ultima</string>
 	<key>PROJECT_ID</key>
-	<string>ultima-2989f</string>
+	<string>ultima-b32f3</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ultima-2989f.appspot.com</string>
+	<string>ultima-b32f3.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:710359658843:ios:305393fd23a63866e2ea7e</string>
+	<string>1:889329332221:ios:367868b305f8e16ea7f394</string>
 </dict>
 </plist>
