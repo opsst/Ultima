@@ -12,6 +12,7 @@ import 'package:ultima/provider/auth-service.dart';
 import 'package:ultima/services/user-controller.dart';
 import 'package:ultima/views/home-view.dart';
 import 'package:ultima/views/signup-view.dart';
+import 'package:ultima/views/splash-view.dart';
 import '../services/service.dart';
 import '../services/user-controller.dart';
 import 'navigation-view.dart';
@@ -72,14 +73,14 @@ class _LoginpageViewState extends State<LoginpageView> {
 
                 final data = jsonDecode(res2.toString());
 
-
+                print(data['message']);
                 if(data['message']== "success"){
                   await storage.delete(key: "token");
                   await storage.write(key: "token", value: data['token']);
                   String? mytoken = await storage.read(key: "token");
                   print("TOKEN: "+mytoken.toString());
                   Get.off(
-                      () => NavigationBarView()
+                      () => SplashView()
                   );
                 }
 

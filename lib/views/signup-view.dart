@@ -132,13 +132,13 @@ class _SignUppageViewState extends State<SignUppageView> {
                 final data = jsonDecode(register.toString());
                 print(data);
                 if(data["message"]=="success"){
-
+                  print("\nRegister Success\n");
                   var res2 = await service.loginUser(_emailController.text, _passwordController.text);
                   final data2 = jsonDecode(res2.toString());
                    if(data2["message"]=="success"){
+                     print("\nLogin Success\n");
                      await storage.delete(key: "token");
-
-                     await storage.write(key: "token", value: data['token']);
+                     await storage.write(key: "token", value: data2['token']);
                      String? mytoken = await storage.read(key: "token");
                      print("TOKEN: "+mytoken.toString());
 
