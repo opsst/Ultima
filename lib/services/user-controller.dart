@@ -38,6 +38,9 @@ class userController extends GetxController{
   var onCustomize = false.obs;
   var customizeIndex = 0.obs;
 
+  var image = ''.obs;
+  var pdt_name = ''.obs;
+  var pdt_price = ''.obs;
 
 
   // var cosmeticModel = CosmeticModel();

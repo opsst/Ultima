@@ -20,16 +20,28 @@ class CosmeticView extends StatefulWidget {
 class _CosmeticViewState extends State<CosmeticView> {
   
   var scape = Scraper();
-
-
-  
+  //
+  // var image = '';
+  // var pdt_name = '';
+  // var pdt_price = '';
+  //
   @override
   void initState() {
     // TODO: implement initState
+    startScrape();
+
     super.initState();
 
-    startScrape();
-    
+
+  }
+
+  @override
+  void dispose(){
+
+      Get.find<userController>().image.value = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Solid_white.svg/2048px-Solid_white.svg.png';
+
+
+    super.dispose();
   }
 
   startScrape() async {
@@ -39,12 +51,25 @@ class _CosmeticViewState extends State<CosmeticView> {
     //   mode: LaunchMode.externalApplication,
     // );
     var my = await scape.getSuggest(Get.find<userController>().cosmetic.value[Get.arguments].l_link.value[0]);
-    print(my);
+    // print(my);
     var x = my.toString().substring(my.toString().indexOf('image" content="')).substring(16);
     var y = x.substring(0,x.indexOf('"'));
     print(y);
 
-    
+    var pdt_name = my.toString().substring(my.toString().indexOf('"pdt_name')).substring(14);
+    var pdt_name_fin = pdt_name.substring(0,pdt_name.indexOf('"')-1);
+    print(pdt_name_fin);
+
+    var pdt_price = my.toString().substring(my.toString().indexOf('"pdt_price')).substring(15);
+    var pdt_price_fin = pdt_price.substring(0,pdt_price.indexOf('"')-1);
+    print(pdt_price_fin);
+
+    setState(() {
+       Get.find<userController>().image.value = y;
+       Get.find<userController>().pdt_name.value = pdt_name_fin;
+       Get.find<userController>().pdt_price.value = pdt_price_fin;
+    });
+    // print(pdt_name);
     // print(my.indexOf('<meta name="og:url" content="'));
     //
 
@@ -57,8 +82,8 @@ class _CosmeticViewState extends State<CosmeticView> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            height: 100.h,
-            width: 100.w,
+            // height: 100.h,
+            // width: 100.w,
             
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,10 +175,62 @@ class _CosmeticViewState extends State<CosmeticView> {
                 ),
                 SizedBox(height: 3.h,),
 
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w),
-                  child: Text('Shopping Suggestion',style: GoogleFonts.inter(fontSize: 18.sp,fontWeight: FontWeight.w700),),
-                ),
+                Container(
+                  width: 100.w,
+                  // height: 100.h,
+                  color: Color(0xFFF6F8FA),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 2.h,),
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.w),
+                        child: Text('Shopping Suggestion',style: GoogleFonts.inter(fontSize: 18.sp,fontWeight: FontWeight.w700),),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.w,vertical: 2.h),
+                        child: GestureDetector(
+                          onTap: (){
+                            launchUrl(Uri.parse(Get.find<userController>().cosmetic.value[Get.arguments].l_link.value[0]),
+                              mode: LaunchMode.externalApplication,
+                            );
+                          },
+                          child: Container(
+                            width: 45.w,
+                            // height: 30.h,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20)
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(2.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Image.network(
+                                      Get.find<userController>().image.value,
+                                    ),
+                                  ),
+                                  SizedBox(height: 1.5.h,),
+                                  Text(Get.find<userController>().pdt_name.value ,style: GoogleFonts.notoSansThai(color: Colors.black,fontSize: 15.sp,fontWeight: FontWeight.w700,height: 1.2),),
+                                  SizedBox(height: 1.5.h,),
+                                  Text(Get.find<userController>().pdt_price.value ,style: GoogleFonts.notoSansThai(color: Colors.black,fontSize: 15.sp,fontWeight: FontWeight.w700,height: 1.2),),
+
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10.h,)
+
+
+                    ],
+                  ),
+                )
 
               ],
             ),

@@ -131,11 +131,18 @@ class _HomepageViewState extends State<HomepageView> {
                               arguments:imageLink[index]
                           );
                         },
-                        child: CachedNetworkImage(imageUrl: imageAds[index],fit: BoxFit.fill,  placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) => Icon(Icons.error),),
+                        child: CachedNetworkImage(imageUrl: imageAds[index],fit: BoxFit.fill,  placeholder: (context, url) => Container(
+                          color: Colors.transparent,
+
+                        ),
+                          errorWidget: (context, url, error) => Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                            ),
+                          ),),
                       );
                     }, options: CarouselOptions(
-                      autoPlay: true,autoPlayAnimationDuration: Duration(seconds: 1),
+                      autoPlay: true,autoPlayAnimationDuration: Duration(milliseconds: 300),
                       viewportFraction: 1,
                       onPageChanged: (index, page){
                         setState(() {
@@ -821,7 +828,7 @@ class _HomepageViewState extends State<HomepageView> {
 
               ),
               child: Padding(
-                padding: EdgeInsets.only(left: 3.h,right: 2.5.h,bottom: 1.5.h),
+                padding: EdgeInsets.only(left: 3.h,bottom: 1.5.h),
                 child: Column(
                   children: [
                     Spacer(),
@@ -829,16 +836,26 @@ class _HomepageViewState extends State<HomepageView> {
                       children: [
                         Text('Ultima',style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 22.sp,letterSpacing: 1,color: Color(0xFF0B1F4F)),),
                         Spacer(),
-                        IconButton(onPressed: (){
-                          setState((){
-                            Get.find<userController>().modeSelect.value = 0;
+                        GestureDetector(
+                          onTap: (){
+                            setState((){
+                              Get.find<userController>().modeSelect.value = 0;
 
-                          });
-                          Get.to(
-                              () => CameraView(),
+                            });
+                            Get.to(
+                                  () => CameraView(),
 
-                          );
-                        }, icon: Icon(FeatherIcons.maximize,size: 20.sp,))
+                            );
+                          },
+                          child: Container(
+                            color:Colors.transparent,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 3.h,vertical: 1.h),
+                              child: SvgPicture.asset('assets/icons/camera.svg'),
+                            ),
+                          ),
+                        )
+
 
                       ],
                     ),

@@ -33,9 +33,13 @@ class CameraView extends StatefulWidget {
 class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
 
   // var Get.find<userController>().modeSelect.value = 0;
-  var animationStart = false;
+  var animationStart = true;
 
   QRViewController? controller;
+
+  var streamResult = true;
+
+  var isShowModal = true;
 
   // var Get.find<userController>().cosmeticSelect.value = 0;
 
@@ -72,126 +76,125 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
   }
 
   loadModel() async{
-
     var resultant = await Tflite.loadModel(
         labels: 'assets/model/labels.txt',
         model: 'assets/model/model_unquant.tflite'
     );
     print("Result : $resultant");
-  }
-  Future<String> applyModelOnImage(String file) async {
-    var res = await Tflite.runModelOnImage(
-        path: file,
-        numResults: 1,
-        threshold: 0.5,
-        imageMean: 127.5,
-        imageStd: 127.5
-    );
-    print(res);
-    if(res?.length==0){
-      return '';
-    }
-    else if(res![0]['confidence']>0.7){
-      print(res![0]['label'].toString().split(' ')[1]);
-      return res![0]['label'].toString().split(' ')[1];
-
-    }
-    return '';
-
-
-
-
-
-    // setState(() {
-    //   var _result = res!;
-    //   // print(_result);
-    //   String str = _result[0]["label"];
-    //
-    //   _name = str.substring(2);
-    //   print(_name);
-    //   // _confident = _result != null ? (_result[0]['confidence'] * 100.0).toString().substring(0,2) + "%" : "";
-    //   // findProduct();
-    // });
-    // ModalScanProduct.Dialog_Settings(context, _name);
-    // int i = 0;
-    // List listresult = [];
-    // for(i; i<res!.length; i++){
-    //   print(res[i]["label"].toString().substring(2));
-    //
-    //   print(i);
-    //   listresult.add(await networkHandler.get("/product/" + res[i]["label"].toString().substring(2)));
-    //   print(listresult);
-    //
-    // }
-    // var x = await networkHandler.get("/product/" + res![i]["label"].toString().substring(2));
-    // ModalViewProduct.Dialog_Settings(context, json.decode(x));
-    // print(x);
-    // String y = x.toString();
-    // listresult.add(y);
-    // print(json.decode(y));
-    // print(listresult.add(x));
-    // Future.delayed(Duration(seconds: 1),(){
-    // print(listresult);
-    // ModalViewProduct.Dialog_Settings(context ,listresult);
-    // });
-
-    // print(_name+" with "+_confident);
-    // print(_result.length);
-    // print(_result[1]);
-
-
-  }
-
-
-
-  late final DeepArController deepArController;
-  String _platformVersion = 'Unknown';
-  bool isRecording = false;
-  // CameraMode cameraMode = config.cameraMode;
-  // DisplayMode displayMode = config.displayMode;
-
-  // CameraController? deepController;
-  // CameraDeepArController? cameraDeepArController;
-  late List<CameraDescription> _cameras;
-  bool cameraReady = false;
-
-  // CameraController? controller;
-  File? import;
-  XFile? pictureFile;
-  bool flash = false;
-  late AnimationController pageController;
-
-  // Future takePhoto(ImageSource source) async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: source);
-  //     if (image == null) return;
-  //
-  //     final imageTemporary = File(image.path);
-  //     setState(() {
-  //       this.import = imageTemporary;
-  //     });
-  //   } on PlatformException catch (e) {
-  //     print('Failed to pick image $e');
-  //   }
-  // }
-  void _onQRViewCreated(QRViewController controller) {
-    setState(() {
-      this.controller = controller;
-    });
-    controller.scannedDataStream.listen((scanData) {
-      print(scanData);
+    Future.delayed(Duration(seconds: 3)).whenComplete(() {
       setState(() {
-        // result = scanData;
+        streamResult = false;
+        isShowModal = false;
+        print(streamResult.toString()+'hi');
       });
     });
   }
 
-  checkState() {
+  // Future<String> applyModelOnImage(String file) async {
+  //   // var res2 = await Tflite.detectObjectOnImage(
+  //   //   path: file,
+  //   // );
+  //
+  //   // var res2 = await Tflite.runModelOnFrame(bytesList: bytesList)
+  //
+  //   var res = await Tflite.runModelOnImage(
+  //       path: file,
+  //       numResults: 1,
+  //       threshold: 0.5,
+  //       imageMean: 127.5,
+  //       imageStd: 127.5
+  //   );
+  //   print(res);
+  //   if(res?.length==0){
+  //     return '';
+  //   }
+  //   else if(res![0]['confidence']>0.7){
+  //     print(res![0]['label'].toString().split(' ')[1]);
+  //     return res![0]['label'].toString().split(' ')[1];
+  //
+  //   }
+  //   return '';
+  //
+  //
+  //
+  //
+  //
+  //   // setState(() {
+  //   //   var _result = res!;
+  //   //   // print(_result);
+  //   //   String str = _result[0]["label"];
+  //   //
+  //   //   _name = str.substring(2);
+  //   //   print(_name);
+  //   //   // _confident = _result != null ? (_result[0]['confidence'] * 100.0).toString().substring(0,2) + "%" : "";
+  //   //   // findProduct();
+  //   // });
+  //   // ModalScanProduct.Dialog_Settings(context, _name);
+  //   // int i = 0;
+  //   // List listresult = [];
+  //   // for(i; i<res!.length; i++){
+  //   //   print(res[i]["label"].toString().substring(2));
+  //   //
+  //   //   print(i);
+  //   //   listresult.add(await networkHandler.get("/product/" + res[i]["label"].toString().substring(2)));
+  //   //   print(listresult);
+  //   //
+  //   // }
+  //   // var x = await networkHandler.get("/product/" + res![i]["label"].toString().substring(2));
+  //   // ModalViewProduct.Dialog_Settings(context, json.decode(x));
+  //   // print(x);
+  //   // String y = x.toString();
+  //   // listresult.add(y);
+  //   // print(json.decode(y));
+  //   // print(listresult.add(x));
+  //   // Future.delayed(Duration(seconds: 1),(){
+  //   // print(listresult);
+  //   // ModalViewProduct.Dialog_Settings(context ,listresult);
+  //   // });
+  //
+  //   // print(_name+" with "+_confident);
+  //   // print(_result.length);
+  //   // print(_result[1]);
+  //
+  //
+  // }
+
+
+
+  late final DeepArController deepArController;
+
+  bool isRecording = false;
+
+  late List<CameraDescription> _cameras;
+  bool cameraReady = false;
+
+  File? import;
+  XFile? pictureFile;
+  bool flash = false;
+  late AnimationController pageController;
+  //
+  // void _onQRViewCreated(QRViewController controller) {
+  //   setState(() {
+  //     this.controller = controller;
+  //   });
+  //   controller.scannedDataStream.listen((scanData) {
+  //     print(scanData);
+  //     setState(() {
+  //       // result = scanData;
+  //     });
+  //   });
+  // }
+
+  checkState() async {
+    // print('cccckkk');
 
       if(Get.find<userController>().modeSelect.value==1){
-        if(deepArController.cameraDirection.toString() == "CameraDirection.rear"){
-          deepArController.flipCamera();
-        }
+        _cameras = await availableCameras();
+        cameraController = CameraController(_cameras[0], ResolutionPreset.high);
+        print('ckk');
+        // if(deepArController.cameraDirection.toString() == "CameraDirection.rear"){
+        //   deepArController.flipCamera();
+        // }
         _tabController.animateTo(1);
         setState(() {
           Get.find<userController>().modeSelect.value = Get.find<userController>().modeSelect.value;
@@ -203,27 +206,38 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
             animationStart = false;
           });
         });
-      }else{
-        print(deepArController.cameraDirection.toString());
-        if(deepArController.cameraDirection.toString() == "CameraDirection.front"){
-          Future.delayed(Duration(milliseconds: 100)).then((value) => deepArController.flipCamera());
-
-        }
-
-        // print(res);
-        setState(() {
-          Get.find<userController>().modeSelect.value= Get.find<userController>().modeSelect.value;
-          animationStart = true;
-
-        });
-        Future.delayed(Duration(milliseconds: 1200)).then((value){
-          setState(() {
-            animationStart = false;
-          });
-
-        });
-
       }
+      // else{
+      //   print(deepArController.cameraDirection.toString());
+      //   if(deepArController.cameraDirection.toString() == "CameraDirection.front"){
+      //     Future.delayed(Duration(milliseconds: 100)).then((value) => deepArController.flipCamera());
+      //
+      //   }
+      //
+      //   // print(res);
+      //   setState(() {
+      //     Get.find<userController>().modeSelect.value= Get.find<userController>().modeSelect.value;
+      //     animationStart = true;
+      //
+      //   });
+      //   Future.delayed(Duration(milliseconds: 1200)).then((value){
+      //     setState(() {
+      //       animationStart = false;
+      //     });
+      //
+      //   });
+      //
+      // }
+      setState(() {
+        Get.find<userController>().modeSelect.value = Get.find<userController>().modeSelect.value;
+        animationStart = true;
+      });
+      //
+      Future.delayed(Duration(milliseconds: 1200)).then((value){
+        setState(() {
+          animationStart = false;
+        });
+      });
 
   }
 
@@ -235,26 +249,47 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
   void initState() {
     loadModel();
 
+    if (Get.find<userController>().modeSelect.value == 0) {
+      cameraInit();
+    }
+    // if (Get.find<userController>().modeSelect == 0) {
+    //   cameraController.dispose();
+    //
+    // }
+    // }else{
+    // if(Get.find<userController>().modeSelect.value == 1){
+    //   cameraInit().whenComplete(() {
+    //     cameraController.dispose();
+    //
+    //   });
+    // }
+
+    // }
+
+    super.initState();
+
     deepArController = DeepArController();
     deepArController.initialize(
         androidLicenseKey: 'a08dcc7e27c80ee1daaeab600bc7d28892388050a29e4f1327369489f6ef025d8dec7635ac0dcf29',
         iosLicenseKey: '7fd8276127f7729ab29b0b3ba765eacc4f62b06d7dcba40c2709e8f29edaa206214e4e717157ff14',
-        resolution: Resolution.veryHigh).then((value) => checkState());
+        resolution: Resolution.veryHigh).whenComplete(() {
+      checkState();
+    });
 
-    // cameraInit();
-    super.initState();
-
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     pageController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 800));
   }
 
   @override
   void dispose() {
-    // controller!.dispose();
+
+    if(cameraController.value.isInitialized){
+      cameraController.dispose();
+
+    }
     deepArController.destroy();
 
-    super.dispose();
     Get.find<userController>().lipSelect.value = '';
     Get.find<userController>().lipIndex.value = -1;
     Get.find<userController>().blushSelect.value = '';
@@ -263,7 +298,13 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
     Get.find<userController>().eyeIndex.value = -1;
     Get.find<userController>().onCustomize.value = false;
     Get.find<userController>().customizeIndex.value = 0;
+
+    super.dispose();
+
+
   }
+
+
 
 
 
@@ -313,7 +354,11 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
               height: Platform.isAndroid? 85.h: 100.h,
               // width: 100.w,
               color: Colors.black,
-              child:DeepArPreview(deepArController,key: Key('Camera')),
+              child: Get.find<userController>().modeSelect==0&&!animationStart?CameraPreview(cameraController):
+              Get.find<userController>().modeSelect==0?Center(
+                child: Image.asset('assets/images/loading.gif',width: 3.w,),
+              ):Get.find<userController>().modeSelect==1?DeepArPreview(deepArController,key: Key('Camera')):
+              Container(),
               // cameraReady?
               // CameraPreview(
               //   controller!,
@@ -333,7 +378,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
           ),
         ),
         Positioned(
-          top: Platform.isAndroid? 32.h:40.h,
+          top: Platform.isAndroid? 30.h:38.h,
           left: 3.w,
           child: Container(
             decoration: BoxDecoration(
@@ -346,18 +391,24 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                 padding: EdgeInsets.symmetric(horizontal:1.w,vertical: 1.w),
                 child: SizedBox(
                   height: 13.w,
-                  width: 26.w,
+                  width: 40.w,
                   child: TabBar(
                     onTap: (index){
                       // _tabController.addListener(() {
                       print(index);
                       //   if(_tabController.indexIsChanging){
-                      if(index==0){
-                        deepArController.switchEffect('assets/deepar/default.deepar');
-                        if(deepArController.cameraDirection.toString() == "CameraDirection.front"){
+                      // deepArController.showStats(enabled: true);
 
-                          deepArController.flipCamera();
-                        }
+                      if(index==0 && Get.find<userController>().modeSelect.value != index){
+                        deepArController.destroy();
+                        cameraInit();
+
+
+                        // deepArController.switchEffect('assets/deepar/default.deepar');
+                        // if(deepArController.cameraDirection.toString() == "CameraDirection.front"){
+                        //
+                        //   deepArController.flipCamera();
+                        // }
                         setState(() {
                           Get.find<userController>().cosmeticSelect.value = 0;
 
@@ -380,9 +431,26 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                         // deepController!.pausePreview();
 
 
-                      }else{
+                      }
+                      else if(index==1 && Get.find<userController>().modeSelect.value != index){
 
                         // print(deepArController.cameraDirection);
+                        if(cameraController.value.isInitialized){
+                          cameraController.dispose();
+
+                        }
+
+                        deepArController.initialize(
+                            androidLicenseKey: 'a08dcc7e27c80ee1daaeab600bc7d28892388050a29e4f1327369489f6ef025d8dec7635ac0dcf29',
+                            iosLicenseKey: '7fd8276127f7729ab29b0b3ba765eacc4f62b06d7dcba40c2709e8f29edaa206214e4e717157ff14',
+                            resolution: Resolution.veryHigh).then((value) => checkState());
+
+                        // deepArController.initialize(
+                        //     androidLicenseKey: 'a08dcc7e27c80ee1daaeab600bc7d28892388050a29e4f1327369489f6ef025d8dec7635ac0dcf29',
+                        //     iosLicenseKey: '7fd8276127f7729ab29b0b3ba765eacc4f62b06d7dcba40c2709e8f29edaa206214e4e717157ff14',
+                        //     resolution: Resolution.veryHigh).then((value) => checkState());
+                        //
+
                         if(deepArController.cameraDirection.toString() == "CameraDirection.rear"){
                           deepArController.flipCamera();
                         }
@@ -413,12 +481,16 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                     controller: _tabController,
                     tabs: [
                       Tab(
-                        child: SvgPicture.asset('assets/icons/barcode.svg',width: 4.w,color: Get.find<userController>().modeSelect.value==0?Colors.black:Colors.white,),
+                        child: Get.find<userController>().modeSelect.value==0?Image.asset('assets/icons/barcode-scanner-2 1-2.png',width: 4.w):Image.asset('assets/icons/barcode-scanner-21.png',width: 4.w),
                       ),
                       Tab(
                         child: RotatedBox(quarterTurns:2,child: SvgPicture.asset('assets/icons/star.svg',width: 5.w,color: Get.find<userController>().modeSelect.value==1?Colors.black:Colors.white,)),
 
-                      )
+                      ),
+                      Tab(
+                        child: SvgPicture.asset('assets/icons/barcode.svg',width: 3.5.w,color: Get.find<userController>().modeSelect.value==2?Colors.black:Colors.white,),
+
+                      ),
                     ],
                     // labelStyle: GoogleFonts.prompt(fontSize: 15.sp,color: Colors.black,fontWeight: FontWeight.w400),
                     // unselectedLabelStyle: GoogleFonts.prompt(fontSize: 15.sp,color: Color(0xFF7B7B7B),fontWeight: FontWeight.w400),
@@ -440,7 +512,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
           ),
         ),
         Positioned(
-          top: Platform.isAndroid?30.h:40.h,
+          top: Platform.isAndroid?32.h:38.h,
           left: 20.w,
           child: AnimatedSwitcher(
               duration: Duration(milliseconds: 200),
@@ -448,15 +520,17 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
 
               child: animationStart?Container(
                 key: Key("showText"),
-                height: 26.w,
+                height: 43.w,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Spacer(),
+                    Text('Inspect Product',style: TextStyle(fontWeight: FontWeight.w600,color: Get.find<userController>().modeSelect.value==0?Colors.white:Colors.white24),),
                     Spacer(flex: 2,),
-                    Text('Scan Product',style: TextStyle(fontWeight: FontWeight.w600,color: Get.find<userController>().modeSelect.value==0?Colors.white:Colors.white24),),
-                    Spacer(flex: 3,),
 
                     Text('Cosmetic Try-on',style: TextStyle(fontWeight: FontWeight.w600,color: Get.find<userController>().modeSelect.value==1?Colors.white:Colors.white24),),
+                    Spacer(flex: 2,),
+                    Text('Barcode Scan',style: TextStyle(fontWeight: FontWeight.w600,color: Get.find<userController>().modeSelect.value==2?Colors.white:Colors.white24),),
                     Spacer(),
 
                   ],
@@ -466,191 +540,35 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
               )
           ),
         ),
-        Get.find<userController>().modeSelect.value==0?Positioned(bottom:Platform.isAndroid?4.h: 8.h,child: GestureDetector(
-          onTap: () async {
-            HapticFeedback.selectionClick();
-             deepArController.takeScreenshot().then((file) {
-               print(file.path);
-               applyModelOnImage(file.path).then((result) {
-                 for(var i = 0; i< Get.find<userController>().cosmetic.value.length; i++){
-                   if(Get.find<userController>().cosmetic.value[i].id.value==result){
-                     showModalBottomSheet(backgroundColor: Colors.transparent,context: context, builder: (context){
-                       return Column(
-                         children: [
-                           Spacer(flex: 5,),
-                           Padding(
-                             padding: EdgeInsets.only(right: 5.w),
-                             child: Row(
-                               mainAxisAlignment: MainAxisAlignment.end,
-                               children: [
-                                 Container(
-                                   // width: 25.w,
-                                   height: 4.h,
-                                   decoration: BoxDecoration(
-                                       color: Color(0xFF4E82FF),
-                                       borderRadius: BorderRadius.circular(18)
-                                   ),
-                                   child: Padding(
-                                     padding: EdgeInsets.symmetric(horizontal:5.w),
-                                     child: Row(
-                                       children: [
-                                         SvgPicture.asset('assets/icons/brush-on.svg'),
-                                         SizedBox(width: 1.w,),
-                                         Text('Try-on',style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Colors.white),)
-                                       ],
-                                     ),
-                                   ),
-                                 )
-                               ],
-                             ),
-                           ),
-                           Padding(
-                             padding: EdgeInsets.symmetric(vertical: 5.w),
-                             child: Container(
-                               height: 18.h,
-                               width: 90.w,
-                               decoration: BoxDecoration(
-                                   color: Colors.white,
-                                   borderRadius: BorderRadius.circular(10)
-                               ),
-                               child: Stack(
-                                 alignment: Alignment.topRight,
-                                 children: [
-                                   Padding(
-                                     padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
-
-                                     child: Row(
-                                       children: [
-                                         Expanded(
-                                             flex:3,
-                                             child: Center(child: Image.network(Get.find<userController>().cosmetic.value[i].cos_img.value[0]))),
-                                         SizedBox(width: 3.w,),
-                                         Expanded(
-                                             flex:5,
-                                             child: Column(
-                                               mainAxisAlignment: MainAxisAlignment.center,
-                                               children: [
-                                                 SizedBox(height: 1.h,),
-                                                 Text(Get.find<userController>().cosmetic.value[i].cos_brand.value+" : "+Get.find<userController>().cosmetic.value[i].cos_name.value,maxLines: 3,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 16.sp),),
-                                                 Spacer(),
-                                                 Row(
-                                                   children: [
-                                                     Text('Tap to see more',style: GoogleFonts.inter(fontSize: 13.sp,color: Color(0xFF717171)),),
-                                                     Icon(Icons.arrow_forward_ios_rounded,size: 12.sp,color: Color(0xFF717171),)
-                                                   ],
-                                                 ),
-                                                 SizedBox(height: 1.h,),
-
-
-                                               ],
-                                             )),
-                                         Spacer()
-
-                                       ],
-                                     ),
-                                   ),
-                                   Positioned(top: 1.h,right: 1.w,child: IconButton(onPressed: (){
-                                     Get.back();
-                                   }, icon: Icon(Icons.close,color: Colors.black,size: 20.sp,)))
-                                 ],
-                               ),
-                             ),
-                           ),
-                           Spacer(),
-
-                         ],
-                       );
-                     });
-
-                   }
-                 }
-                 for(var j= 0; j< Get.find<userController>().skincare.value.length;j++ ){
-                   if(Get.find<userController>().skincare.value[j].id.value==result){
-                     showModalBottomSheet(backgroundColor: Colors.transparent,context: context, builder: (context){
-                       return Column(
-                         children: [
-                           Spacer(flex: 5,),
-                           Padding(
-                             padding: EdgeInsets.symmetric(vertical: 5.w),
-                             child: Container(
-                               height: 18.h,
-                               width: 90.w,
-                               decoration: BoxDecoration(
-                                   color: Colors.white,
-                                   borderRadius: BorderRadius.circular(10)
-                               ),
-                               child: Stack(
-                                 alignment: Alignment.topRight,
-                                 children: [
-                                   Padding(
-                                     padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
-
-                                     child: Row(
-                                       children: [
-                                         Expanded(
-                                             flex:3,
-                                             child: Center(child: Image.network(Get.find<userController>().skincare.value[j].p_img.value))),
-                                         SizedBox(width: 3.w,),
-                                         Expanded(
-                                             flex:5,
-                                             child: Column(
-                                               mainAxisAlignment: MainAxisAlignment.center,
-                                               children: [
-                                                 SizedBox(height: 1.h,),
-                                                 Text(Get.find<userController>().skincare.value[j].p_brand.value+" : "+Get.find<userController>().skincare.value[j].p_name.value,maxLines: 3,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 16.sp),),
-                                                 Spacer(),
-                                                 Row(
-                                                   children: [
-                                                     Text('Tap to see more',style: GoogleFonts.inter(fontSize: 13.sp,color: Color(0xFF717171)),),
-                                                     Icon(Icons.arrow_forward_ios_rounded,size: 12.sp,color: Color(0xFF717171),)
-                                                   ],
-                                                 ),
-                                                 SizedBox(height: 1.h,),
-
-
-                                               ],
-                                             )),
-                                         Spacer()
-
-                                       ],
-                                     ),
-                                   ),
-                                   Positioned(top: 1.h,right: 1.w,child: IconButton(onPressed: (){
-                                     Get.back();
-                                   }, icon: Icon(Icons.close,color: Colors.black,size: 20.sp,)))
-                                 ],
-                               ),
-                             ),
-                           ),
-                           Spacer(),
-
-                         ],
-                       );
-                     });
-
-                   }
-                 }
-               });
-             });
-          },
-            child: SvgPicture.asset('assets/icons/capture.svg',width: 22.w,))
-        ):Container(),
-        Get.find<userController>().modeSelect.value==0?Positioned(
-          right: 10.w,
-          bottom: Platform.isAndroid?4.h:8.h,
-          child:    Padding(
-          padding: EdgeInsets.only(right: 5.w,bottom: 4.w),
-          child: GestureDetector(
-              onTap: () {
-            deepArController.flipCamera();
-            HapticFeedback.selectionClick();
-          }, child: CircleAvatar(radius: 7.w,
-              backgroundColor: Colors.black.withOpacity(0.5),
-              child: Padding(
-                padding: EdgeInsets.all(1.0.w),
-                child: SvgPicture.asset('assets/icons/flip.svg',),
-              ))),
-        ),):Container(),
+        // Get.find<userController>().modeSelect.value==0?Positioned(bottom:Platform.isAndroid?4.h: 8.h,child: GestureDetector(
+        //   onTap: () async {
+        //     HapticFeedback.selectionClick();
+        //
+        //      deepArController.takeScreenshot().then((file) {
+        //        print(file.path);
+        //        // applyModelOnImage(file.path).then((result) {
+        //        //
+        //        // });
+        //      });
+        //   },
+        //     child: SvgPicture.asset('assets/icons/capture.svg',width: 22.w,))
+        // ):Container(),
+        // Get.find<userController>().modeSelect.value==0?Positioned(
+        //   right: 10.w,
+        //   bottom: Platform.isAndroid?4.h:8.h,
+        //   child:    Padding(
+        //   padding: EdgeInsets.only(right: 5.w,bottom: 4.w),
+        //   child: GestureDetector(
+        //       onTap: () {
+        //     deepArController.flipCamera();
+        //     HapticFeedback.selectionClick();
+        //   }, child: CircleAvatar(radius: 7.w,
+        //       backgroundColor: Colors.black.withOpacity(0.5),
+        //       child: Padding(
+        //         padding: EdgeInsets.all(1.0.w),
+        //         child: SvgPicture.asset('assets/icons/flip.svg',),
+        //       ))),
+        // ),):Container(),
       ],
     );
   }
@@ -684,19 +602,41 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
             crossAxisAlignment: CrossAxisAlignment.end,
             children:[
                 Spacer(),
-              Padding(
-                padding: EdgeInsets.only(right: 5.w,bottom: 4.w),
-                child: GestureDetector(onTap: () {
-                  deepArController.flipCamera();
-                  HapticFeedback.selectionClick();
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 2.w,bottom: 4.w),
+                    child: GestureDetector(onTap: () {
+                      setState(() {
+                        Get.find<userController>().currentExtent.value = Platform.isAndroid? 70.h:80.h;
 
-                }, child: CircleAvatar(radius: 7.w,
-                    backgroundColor: Colors.black.withOpacity(0.5),
-                    child: Padding(
-                  padding: EdgeInsets.all(1.0.w),
-                  child: SvgPicture.asset('assets/icons/flip.svg',),
-                ))),
+                      });
+                      HapticFeedback.selectionClick();
+
+                    }, child: CircleAvatar(radius: 7.w,
+                        backgroundColor: Colors.black.withOpacity(0.5),
+                        child: Padding(
+                          padding: EdgeInsets.all(1.0.w),
+                          child: Icon(EvaIcons.search,color: Colors.white,size: 20.sp,),
+                        ))),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 3.w,bottom: 4.w),
+                    child: GestureDetector(onTap: () {
+                      deepArController.flipCamera();
+                      HapticFeedback.selectionClick();
+
+                    }, child: CircleAvatar(radius: 7.w,
+                        backgroundColor: Colors.black.withOpacity(0.5),
+                        child: Padding(
+                          padding: EdgeInsets.all(1.w),
+                          child: SvgPicture.asset('assets/icons/flip.svg',width:6.w,),
+                        ))),
+                  ),
+                ],
               ),
+
               SafeArea(
                 top: false,
                 left: false,
@@ -919,7 +859,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                               ),
                               SizedBox(height: .5.h,),
 
-                              Text('Swipe up to see more',style: TextStyle(fontSize: 13.sp),),
+                              Text('Swipe up to search',style: TextStyle(fontSize: 13.sp),),
 
                               SizedBox(height: .5.h,),
                               Expanded(
@@ -1432,7 +1372,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                 ),
               ):Container(),
               Expanded(
-                child: ListView.builder(padding: EdgeInsets.only(top: 2.h),itemCount: searchList.where((element) => element.cos_istryon.value==true).toList().length ,itemBuilder: (context,index){
+                child: ListView.builder(physics: BouncingScrollPhysics(),padding: EdgeInsets.only(top: 2.h),itemCount: searchList.where((element) => element.cos_istryon.value==true).toList().length ,itemBuilder: (context,index){
                   return searchList[index].cos_istryon.value==true?
                   GestureDetector(
                     onTap: (){
@@ -1600,6 +1540,247 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
         ),
       ),
     );
+  }
+  late CameraImage cameraImage;
+  late CameraController cameraController;
+  String result = "";
+
+  Future<void> cameraInit() async {
+    setState(() {
+      animationStart = false;
+    });
+    _cameras = await availableCameras();
+    cameraController = CameraController(_cameras[0], ResolutionPreset.high);
+    cameraController.initialize().then((value) {
+      if (!mounted) return;
+      setState(() {
+        cameraController.startImageStream((imageStream) {
+          
+          cameraImage = imageStream;
+          runModel();
+
+          if(streamResult == true && isShowModal == false){
+            print('kuykuy');
+            // cameraController.stopImageStream();
+            for(var i = 0; i< Get.find<userController>().cosmetic.value.length; i++){
+
+              if(Get.find<userController>().cosmetic.value[i].id.value==result){
+
+                showModalBottomSheet(backgroundColor: Colors.transparent,context: context, builder: (context){
+                  return Column(
+                    children: [
+                      Spacer(flex: 5,),
+                      Padding(
+                        padding: EdgeInsets.only(right: 5.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              // width: 25.w,
+                              height: 4.h,
+                              decoration: BoxDecoration(
+                                  color: Color(0xFF4E82FF),
+                                  borderRadius: BorderRadius.circular(18)
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal:5.w),
+                                child: GestureDetector(
+                                  onTap: (){
+
+                                  },
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset('assets/icons/brush-on.svg'),
+                                      SizedBox(width: 1.w,),
+                                      Text('Try-on',style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Colors.white),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        child: Container(
+                          height: 18.h,
+                          width: 90.w,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
+
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        flex:3,
+                                        child: Center(child: Image.network(Get.find<userController>().cosmetic.value[i].cos_img.value[0]))),
+                                    SizedBox(width: 3.w,),
+                                    Expanded(
+                                        flex:5,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(height: 1.h,),
+                                            Text(Get.find<userController>().cosmetic.value[i].cos_brand.value+" : "+Get.find<userController>().cosmetic.value[i].cos_name.value,maxLines: 3,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 16.sp),),
+                                            Spacer(),
+                                            Row(
+                                              children: [
+                                                Text('Tap to see more',style: GoogleFonts.inter(fontSize: 13.sp,color: Color(0xFF717171)),),
+                                                Icon(Icons.arrow_forward_ios_rounded,size: 12.sp,color: Color(0xFF717171),)
+                                              ],
+                                            ),
+                                            SizedBox(height: 1.h,),
+
+
+                                          ],
+                                        )),
+                                    Spacer()
+
+                                  ],
+                                ),
+                              ),
+                              Positioned(top: 1.h,right: 1.w,child: IconButton(onPressed: (){
+                                Get.back();
+                              }, icon: Icon(Icons.close,color: Colors.black,size: 20.sp,)))
+                            ],
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+
+                    ],
+                  );
+                }).whenComplete(() {
+                  Future.delayed(Duration(seconds: 3)).whenComplete(() {
+                    setState(() {
+                      isShowModal = false;
+                      streamResult = false;
+                    });
+                  });
+                });
+
+              }
+            }
+            for(var j= 0; j< Get.find<userController>().skincare.value.length;j++ ){
+              if(Get.find<userController>().skincare.value[j].id.value==result){
+                showModalBottomSheet(backgroundColor: Colors.transparent,context: context, builder: (context){
+                  return Column(
+                    children: [
+                      Spacer(flex: 5,),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        child: Container(
+                          height: 18.h,
+                          width: 90.w,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
+
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        flex:3,
+                                        child: Center(child: Image.network(Get.find<userController>().skincare.value[j].p_img.value))),
+                                    SizedBox(width: 3.w,),
+                                    Expanded(
+                                        flex:5,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(height: 1.h,),
+                                            Text(Get.find<userController>().skincare.value[j].p_brand.value+" : "+Get.find<userController>().skincare.value[j].p_name.value,maxLines: 3,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 16.sp),),
+                                            Spacer(),
+                                            Row(
+                                              children: [
+                                                Text('Tap to see more',style: GoogleFonts.inter(fontSize: 13.sp,color: Color(0xFF717171)),),
+                                                Icon(Icons.arrow_forward_ios_rounded,size: 12.sp,color: Color(0xFF717171),)
+                                              ],
+                                            ),
+                                            SizedBox(height: 1.h,),
+
+
+                                          ],
+                                        )),
+                                    Spacer()
+
+                                  ],
+                                ),
+                              ),
+                              Positioned(top: 1.h,right: 1.w,child: IconButton(onPressed: (){
+                                Get.back();
+                              }, icon: Icon(Icons.close,color: Colors.black,size: 20.sp,)))
+                            ],
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+
+                    ],
+                  );
+                }).whenComplete(() {
+                  Future.delayed(Duration(seconds: 3)).whenComplete(() {
+                    setState(() {
+                      isShowModal = false;
+                      streamResult = false;
+                    });
+                  });
+
+                });
+
+              }
+            }
+            setState(() {
+              isShowModal = true;
+              result="";
+            });
+          }
+
+        });
+      });
+    });
+  }
+  runModel() async {
+
+    if (cameraImage != null) {
+      var recognitions = await Tflite.runModelOnFrame(
+          bytesList: cameraImage.planes.map((plane) {
+            return plane.bytes;
+          }).toList(),
+          imageHeight: cameraImage.height,
+          imageWidth: cameraImage.width,
+          imageMean: 127.5,
+          imageStd: 127.5,
+          rotation: 90,
+          numResults: 2,
+          threshold: 0.1,
+          asynch: true);
+      recognitions!.forEach((element) {
+        print(element["confidence"]);
+        print(streamResult);
+        if(element["confidence"]>0.99&&!streamResult){
+          setState(() {
+            result = element["label"].toString().split(' ')[1];
+            print('inininininin');
+            streamResult = true;
+            // print(element["confidence"]);
+          });
+        }
+
+      });
+    }
   }
 
 
