@@ -16,6 +16,8 @@ import 'package:ultima/services/service.dart';
 import 'package:ultima/services/user-controller.dart';
 import 'package:ultima/views/camera-view.dart';
 import 'package:ultima/views/cosmetic-view.dart';
+import 'package:ultima/views/product-view.dart';
+import 'package:ultima/views/product-view2.dart';
 import 'package:ultima/views/reward-view.dart';
 import 'package:ultima/views/search-view.dart';
 import 'package:ultima/views/web-view.dart';
@@ -385,8 +387,9 @@ class _HomepageViewState extends State<HomepageView> {
                           });
                         },
                         tabs: [
-                          Text('Skincare'),
                           Text('Cosmetics'),
+                          Text('Skincare'),
+
                           Text('Perfume'),
 
                         ],
@@ -394,7 +397,8 @@ class _HomepageViewState extends State<HomepageView> {
                           unselectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600,fontSize: 14.sp),
                           labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 14.sp),
                           padding: EdgeInsets.only(top: 1.h),
-                          height: 7.h,
+                          height: 8.h,
+                          labelPadding: EdgeInsets.all(1.w),
                           width: 70.w,
                           indicatorColor: Color(0xFF4E82FF),
                           indicator: ContainerTabIndicator(
@@ -414,6 +418,167 @@ class _HomepageViewState extends State<HomepageView> {
 
                         views: [
                           CarouselSlider.builder(
+                              carouselController: carouselController,
+                              itemCount: Get.find<userController>().cosmetic.value.length, itemBuilder: (context,index,pageView){
+                            return Padding(
+                              padding: EdgeInsets.only(right: 4.w),
+                              child: GestureDetector(
+                                onTap: (){
+                                  Get.to(
+                                          () => CosmeticView(),
+                                      arguments: index
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.01),blurRadius: 40,spreadRadius: 20)
+                                      ]
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(right: 3.w,top: 3.w,bottom: 3.w),
+                                    child: Row(
+                                      children: [
+                                        Expanded(flex: 4,child: Padding(
+                                          padding: EdgeInsets.only(top: 3.h,bottom: 3.h,left: 5.w,right: 3.w),
+                                          child: CachedNetworkImage(imageUrl: Get.find<userController>().cosmetic.value[index].cos_img.value[0],),
+                                        )),
+                                        SizedBox(width: 1.w,),
+                                        Expanded(flex: 7,child: Padding(
+                                          padding: EdgeInsets.only(top: 5.w,right: 2.w,bottom: 3.w),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(Get.find<userController>().cosmetic.value[index].cos_brand.value+" "+Get.find<userController>().cosmetic.value[index].cos_name.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
+                                              SizedBox(height: 1.h,),
+                                              Text(Get.find<userController>().cosmetic.value[index].cos_desc.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
+                                              SizedBox(height: 1.h,),
+                                              Expanded(child: ListView.builder(padding: EdgeInsets.zero
+                                                  ,scrollDirection: Axis.horizontal,itemCount: Get.find<userController>().cosmetic.value[index].cos_color_img.value.length ,itemBuilder: (context,colorIndex){
+
+                                                    return colorIndex==4?Center(child: Text("  +${Get.find<userController>().cosmetic.value[index].cos_color_img.value.length-4}",style: GoogleFonts.inter(color: Color(0xFF9FA2A8),fontWeight: FontWeight.w600),)):colorIndex>3?Container():Padding(
+                                                      padding: EdgeInsets.all(.8.w),
+                                                      child: CircleAvatar(
+                                                        // backgroundColor: Get.find<userController>().cosmetic.value[index].cos_color_img.value[index],
+                                                        backgroundColor: Colors.white,
+                                                        foregroundImage: NetworkImage(Get.find<userController>().cosmetic.value[index].cos_color_img.value[colorIndex]),
+                                                        radius: 4.w,
+                                                      ),
+                                                    );
+                                                  })),
+                                              SizedBox(height: 1.h,),
+                                              Get.find<userController>().cosmetic.value[index].cos_istryon.value?Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap : (){
+                                                      setState(() {
+                                                        if (Get.find<userController>().cosmetic.value[index].cos_cate.value == 'Lipstick'){
+                                                          for(var i = 0; i<Get.find<userController>().lipstick.value.length; i++){
+                                                            if(Get.find<userController>().cosmetic.value[index].id.value==Get.find<userController>().lipstick.value[i].id.value){
+                                                              Get.find<userController>().currentExtent.value = 50.h;
+                                                              Get.find<userController>().lipSelect.value = Get.find<userController>().cosmetic.value[index].cos_tryon_name.value[0];
+                                                              Get.find<userController>().lipIndex.value = i;
+                                                              Get.find<userController>().cosmeticSelect.value = 3;
+                                                              Get.find<userController>().modeSelect.value = 1;
+                                                              Get.to(
+                                                                      () => CameraView()
+                                                              );
+                                                            }
+                                                          }
+                                                        }
+                                                        else if (Get.find<userController>().cosmetic.value[index].cos_cate.value == 'Eyeshadows'){
+                                                          for(var i = 0; i<Get.find<userController>().eyeshadow.value.length; i++){
+                                                            if(Get.find<userController>().cosmetic.value[index].id.value==Get.find<userController>().eyeshadow.value[i].id.value){
+                                                              Get.find<userController>().currentExtent.value = 50.h;
+                                                              Get.find<userController>().eyeSelect.value = Get.find<userController>().cosmetic.value[index].cos_tryon_name.value[0];
+                                                              Get.find<userController>().eyeIndex.value = i;
+                                                              Get.find<userController>().cosmeticSelect.value = 1;
+                                                              Get.find<userController>().modeSelect.value = 1;
+                                                              Get.to(
+                                                                      () => CameraView()
+                                                              );
+                                                            }
+                                                          }
+                                                        }
+                                                        else if (Get.find<userController>().cosmetic.value[index].cos_cate.value == 'Blush on'){
+                                                          for(var i = 0; i<Get.find<userController>().blushOn.value.length; i++){
+                                                            if(Get.find<userController>().cosmetic.value[index].id.value==Get.find<userController>().blushOn.value[i].id.value){
+                                                              Get.find<userController>().currentExtent.value = 50.h;
+                                                              Get.find<userController>().blushSelect.value = Get.find<userController>().cosmetic.value[index].cos_tryon_name.value[0];
+                                                              Get.find<userController>().blushIndex.value = i;
+                                                              Get.find<userController>().cosmeticSelect.value = 2;
+                                                              Get.find<userController>().modeSelect.value = 1;
+                                                              Get.to(
+                                                                      () => CameraView()
+                                                              );
+                                                            }
+                                                          }
+                                                        }
+
+
+
+
+                                                      });
+
+                                                    },
+                                                    child: Container(
+                                                      width: 50.w,
+                                                      decoration: BoxDecoration(
+                                                          color: Color(0xFF4E82FF),
+                                                          borderRadius: BorderRadius.circular(20)
+                                                      ),
+                                                      child: Padding(
+                                                        padding: EdgeInsets.symmetric(vertical: .5.h),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
+                                                            SizedBox(width: 1.w,),
+                                                            Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                  // RawChip(backgroundColor:Color(0xFF4E82FF),label: Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
+                                                  //   , avatar: InkWell(
+                                                  //     onTap: () {},
+                                                  //     child: Padding(
+                                                  //       padding: EdgeInsets.only(left: 1.w),
+                                                  //       child: Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
+                                                  //     ),
+                                                  //   ),
+                                                  // )
+                                                ],
+                                              ):Container()
+
+
+
+                                            ],
+                                          ),
+                                        )),
+
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }, options: CarouselOptions(
+                              enableInfiniteScroll: false,
+                              viewportFraction:0.92,
+                              onPageChanged: (index, page){
+                                setState(() {
+                                  indicator = index;
+                                });
+                                // indicator.animateToPage(index, duration: Duration(milliseconds: 800), curve: Curves.linear);
+                              }
+                          )),
+
+                          CarouselSlider.builder(
                           carouselController: carouselController,
                           itemCount: Get.find<userController>().skincare.value.length, itemBuilder: (context,index,pageView){
                         return Padding(
@@ -421,6 +586,10 @@ class _HomepageViewState extends State<HomepageView> {
                           child: GestureDetector(
                             onTap: (){
                               // ไปหาโพรดัค
+                              Get.to(
+                                      () => ProductView(),
+                                  arguments: index
+                              );
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -482,15 +651,16 @@ class _HomepageViewState extends State<HomepageView> {
                             // indicator.animateToPage(index, duration: Duration(milliseconds: 800), curve: Curves.linear);
                           }
                       )),
+
                           CarouselSlider.builder(
                               carouselController: carouselController,
-                              itemCount: Get.find<userController>().cosmetic.value.length, itemBuilder: (context,index,pageView){
+                              itemCount: Get.find<userController>().fragrance.value.length, itemBuilder: (context,index,pageView){
                             return Padding(
                               padding: EdgeInsets.only(right: 4.w),
                               child: GestureDetector(
                                 onTap: (){
                                   Get.to(
-                                      () => CosmeticView(),
+                                      () => ProductView2(),
                                     arguments: index
                                   );
                                 },
@@ -508,117 +678,50 @@ class _HomepageViewState extends State<HomepageView> {
                                       children: [
                                         Expanded(flex: 4,child: Padding(
                                           padding: EdgeInsets.only(top: 3.h,bottom: 3.h,left: 5.w,right: 3.w),
-                                          child: CachedNetworkImage(imageUrl: Get.find<userController>().cosmetic.value[index].cos_img.value[0],),
+                                          child: CachedNetworkImage(imageUrl: Get.find<userController>().fragrance.value[index].p_img.value,),
                                         )),
-                                        SizedBox(width: 1.w,),
                                         Expanded(flex: 7,child: Padding(
                                           padding: EdgeInsets.only(top: 5.w,right: 2.w,bottom: 3.w),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
-                                              Text(Get.find<userController>().cosmetic.value[index].cos_brand.value+" "+Get.find<userController>().cosmetic.value[index].cos_name.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                              SizedBox(height: 1.h,),
-                                              Text(Get.find<userController>().cosmetic.value[index].cos_desc.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
-                                              SizedBox(height: 1.h,),
-                                              Expanded(child: ListView.builder(padding: EdgeInsets.zero
-                                                  ,scrollDirection: Axis.horizontal,itemCount: Get.find<userController>().cosmetic.value[index].cos_color_img.value.length ,itemBuilder: (context,colorIndex){
-
-                                                return colorIndex==4?Center(child: Text("  +${Get.find<userController>().cosmetic.value[index].cos_color_img.value.length-4}",style: GoogleFonts.inter(color: Color(0xFF9FA2A8),fontWeight: FontWeight.w600),)):colorIndex>3?Container():Padding(
-                                                  padding: EdgeInsets.all(.8.w),
-                                                  child: CircleAvatar(
-                                                    // backgroundColor: Get.find<userController>().cosmetic.value[index].cos_color_img.value[index],
-                                                    backgroundColor: Colors.white,
-                                                    foregroundImage: NetworkImage(Get.find<userController>().cosmetic.value[index].cos_color_img.value[colorIndex]),
-                                                    radius: 4.w,
-                                                  ),
-                                                );
-                                              })),
-                                              SizedBox(height: 1.h,),
-                                              Get.find<userController>().cosmetic.value[index].cos_istryon.value?Row(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap : (){
-                                                      setState(() {
-                                                      if (Get.find<userController>().cosmetic.value[index].cos_cate.value == 'Lipstick'){
-                                                        for(var i = 0; i<Get.find<userController>().lipstick.value.length; i++){
-                                                          if(Get.find<userController>().cosmetic.value[index].id.value==Get.find<userController>().lipstick.value[i].id.value){
-                                                            Get.find<userController>().currentExtent.value = 50.h;
-                                                            Get.find<userController>().lipSelect.value = Get.find<userController>().cosmetic.value[index].cos_tryon_name.value[0];
-                                                            Get.find<userController>().lipIndex.value = i;
-                                                            Get.find<userController>().cosmeticSelect.value = 3;
-                                                            Get.find<userController>().modeSelect.value = 1;
-                                                            Get.to(
-                                                                    () => CameraView()
-                                                            );
-                                                          }
-                                                        }
-                                                      }
-                                                      else if (Get.find<userController>().cosmetic.value[index].cos_cate.value == 'Eyeshadows'){
-                                                        for(var i = 0; i<Get.find<userController>().eyeshadow.value.length; i++){
-                                                          if(Get.find<userController>().cosmetic.value[index].id.value==Get.find<userController>().eyeshadow.value[i].id.value){
-                                                            Get.find<userController>().currentExtent.value = 50.h;
-                                                            Get.find<userController>().eyeSelect.value = Get.find<userController>().cosmetic.value[index].cos_tryon_name.value[0];
-                                                            Get.find<userController>().eyeIndex.value = i;
-                                                            Get.find<userController>().cosmeticSelect.value = 1;
-                                                            Get.find<userController>().modeSelect.value = 1;
-                                                            Get.to(
-                                                                    () => CameraView()
-                                                            );
-                                                          }
-                                                        }
-                                                      }
-                                                      else if (Get.find<userController>().cosmetic.value[index].cos_cate.value == 'Blush on'){
-                                                        for(var i = 0; i<Get.find<userController>().blushOn.value.length; i++){
-                                                          if(Get.find<userController>().cosmetic.value[index].id.value==Get.find<userController>().blushOn.value[i].id.value){
-                                                            Get.find<userController>().currentExtent.value = 50.h;
-                                                            Get.find<userController>().blushSelect.value = Get.find<userController>().cosmetic.value[index].cos_tryon_name.value[0];
-                                                            Get.find<userController>().blushIndex.value = i;
-                                                            Get.find<userController>().cosmeticSelect.value = 2;
-                                                            Get.find<userController>().modeSelect.value = 1;
-                                                            Get.to(
-                                                                    () => CameraView()
-                                                            );
-                                                          }
-                                                        }
-                                                      }
-
-
-
-
-                                                      });
-
-                                                    },
-                                                    child: Container(
-                                                      width: 50.w,
-                                                      decoration: BoxDecoration(
-                                                        color: Color(0xFF4E82FF),
-                                                        borderRadius: BorderRadius.circular(20)
-                                                      ),
-                                                      child: Padding(
-                                                        padding: EdgeInsets.symmetric(vertical: .5.h),
-                                                        child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          children: [
-                                                            Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
-                                                            SizedBox(width: 1.w,),
-                                                            Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )
-                                                  // RawChip(backgroundColor:Color(0xFF4E82FF),label: Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
-                                                  //   , avatar: InkWell(
-                                                  //     onTap: () {},
-                                                  //     child: Padding(
-                                                  //       padding: EdgeInsets.only(left: 1.w),
-                                                  //       child: Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
-                                                  //     ),
-                                                  //   ),
-                                                  // )
-                                                ],
-                                              ):Container()
+                                              Text(Get.find<userController>().fragrance.value[index].p_brand.value+" "+Get.find<userController>().fragrance.value[index].p_name.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
+                                              SizedBox(height: 2.h,),
+                                              Text(Get.find<userController>().fragrance.value[index].p_desc.value,overflow: TextOverflow.ellipsis,maxLines: 5,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
+                                              // Row(
+                                              //   crossAxisAlignment: CrossAxisAlignment.center,
+                                              //   children: [
+                                              //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
+                                              //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
+                                              //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
+                                              //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
+                                              //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107).withOpacity(0.35),),
+                                              //     SizedBox(width: 0.5.w,),
+                                              //     Text('4.5',maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFFFFC107))),
+                                              //     Spacer(),
+                                              //     Opacity(
+                                              //       opacity: 0,
+                                              //       child: RawChip(backgroundColor:Color(0xFF4E82FF),label: Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
+                                              //         , avatar: InkWell(
+                                              //           onTap: () {},
+                                              //           child: Padding(
+                                              //             padding: EdgeInsets.only(left: 1.w),
+                                              //             child: Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
+                                              //           ),
+                                              //         ),
+                                              //       ),
+                                              //     )
+                                              //   ],
+                                              // ),
+                                              // Row(
+                                              //   crossAxisAlignment: CrossAxisAlignment.center,
+                                              //   children: [
+                                              //     Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
+                                              //     SizedBox(width: 1.w,),
+                                              //     Text('5,600-7,050 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
+                                              //
+                                              //   ],
+                                              // ),
 
 
 
@@ -628,92 +731,6 @@ class _HomepageViewState extends State<HomepageView> {
 
                                       ],
                                     ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }, options: CarouselOptions(
-                              enableInfiniteScroll: false,
-                              viewportFraction:0.92,
-                              onPageChanged: (index, page){
-                                setState(() {
-                                  indicator = index;
-                                });
-                                // indicator.animateToPage(index, duration: Duration(milliseconds: 800), curve: Curves.linear);
-                              }
-                          )),
-
-                          CarouselSlider.builder(
-                              carouselController: carouselController,
-                              itemCount: Get.find<userController>().fragrance.value.length, itemBuilder: (context,index,pageView){
-                            return Padding(
-                              padding: EdgeInsets.only(right: 4.w),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.01),blurRadius: 40,spreadRadius: 20)
-                                    ]
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.only(right: 3.w,top: 3.w,bottom: 3.w),
-                                  child: Row(
-                                    children: [
-                                      Expanded(flex: 4,child: Padding(
-                                        padding: EdgeInsets.only(top: 3.h,bottom: 3.h,left: 5.w,right: 3.w),
-                                        child: CachedNetworkImage(imageUrl: Get.find<userController>().fragrance.value[index].p_img.value,),
-                                      )),
-                                      Expanded(flex: 7,child: Padding(
-                                        padding: EdgeInsets.only(top: 5.w,right: 2.w,bottom: 3.w),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Text(Get.find<userController>().fragrance.value[index].p_brand.value+" "+Get.find<userController>().fragrance.value[index].p_name.value,overflow: TextOverflow.ellipsis,maxLines: 2,style: GoogleFonts.inter(fontSize: 16.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                            SizedBox(height: 2.h,),
-                                            Text(Get.find<userController>().fragrance.value[index].p_desc.value,overflow: TextOverflow.ellipsis,maxLines: 5,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFF9D9D9D))),
-                                            // Row(
-                                            //   crossAxisAlignment: CrossAxisAlignment.center,
-                                            //   children: [
-                                            //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                            //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                            //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                            //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107),),
-                                            //     Icon(Icons.star,size: 16.sp,color: Color(0xFFFFC107).withOpacity(0.35),),
-                                            //     SizedBox(width: 0.5.w,),
-                                            //     Text('4.5',maxLines: 3,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w400,color: Color(0xFFFFC107))),
-                                            //     Spacer(),
-                                            //     Opacity(
-                                            //       opacity: 0,
-                                            //       child: RawChip(backgroundColor:Color(0xFF4E82FF),label: Text('Try-on',style: GoogleFonts.inter(fontSize: 14.sp,color: Colors.white,fontWeight: FontWeight.w700),)
-                                            //         , avatar: InkWell(
-                                            //           onTap: () {},
-                                            //           child: Padding(
-                                            //             padding: EdgeInsets.only(left: 1.w),
-                                            //             child: Icon(Boxicons.bx_brush,color: Colors.white,size: 20.sp,),
-                                            //           ),
-                                            //         ),
-                                            //       ),
-                                            //     )
-                                            //   ],
-                                            // ),
-                                            // Row(
-                                            //   crossAxisAlignment: CrossAxisAlignment.center,
-                                            //   children: [
-                                            //     Icon(Icons.arrow_circle_right_outlined,size: 18.sp,color: Color(0xFF576580),),
-                                            //     SizedBox(width: 1.w,),
-                                            //     Text('5,600-7,050 THB',maxLines: 1,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w500,color: Color(0xFF576580))),
-                                            //
-                                            //   ],
-                                            // ),
-
-
-
-                                          ],
-                                        ),
-                                      )),
-
-                                    ],
                                   ),
                                 ),
                               ),
@@ -764,6 +781,7 @@ class _HomepageViewState extends State<HomepageView> {
                       child: Row(
                         children: [
                           Text('Official Mall',style: GoogleFonts.inter(fontSize: 18.sp,fontWeight: FontWeight.w800,color: Color(0xFF0B1F4F))),
+
                           Spacer(),
                           // Container(
                           //   color: Colors.transparent,
@@ -839,34 +857,43 @@ class _HomepageViewState extends State<HomepageView> {
                       padding: EdgeInsets.symmetric(horizontal: 2.h),
                       child: GridView.count(childAspectRatio: 0.8, crossAxisCount: 2,crossAxisSpacing: 3.w,mainAxisSpacing: 3.w,physics: NeverScrollableScrollPhysics(),padding: EdgeInsets.zero,shrinkWrap: true,
                         children: List.generate(Get.find<userController>().skincare.value.length, (index) {
-                          return Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15),boxShadow: [BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.02),blurRadius: 40,spreadRadius: 20)]),child: Column(
-                            children: [
-                              Expanded(flex:3,child: Padding(
-                                padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
-                                child: CachedNetworkImage(imageUrl: Get.find<userController>().skincare.value[index].p_img.value,),
-                              )),
-                              Expanded(flex:2,child: Padding(
-                                padding: EdgeInsets.only(left: 2.h,right: 2.h,bottom: 2.h),
+                          return GestureDetector(
+                            onTap: (){
+                              Get.to(
+                                  () => ProductView(),
+                                arguments: index
+                              );
 
-                                child: Column(
-                                  children: [
-                                    Text(Get.find<userController>().skincare.value[index].p_brand.value.toString().capitalize!+" "+Get.find<userController>().skincare.value[index].p_name.value,maxLines: 2,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
-                                    Spacer(),
-                                    Container(
-                                      width: 100.w,
-                                      height: 3.h,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFDBE9F7),
-                                        borderRadius: BorderRadius.circular(200)
-                                      ),
-                                      child: Center(child: Text(Get.find<userController>().skincare.value[index].p_cate.value ,style: GoogleFonts.inter(color: Color(0xFF1E439B),fontWeight: FontWeight.w700,fontSize: 13.sp),)),
-                                    )
-                                  ],
-                                ),
-                              )),
+                            },
+                            child: Container(decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15),boxShadow: [BoxShadow(offset: Offset(3,7),color: Colors.black.withOpacity(0.02),blurRadius: 40,spreadRadius: 20)]),child: Column(
+                              children: [
+                                Expanded(flex:3,child: Padding(
+                                  padding: EdgeInsets.only(top: 2.h,bottom: 2.h),
+                                  child: CachedNetworkImage(imageUrl: Get.find<userController>().skincare.value[index].p_img.value,),
+                                )),
+                                Expanded(flex:2,child: Padding(
+                                  padding: EdgeInsets.only(left: 2.h,right: 2.h,bottom: 2.h),
 
-                            ],
-                          ),);
+                                  child: Column(
+                                    children: [
+                                      Text(Get.find<userController>().skincare.value[index].p_brand.value.toString().capitalize!+" "+Get.find<userController>().skincare.value[index].p_name.value,maxLines: 2,style: GoogleFonts.inter(fontSize: 15.sp,fontWeight: FontWeight.w700,color: Color(0xFF0B1F4F))),
+                                      Spacer(),
+                                      Container(
+                                        width: 100.w,
+                                        height: 3.h,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFFDBE9F7),
+                                          borderRadius: BorderRadius.circular(200)
+                                        ),
+                                        child: Center(child: Text(Get.find<userController>().skincare.value[index].p_cate.value ,style: GoogleFonts.inter(color: Color(0xFF1E439B),fontWeight: FontWeight.w700,fontSize: 13.sp),)),
+                                      )
+                                    ],
+                                  ),
+                                )),
+
+                              ],
+                            ),),
+                          );
 
                         })
                       ),

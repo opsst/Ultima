@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:ultima/views/cosmetic-view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../services/user-controller.dart';
@@ -218,7 +219,16 @@ class _SearchViewState extends State<SearchView> {
                   color: Colors.transparent,
                   child: InkWell(
                       onTap: (){
-                        Get.back(result: allResult[index]);
+                        // Get.back(result: allResult[index]);
+                        print(serchResult[index]);
+                        for(var i = 0; i<Get.find<userController>().cosmetic.value.length; i++){
+                          if(Get.find<userController>().cosmetic.value[i].cos_name.value==serchResult[index]){
+                            Get.off(
+                                () => CosmeticView(),
+                              arguments: i
+                            );
+                          }
+                        }
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 1.5.h,horizontal: 5.w),

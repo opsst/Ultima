@@ -444,4 +444,29 @@ class APIService {
       }
     }
   }
+
+  Future contactApp(String id,String url) async{
+    try{
+      // dio.interceptors.add(logger);
+      // String? token = '';
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
+
+      Response response = await dio.put(public + "/user/addpoint/"+id,data: {
+        "used_point_url" : [url]
+      });
+
+      if (response.statusCode == 200) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
 }

@@ -53,6 +53,8 @@ class userController extends GetxController{
   // var userPoint = 0.obs;
   var userUrl = [].obs;
 
+  var url = ''.obs;
+
 
   // var cosmeticModel = CosmeticModel();
 
@@ -62,15 +64,15 @@ class userController extends GetxController{
     print('start');
 
     service.getUser().then((res) {
-      print('kuy');
+      // print('kuy');
 
       print(res.data['data']);
       service.getUser2(res.data['data']['id']).then((value) {
-        print('sdsddsds');
+        // print('sdsddsds');
         print(value.data['data']);
         userID.value = value.data['data']['id'];
         userFirstName.value = value.data['data']['firstname'].toString().capitalize!;
-        userLastName.value = value.data['data']['lastname'].toString().capitalize!;
+        userLastName.value = (value.data['data']['lastname'].toString().capitalize!)=="Null"?" ":(value.data['data']['lastname'].toString().capitalize!);
         userPoint.value = value.data['data']['point']??0;
         userUrl.value = value.data['data']['used_point_url']??[];
         print(userID.value);
@@ -157,6 +159,7 @@ class userController extends GetxController{
             productModel.p_cate.value = element['p_cate'];
             productModel.p_img.value = element['p_img'];
             productModel.ing_id.value = element['ing_id']??[];
+          productModel.l_link.value = element['l_link']??[];
 
 
             skincare.value.add(productModel);
@@ -197,6 +200,7 @@ class userController extends GetxController{
           productModel.p_cate.value = element['p_cate'];
           productModel.p_img.value = element['p_img'];
           productModel.ing_id.value = element['ing_id']??[];
+          productModel.l_link.value = element['l_link']??[];
 
 
           fragrance.value.add(productModel);
@@ -239,6 +243,28 @@ class userController extends GetxController{
     service.getAllCosmetic().then((res) {
 
     });
+  }
+
+  reloadPoint(){
+    service.getUser().then((res) {
+      // print('kuy');
+
+      print(res.data['data']);
+      service.getUser2(res.data['data']['id']).then((value) {
+        // print('sdsddsds');
+        print(value.data['data']);
+        userID.value = value.data['data']['id'];
+        userFirstName.value = value.data['data']['firstname'].toString().capitalize!;
+        userLastName.value = (value.data['data']['lastname'].toString().capitalize!)=="Null"?" ":(value.data['data']['lastname'].toString().capitalize!);
+        userPoint.value = value.data['data']['point']??0;
+        userUrl.value = value.data['data']['used_point_url']??[];
+        print(userID.value);
+        print(userFirstName.value);
+        print(userLastName.value);
+        print(userPoint.value);
+      });
+    });
+
   }
 
   startControl(PageController controller){

@@ -18,6 +18,7 @@ import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:tflite/tflite.dart';
 // import 'package:tflite/tflite.dart';
 import 'package:ultima/services/user-controller.dart';
+import 'package:ultima/views/cosmetic-view.dart';
 import 'package:ultima/widget/colorExtension.dart';
 import 'dart:io';
 import '../services/config.dart';
@@ -1165,6 +1166,41 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                                                             });
                                                           },
                                                           child: GestureDetector(
+                                                            onTap: (){
+                                                              print(Get.find<userController>().cosmeticSelect.value==1?Get.find<userController>().eyeshadow.value[customizeIndex].id.value  :Get.find<userController>().cosmeticSelect.value==2?Get.find<userController>().blushOn.value[customizeIndex].id.value:Get.find<userController>().lipstick.value[customizeIndex].id.value);
+                                                             if(Get.find<userController>().cosmeticSelect.value==1)
+                                                             {
+                                                               for(var i = 0; i< Get.find<userController>().cosmetic.value.length; i++){
+                                                                 if(Get.find<userController>().cosmetic.value[i].id.value == Get.find<userController>().eyeshadow.value[customizeIndex].id.value){
+                                                                   Get.off(
+                                                                       () => CosmeticView(),
+                                                                     arguments: i
+                                                                   );
+                                                                 }
+                                                               }
+                                                             }
+                                                             else if(Get.find<userController>().cosmeticSelect.value==2) {
+                                                               for(var i = 0; i< Get.find<userController>().cosmetic.value.length; i++){
+                                                                 if(Get.find<userController>().cosmetic.value[i].id.value == Get.find<userController>().blushOn.value[customizeIndex].id.value){
+                                                                   Get.off(
+                                                                           () => CosmeticView(),
+                                                                       arguments: i
+                                                                   );
+                                                                 }
+                                                               }
+                                                             }
+                                                             else if(Get.find<userController>().cosmeticSelect.value==3) {
+                                                               for(var i = 0; i< Get.find<userController>().cosmetic.value.length; i++){
+                                                                 if(Get.find<userController>().cosmetic.value[i].id.value == Get.find<userController>().lipstick.value[customizeIndex].id.value){
+                                                                   Get.off(
+                                                                           () => CosmeticView(),
+                                                                       arguments: i
+                                                                   );
+                                                                 }
+                                                               }
+                                                             }
+
+                                                            },
                                                             child: Container(
                                                               height: 3.h,
                                                               // width: 100.w,
@@ -1607,13 +1643,13 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
         cameraController.startImageStream((imageStream) async {
           
           cameraImage = imageStream;
-
-          if(count>1&&foundBarcode){
-            setState(() {
-              count = 0;
-              foundBarcode = false;
-            });
-          }
+          //
+          // if(count>1&&foundBarcode){
+          //   setState(() {
+          //     count = 0;
+          //     foundBarcode = false;
+          //   });
+          // }
 
           if(Get.find<userController>().modeSelect.value==0){
             runModel();
@@ -1772,53 +1808,62 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 5.w),
-                          child: Container(
-                            height: 18.h,
-                            width: 90.w,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Stack(
-                              alignment: Alignment.topRight,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
+                          child: GestureDetector(
+                            onTap: (){
+                              Get.back();
+                              Get.off(
+                                  () => CosmeticView(),
+                                arguments: i
+                              );
+                            },
+                            child: Container(
+                              height: 18.h,
+                              width: 90.w,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
 
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          flex:3,
-                                          child: Center(child: Image.network(Get.find<userController>().cosmetic.value[i].cos_img.value[0]))),
-                                      SizedBox(width: 3.w,),
-                                      Expanded(
-                                          flex:5,
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(height: 1.h,),
-                                              Text(Get.find<userController>().cosmetic.value[i].cos_brand.value+" : "+Get.find<userController>().cosmetic.value[i].cos_name.value,maxLines: 3,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 16.sp),),
-                                              Spacer(),
-                                              Row(
-                                                children: [
-                                                  Text('Tap to see more',style: GoogleFonts.inter(fontSize: 13.sp,color: Color(0xFF717171)),),
-                                                  Icon(Icons.arrow_forward_ios_rounded,size: 12.sp,color: Color(0xFF717171),)
-                                                ],
-                                              ),
-                                              SizedBox(height: 1.h,),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                            flex:3,
+                                            child: Center(child: Image.network(Get.find<userController>().cosmetic.value[i].cos_img.value[0]))),
+                                        SizedBox(width: 3.w,),
+                                        Expanded(
+                                            flex:5,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(height: 1.h,),
+                                                Text(Get.find<userController>().cosmetic.value[i].cos_brand.value+" : "+Get.find<userController>().cosmetic.value[i].cos_name.value,maxLines: 3,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 16.sp),),
+                                                Spacer(),
+                                                Row(
+                                                  children: [
+                                                    Text('Tap to see more',style: GoogleFonts.inter(fontSize: 13.sp,color: Color(0xFF717171)),),
+                                                    Icon(Icons.arrow_forward_ios_rounded,size: 12.sp,color: Color(0xFF717171),)
+                                                  ],
+                                                ),
+                                                SizedBox(height: 1.h,),
 
 
-                                            ],
-                                          )),
-                                      Spacer()
+                                              ],
+                                            )),
+                                        Spacer()
 
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Positioned(top: 1.h,right: 1.w,child: IconButton(onPressed: (){
-                                  Get.back();
-                                }, icon: Icon(Icons.close,color: Colors.black,size: 20.sp,)))
-                              ],
+                                  Positioned(top: 1.h,right: 1.w,child: IconButton(onPressed: (){
+                                    Get.back();
+                                  }, icon: Icon(Icons.close,color: Colors.black,size: 20.sp,)))
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -1969,6 +2014,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                     result = "646f54cdcb8da7f6d098b571";
                   });
                 }
+
                 print(count);
                 for(var j= 0; j< Get.find<userController>().skincare.value.length;j++ ){
                   if(Get.find<userController>().skincare.value[j].id.value==result && count==1){
@@ -2042,7 +2088,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin{
                       });
 
                     });
-
+                    break;
                   }
                 }
 
