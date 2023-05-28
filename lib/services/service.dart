@@ -5,8 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class APIService {
-
-  // var public = "http://100.66.40.189:8000";
+  
+//   // var public = "http://100.66.40.189:8000";
+//   // var public = "http://192.168.2.35:8000";
   var public = "https://apiservice-d5qtigtmea-as.a.run.app";
   // FlutterSecureStorage storage = FlutterSecureStorage();
 

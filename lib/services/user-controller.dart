@@ -43,6 +43,11 @@ class userController extends GetxController{
   var pdt_price = ''.obs;
 
 
+  var userFirstName = ''.obs;
+  var userLastName = ''.obs;
+  var userPoint = 0.obs;
+
+
   // var cosmeticModel = CosmeticModel();
 
   APIService service = APIService();
@@ -202,6 +207,12 @@ class userController extends GetxController{
     customizeIndex.value = 0;
 
 
+  }
+
+  initProfile() {
+    service.getAllCosmetic().then((res) {
+
+    });
   }
 
   startControl(PageController controller){
