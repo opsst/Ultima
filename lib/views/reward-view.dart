@@ -93,7 +93,7 @@ class _RewardViewState extends State<RewardView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('Total Point',style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 14.sp,letterSpacing: 0.3,color: Colors.white.withOpacity(0.84))),
-                                    Text(256.toString()+' P.',style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 30.sp,letterSpacing: 0.3,color: Colors.white)),
+                                    Text(Get.find<userController>().userPoint.value.toString()+' P.',style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 30.sp,letterSpacing: 0.3,color: Colors.white)),
                                     SizedBox(height: 4.w,),
                                     Container(
                                       decoration: BoxDecoration(

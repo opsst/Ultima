@@ -96,6 +96,7 @@ class _AccountViewState extends State<AccountView> {
                             // Text(FirebaseAuth.instance.currentUser!.displayName!.toString(),style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 18.sp,letterSpacing: 0.3,color: Color(0xFF0B1F4F)),),
                             Spacer(),
                             CircleAvatar(
+                              backgroundColor: Color(0XFF4E82FF),
                               child: Center(child: Obx(() =>
                                   Text(Get.find<userController>().userFirstName.value.substring(0,1) ,style: GoogleFonts.inter(fontWeight: FontWeight.w600,fontSize: 17.sp,letterSpacing: 0.3,color: Colors.white)),
                             ))),
@@ -218,7 +219,7 @@ class _AccountViewState extends State<AccountView> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   customBorder: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                                    // borderRadius: BorderRadius.circular(8),
                                   ),
                                   onTap: () async {
                                     if(index == 3){

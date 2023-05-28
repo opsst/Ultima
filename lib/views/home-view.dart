@@ -16,6 +16,7 @@ import 'package:ultima/services/service.dart';
 import 'package:ultima/services/user-controller.dart';
 import 'package:ultima/views/camera-view.dart';
 import 'package:ultima/views/cosmetic-view.dart';
+import 'package:ultima/views/deals-view.dart';
 import 'package:ultima/views/reward-view.dart';
 import 'package:ultima/views/search-view.dart';
 import 'package:ultima/views/web-view.dart';
@@ -249,31 +250,38 @@ class _HomepageViewState extends State<HomepageView> {
                       padding: EdgeInsets.symmetric(horizontal: 2.h,vertical: 2.h),
                       child: Row(
                         children: [
-                          Expanded(child: Container(
-                            height: 13.h,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(color: Color(0xFFA5A5A5).withOpacity(0.11),offset: Offset(1,2),blurRadius: 10)
-                                ]
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset('assets/images/hot-deal.png',height: 3.h,),
-                                // SvgPicture.asset('assets/icons/hot-deal.svg'),
-                                SizedBox(height: 2.w,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('All Deals ',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color:  Color(0xFF0b1f4f))),
-                                    Icon(Icons.arrow_forward_ios_rounded,size: 15.sp,color: Color(0xFF0b1f4f),)
+                          Expanded(child: GestureDetector(
+                            onTap: (){
+                              Get.to(
+                                    () => AllDealsView(),
+                              );
+                            },
+                            child: Container(
+                              height: 13.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(color: Color(0xFFA5A5A5).withOpacity(0.11),offset: Offset(1,2),blurRadius: 10)
+                                  ]
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset('assets/images/hot-deal.png',height: 3.h,),
+                                  // SvgPicture.asset('assets/icons/hot-deal.svg'),
+                                  SizedBox(height: 2.w,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text('All Deals ',textAlign: TextAlign.center,style: GoogleFonts.inter(fontSize: 14.sp,fontWeight: FontWeight.w700,color:  Color(0xFF0b1f4f))),
+                                      Icon(Icons.arrow_forward_ios_rounded,size: 15.sp,color: Color(0xFF0b1f4f),)
 
-                                  ],
-                                ),
+                                    ],
+                                  ),
 
                         ],
+                              ),
                             ),
                           )),
 
