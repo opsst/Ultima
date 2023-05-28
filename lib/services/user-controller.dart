@@ -43,7 +43,7 @@ class userController extends GetxController{
   var pdt_price = ''.obs;
 
 
-  var userFirstName = ''.obs;
+  var userFirstName = 'Putita'.obs;
   var userLastName = ''.obs;
   var userPoint = 0.obs;
 
