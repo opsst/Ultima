@@ -42,6 +42,11 @@ class userController extends GetxController{
   var pdt_name = ''.obs;
   var pdt_price = ''.obs;
 
+  var userID = ''.obs;
+  var userFirstName = ''.obs;
+  var userLastname = ''.obs;
+  var userPoint = 0.obs;
+
 
   // var cosmeticModel = CosmeticModel();
 
@@ -49,6 +54,22 @@ class userController extends GetxController{
 
   initData() async{
     print('start');
+
+    service.getUser().then((res) {
+      print(res.data['data']);
+      service.getUser2(res.data['data']['id']).then((value) {
+        print(value.data['data']);
+        userID.value = value.data['data']['id'];
+        userFirstName.value = value.data['data']['firstname'];
+        userLastname.value = value.data['data']['lastname'];
+        userPoint.value = value.data['data']['point'];
+        print(userID.value);
+        print(userFirstName.value);
+        print(userLastname.value);
+        print(userPoint.value);
+      });
+    });
+
     service.getAllCosmetic().then((res) {
     if (res == null){
       print('sddsd');

@@ -266,7 +266,7 @@ class _AccountViewState extends State<AccountView> {
             onTap: () async {
               AuthService().logout();
               await storage.delete(key: "token");
-              Get.off(
+              Get.offAll(
                       () => WelcomepageView()
               );
             },
