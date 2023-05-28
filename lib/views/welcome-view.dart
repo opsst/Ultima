@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ultima/views/signup-view.dart';
@@ -72,7 +73,7 @@ class _WelcomepageViewState extends State<WelcomepageView> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        showModalBottomSheet<dynamic>(context: context, isScrollControlled: true, backgroundColor: Colors.transparent, builder: (context) => SignUppageView());
+                        showModalBottomSheet<dynamic>(context: context, isScrollControlled: true, backgroundColor: Colors.transparent, builder: (context) => SignupView());
                       },
                       child: Container(
                           height: 6.5.h,
@@ -88,6 +89,7 @@ class _WelcomepageViewState extends State<WelcomepageView> {
                     SizedBox(height: 3.5.h,),
                     GestureDetector(
                       onTap: () {
+
                         showModalBottomSheet<dynamic>(context: context, isScrollControlled: true, backgroundColor: Colors.transparent, builder: (context) => LoginView());
                       },
                       child: Container(

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class APIService {
@@ -9,7 +9,7 @@ class APIService {
 //   // var public = "http://100.66.40.189:8000";
 //   // var public = "http://192.168.2.35:8000";
   var public = "https://apiservice-d5qtigtmea-as.a.run.app";
-  // FlutterSecureStorage storage = FlutterSecureStorage();
+  FlutterSecureStorage storage = FlutterSecureStorage();
 
   Dio dio = Dio();
 
@@ -74,6 +74,153 @@ class APIService {
     }
   }
 
+  Future facebookCreate(String firstname, String lastname, String fb_login) async{
+    try{
+      // dio.interceptors.add(logger);
+      Response response = await dio.post(public + "/user/fb_create", data: {
+        "fb_login" : fb_login,
+        "firstname" : firstname,
+        "lastname" : lastname??""
+      });
+
+      if (response.statusCode == 200){
+        return(response);
+      }
+
+    } on DioError catch (e) {
+      if (e.response != null ){
+        print(e.message);
+      } else {
+        print(e.message);
+      }
+    }
+  }
+
+  Future googleCreate(String firstname, String lastname, String google_login) async{
+    try{
+      // dio.interceptors.add(logger);
+      Response response = await dio.post(public + "/user/google_create", data: {
+        "google_login" : google_login,
+        "firstname" : firstname,
+        "lastname" : lastname??""
+      });
+
+      if (response.statusCode == 200){
+        return(response);
+      }
+
+    } on DioError catch (e) {
+      if (e.response != null ){
+        print(e.message);
+      } else {
+        print(e.message);
+      }
+    }
+  }
+
+  Future getUser()async{
+    try{
+      // dio.interceptors.add(logger);
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
+      Response response = await dio.get(public + "/user/jwt/getTokenDetail");
+
+      if (response.statusCode == 200) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
+  Future getUser2(String id)async{
+    try{
+      // dio.interceptors.add(logger);
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
+      Response response = await dio.get(public + "/user/"+id);
+
+      if (response.statusCode == 200) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
+  Future getPoint(String id)async{
+    try{
+      // dio.interceptors.add(logger);
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
+      Response response = await dio.get(public + "/user/point/"+id);
+
+      if (response.statusCode == 200) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
+
+
+  // Future facebookLogin(String firstname, String lastname, String fb_login) async{
+  //   try{
+  //     // dio.interceptors.add(logger);
+  //     Response response = await dio.post(public + "/user/fb_login", data: {
+  //       "fb_login" : fb_login,
+  //     });
+  //
+  //     if (response.statusCode == 200){
+  //       return(response);
+  //     }
+  //
+  //   } on DioError catch (e) {
+  //     if (e.response != null ){
+  //       print(e.message);
+  //     } else {
+  //       print(e.message);
+  //     }
+  //   }
+  // }
+  //
+  // Future googleLogin(String firstname, String lastname, String google_login) async{
+  //   try{
+  //     // dio.interceptors.add(logger);
+  //     Response response = await dio.post(public + "/user/fb_login", data: {
+  //       "google_login" : google_login,
+  //     });
+  //
+  //     if (response.statusCode == 200){
+  //       return(response);
+  //     }
+  //
+  //   } on DioError catch (e) {
+  //     if (e.response != null ){
+  //       print(e.message);
+  //     } else {
+  //       print(e.message);
+  //     }
+  //   }
+  // }
+  //
+
   Future registerUser(String username, String password,String firstname, String lastname) async{
     try{
 
@@ -86,10 +233,10 @@ class APIService {
         "firstname": firstname,
         "lastname": lastname
       });
-      print(response);
-      if (response.statusCode == 201){
+      // print(response);
+      // if (response){
         return(response);
-      }
+      // }
 
     } on DioError catch (e) {
       if (e.response != null ){
@@ -104,8 +251,8 @@ class APIService {
     try{
       // dio.interceptors.add(logger);
       // String? token = '';
-      // token = await storage.read(key: 'TOKEN');
-      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
 
       Response response = await dio.post(public + "/ingredient/find", data: {
         "name" : name,
@@ -130,8 +277,8 @@ class APIService {
       // dio.interceptors.add(logger);
       print(data);
       // String? token = '';
-      // token = await storage.read(key: 'TOKEN');
-      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
 
       Response response = await dio.post(public + "/ingredient/create", data:data);
 
@@ -152,10 +299,8 @@ class APIService {
   Future addCosmetic(dynamic data)async{
     try{
       // dio.interceptors.add(logger);
-      String? token = '';
-      // token = await storage.read(key: 'TOKEN');
-      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
-
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
       Response response = await dio.post(public + "/cosmetic/create", data: data);
 
       if (response.statusCode == 200) {
@@ -175,10 +320,8 @@ class APIService {
   Future addSkincare(dynamic data)async{
     try{
       // dio.interceptors.add(logger);
-      String? token = '';
-      // token = await storage.read(key: 'TOKEN');
-      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
-
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
       Response response = await dio.post(public + "/skincare/create", data: data);
 
       if (response.statusCode == 201) {
@@ -197,10 +340,8 @@ class APIService {
   Future addFragrance(dynamic data)async{
     try{
       // dio.interceptors.add(logger);
-      String? token = '';
-      // token = await storage.read(key: 'TOKEN');
-      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
-
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
       Response response = await dio.post(public + "/fragrance/create", data: data);
 
       if (response.statusCode == 201) {
@@ -221,10 +362,8 @@ class APIService {
   Future getAllCosmetic()async{
     try{
       // dio.interceptors.add(logger);
-      String? token = '';
-      // token = await storage.read(key: 'token');
-      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
-
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
       Response response = await dio.get(public + "/cosmetic/checkall");
 
       if (response.statusCode == 200) {
@@ -243,10 +382,8 @@ class APIService {
   Future getAllSkincare()async{
     try{
       // dio.interceptors.add(logger);
-      String? token = '';
-      // token = await storage.read(key: 'token');
-      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
-
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
       Response response = await dio.get(public + "/skincare/checkall");
 
       if (response.statusCode == 200) {
@@ -265,9 +402,9 @@ class APIService {
   Future getAllFragrance()async{
     try{
       // dio.interceptors.add(logger);
-      String? token = '';
-      // token = await storage.read(key: 'token');
-      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
+      // String? token = '';
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
 
       Response response = await dio.get(public + "/fragrance/checkall");
 
@@ -289,9 +426,8 @@ class APIService {
 
     try{
       // dio.interceptors.add(logger);
-      String? token = '';
-      // token = await storage.read(key: 'token');
-      dio.options.headers["authorization"] = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXJuYW1lIjoiRnJhbmsifQ.b2tDz1PyZBMF7IuelehsHvhmD8d2uZt2lrndTB7XMWc";
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
 
       Response response = await dio.get(public + "/cosmetic/ingredient/"+id);
 

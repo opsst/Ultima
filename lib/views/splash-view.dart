@@ -31,6 +31,7 @@ class _SplashViewState extends State<SplashView> {
 
   isLogin() async {
     String? mytoken = await storage.read(key: "token");
+    // await storage.delete(key: "token");
     print(mytoken);
     if(mytoken == null){
 
