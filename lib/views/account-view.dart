@@ -92,7 +92,7 @@ class _AccountViewState extends State<AccountView> {
                         Row(
                           children: [
 
-                            Text('Putita Techapat',style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 18.5.sp,letterSpacing: 0.3,color: Color(0xFF0B1F4F)),),
+                            Text(Get.find<userController>().userFirstName.value+" "+ Get.find<userController>().userLastName.value,style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 18.5.sp,letterSpacing: 0.3,color: Color(0xFF0B1F4F)),),
                             // Text(FirebaseAuth.instance.currentUser!.displayName!.toString(),style: GoogleFonts.inter(fontWeight: FontWeight.w700,fontSize: 18.sp,letterSpacing: 0.3,color: Color(0xFF0B1F4F)),),
                             Spacer(),
                             CircleAvatar(
@@ -154,7 +154,7 @@ class _AccountViewState extends State<AccountView> {
                                       ],
                                     ),
                                     Expanded(child: Container()),
-                                    Align(alignment: Alignment.centerRight,child: Text('1300',style: GoogleFonts.inter(fontSize: 28.sp,fontWeight: FontWeight.w700,color: Colors.white))),
+                                    Align(alignment: Alignment.centerRight,child: Text(Get.find<userController>().userPoint.value.toString(),style: GoogleFonts.inter(fontSize: 28.sp,fontWeight: FontWeight.w700,color: Colors.white))),
                                     SizedBox(height: 0.2.h,),
                                     Align(alignment: Alignment.centerRight,child: Text('Expired Date 31/12/66',style: GoogleFonts.inter(fontSize: 13.sp,fontWeight: FontWeight.w500,color: Colors.white))),
 
@@ -186,7 +186,7 @@ class _AccountViewState extends State<AccountView> {
                                         ],
                                       ),
                                       Expanded(child: Container()),
-                                      Align(alignment: Alignment.centerRight,child: Text('5',style: GoogleFonts.inter(fontSize: 28.sp,fontWeight: FontWeight.w700,color: Color(0xFF1E439B)))),
+                                      Align(alignment: Alignment.centerRight,child: Text(Get.find<userController>().userUrl.value.length.toString(),style: GoogleFonts.inter(fontSize: 28.sp,fontWeight: FontWeight.w700,color: Color(0xFF1E439B)))),
                                       Align(alignment: Alignment.centerRight,child: Text('items',style: GoogleFonts.inter(fontSize: 13.sp,fontWeight: FontWeight.w500,color: Color(0xFF1E439B)))),
                                     ],
                                   ),
@@ -221,10 +221,10 @@ class _AccountViewState extends State<AccountView> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   onTap: () async {
-                                    if(index == 4){
+                                    if(index == 3){
                                       AuthService().logout();
                                       await storage.delete(key: "token");
-                                      Get.off(
+                                      Get.offAll(
                                               () => WelcomepageView()
                                       );
                                     }

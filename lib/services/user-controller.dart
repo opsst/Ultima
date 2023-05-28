@@ -44,13 +44,14 @@ class userController extends GetxController{
 
   var userID = ''.obs;
   var userFirstName = ''.obs;
-  var userLastname = ''.obs;
+  // var userLastname = ''.obs;
   var userPoint = 0.obs;
 
 
-  var userFirstName = 'Putita'.obs;
+  // var userFirstName = 'Putita'.obs;
   var userLastName = ''.obs;
-  var userPoint = 0.obs;
+  // var userPoint = 0.obs;
+  var userUrl = [].obs;
 
 
   // var cosmeticModel = CosmeticModel();
@@ -61,16 +62,20 @@ class userController extends GetxController{
     print('start');
 
     service.getUser().then((res) {
+      print('kuy');
+
       print(res.data['data']);
       service.getUser2(res.data['data']['id']).then((value) {
+        print('sdsddsds');
         print(value.data['data']);
         userID.value = value.data['data']['id'];
-        userFirstName.value = value.data['data']['firstname'];
-        userLastname.value = value.data['data']['lastname'];
-        userPoint.value = value.data['data']['point'];
+        userFirstName.value = value.data['data']['firstname'].toString().capitalize!;
+        userLastName.value = value.data['data']['lastname'].toString().capitalize!;
+        userPoint.value = value.data['data']['point']??0;
+        userUrl.value = value.data['data']['used_point_url']??[];
         print(userID.value);
         print(userFirstName.value);
-        print(userLastname.value);
+        print(userLastName.value);
         print(userPoint.value);
       });
     });

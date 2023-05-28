@@ -80,7 +80,7 @@ class APIService {
       Response response = await dio.post(public + "/user/fb_create", data: {
         "fb_login" : fb_login,
         "firstname" : firstname,
-        "lastname" : lastname
+        "lastname" : lastname??""
       });
 
       if (response.statusCode == 200){
@@ -102,7 +102,7 @@ class APIService {
       Response response = await dio.post(public + "/user/google_create", data: {
         "google_login" : google_login,
         "firstname" : firstname,
-        "lastname" : lastname
+        "lastname" : lastname??""
       });
 
       if (response.statusCode == 200){
