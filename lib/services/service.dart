@@ -421,7 +421,7 @@ class APIService {
       }
     }
   }
-
+  //
   Future getIngCos(String id) async{
 
     try{
@@ -444,6 +444,29 @@ class APIService {
       }
     }
   }
+  Future getSkinCos(String id) async{
+
+    try{
+      // dio.interceptors.add(logger);
+      var token = await storage.read(key: 'token');
+      dio.options.headers["authorization"] = "Bearer "+token!;
+
+      Response response = await dio.get(public + "/skincare/ingredient/"+id);
+
+      if (response.statusCode == 200) {
+        return response;
+        // print(response);
+      }}
+    on DioError catch (e) {
+      if (e.response != null ){
+        // print(e.message);
+        return e.response!;
+      } else {
+        // print(e.message);
+      }
+    }
+  }
+
 
   Future contactApp(String id,String url) async{
     try{

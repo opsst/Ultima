@@ -173,6 +173,8 @@ class _LoginViewState extends State<LoginView> {
                     // print(result.user!.uid);
                     service.googleCreate(result.user!.displayName!, "", result.user!.uid).then((res) async {
                       print(res.data);
+                      Get.back();
+
                       await storage.write(key: "token", value: res.data['token']);
                       await Get.find<userController>().initData();
                     });
@@ -185,6 +187,7 @@ class _LoginViewState extends State<LoginView> {
                     onTap: () async {
                       var result =  await AuthService().signInWithFacebook(context);
                       print(result);
+                      Get.back();
                       service.facebookCreate(result.user!.displayName!, "", result.user!.uid).then((res) async {
                         print(res.data);
                         await storage.write(key: "token", value: res.data['token']);

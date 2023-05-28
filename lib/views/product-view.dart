@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ultima/services/cosmetic-service.dart';
 import 'package:ultima/services/incidecode-scrap.dart';
+import 'package:ultima/services/service.dart';
 import 'package:ultima/services/user-controller.dart';
 import 'package:ultima/views/point-navigated-view.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,6 +25,18 @@ class ProductView extends StatefulWidget {
 class _ProductViewState extends State<ProductView> {
   var isShow = false;
   var scape = Scraper();
+
+  APIService service = APIService();
+  var fightAcne = false;
+  var brightening = false;
+  var moisturizer = false;
+  var soothing = false;
+  var uvProtection = false;
+  var antioxidant = false;
+  var preservation = false;
+  var exfoliant = false;
+  var perfuming = false;
+  var antibacterial = false;
 
   @override
   void initState() {
@@ -46,6 +59,74 @@ class _ProductViewState extends State<ProductView> {
     super.dispose();
   }
   startScrape() async {
+    service.getSkinCos(Get.find<userController>().skincare.value[Get.arguments].id.value).then((value) {
+      print(value.data['data'].length);
+      for(var i=0; i<value.data['data'].length ; i++){
+        print(value.data['data'][i][0]['func'].toString());
+
+        if(value.data['data'][i][0]['func'].toString().contains('perfuming')){
+          setState(() {
+            perfuming =true;
+          });
+        }
+
+        if(value.data['data'][i][0]['func'].toString().contains('skin brightening')){
+          setState(() {
+            brightening =true;
+          });
+        }
+
+        if(value.data['data'][i][0]['func'].toString().contains('moisturizer/humectant')){
+          setState(() {
+            moisturizer =true;
+          });
+        }
+
+        if(value.data['data'][i][0]['func'].toString().contains('soothing')){
+          setState(() {
+            soothing =true;
+          });
+        }
+
+        if(value.data['data'][i][0]['func'].toString().contains('sunscreen')){
+          setState(() {
+            uvProtection =true;
+          });
+        }
+
+        if(value.data['data'][i][0]['func'].toString().contains('antioxidant')){
+          setState(() {
+            antioxidant  =true;
+          });
+        }
+
+        if(value.data['data'][i][0]['func'].toString().contains('preservative')){
+          setState(() {
+            preservation =true;
+          });
+        }
+
+        if(value.data['data'][i][0]['func'].toString().contains('exfoliant')){
+          setState(() {
+            exfoliant =true;
+          });
+        }
+
+        if(value.data['data'][i][0]['func'].toString().contains('antimicrobial/antibacterial')){
+          setState(() {
+            antibacterial =true;
+          });
+        }
+
+        if(value.data['data'][i][0]['func'].toString().contains('anti-acne')){
+          setState(() {
+            fightAcne =true;
+          });
+        }
+      }
+
+    });
+
     // print(Get.find<userController>().cosmetic.value[Get.arguments].l_link.value[0]);
 
     // launchUrl(Uri.parse(Get.find<userController>().cosmetic.value[Get.arguments].l_link.value[0]),
@@ -161,9 +242,202 @@ class _ProductViewState extends State<ProductView> {
                         ),
                       ):Container(),
                       SizedBox(height: 3.h,),
+                      (  fightAcne || brightening ||
+                          moisturizer ||
+                          soothing ||
+                          uvProtection ||
+                          antioxidant ||
+                          preservation ||
+                          exfoliant ||
+                          perfuming ||
+                          antibacterial
+                      )?Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.w),
+                            child: Text('Highlight Ingredients',style: GoogleFonts.inter(fontSize: 18.sp,fontWeight: FontWeight.w700),),
+                          ),
+                          SizedBox(height: 1.5.h,),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.w),
+                            child: Wrap(
+                              spacing: 2.w,
+                              runSpacing: 1.w,
+                              children: [
+                                brightening?Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xFFBA2797)
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+                                    child: Wrap(
+                                      children: [
+                                        Image.asset('assets/images/Brightening.png',width: 5.w,),
+                                        SizedBox(width: 2.w,),
+                                        Text('Skin Brightening',style: GoogleFonts.inter(fontWeight: FontWeight.w600,color: Colors.white),),
+                                      ],
+                                    ),
+                                  ),
+                                ):Container(),
+                                antibacterial?Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xFF5E0E94)
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+                                    child: Wrap(
+                                      children: [
+                                        Image.asset('assets/images/Antibacterial.png',width: 5.w,),
+                                        SizedBox(width: 2.w,),
+                                        Text('Antibacterial',style: GoogleFonts.inter(fontWeight: FontWeight.w600,color: Colors.white),),
+                                      ],
+                                    ),
+                                  ),
+                                ):Container(),
+
+                                antioxidant?Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xFF2C0398)
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+                                    child: Wrap(
+                                      children: [
+                                        Image.asset('assets/images/Antioxidant.png',width: 5.w,),
+                                        SizedBox(width: 2.w,),
+                                        Text('Antioxidant',style: GoogleFonts.inter(fontWeight: FontWeight.w600,color: Colors.white),),
+                                      ],
+                                    ),
+                                  ),
+                                ):Container(),
+                                moisturizer?Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xFF2B64AD)
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+                                    child: Wrap(
+                                      children: [
+                                        Image.asset('assets/images/Moisturizer.png',width: 5.w,),
+                                        SizedBox(width: 1.w,),
+                                        Text('Moisturizer',style: GoogleFonts.inter(fontWeight: FontWeight.w600,color: Colors.white),),
+                                      ],
+                                    ),
+                                  ),
+                                ):Container(),
+                                exfoliant?Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xFF439697)
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+                                    child: Wrap(
+                                      children: [
+                                        Image.asset('assets/images/Exfoliant.png',width: 5.w,),
+                                        SizedBox(width: 1.w,),
+                                        Text('Exfoliant',style: GoogleFonts.inter(fontWeight: FontWeight.w600,color: Colors.white),),
+                                      ],
+                                    ),
+                                  ),
+                                ):Container(),
+                                fightAcne?Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xFF52B535)
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+                                    child: Wrap(
+                                      children: [
+                                        Image.asset('assets/images/Fight Acne.png',width: 5.w,),
+                                        SizedBox(width: 1.w,),
+                                        Text('Fight Acne',style: GoogleFonts.inter(fontWeight: FontWeight.w600,color: Colors.white),),
+                                      ],
+                                    ),
+                                  ),
+                                ):Container(),
+
+                                perfuming?Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xFFF09F39)
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+                                    child: Wrap(
+                                      children: [
+                                        Image.asset('assets/images/Perfuming.png',width: 5.w,),
+                                        SizedBox(width: 1.w,),
+                                        Text('Perfuming',style: GoogleFonts.inter(fontWeight: FontWeight.w600,color: Colors.white),),
+                                      ],
+                                    ),
+                                  ),
+                                ):Container(),
+                                preservation?Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xFFEC6F2E)
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+                                    child: Wrap(
+                                      children: [
+                                        Image.asset('assets/images/Preservation.png',width: 5.w,),
+                                        SizedBox(width: 1.w,),
+                                        Text('Preservation',style: GoogleFonts.inter(fontWeight: FontWeight.w600,color: Colors.white),),
+                                      ],
+                                    ),
+                                  ),
+                                ):Container(),
+                                soothing?Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xFFE84826)
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+                                    child: Wrap(
+                                      children: [
+                                        Image.asset('assets/images/Soothing.png',width: 5.w,),
+                                        SizedBox(width: 1.w,),
+                                        Text('Soothing',style: GoogleFonts.inter(fontWeight: FontWeight.w600,color: Colors.white),),
+                                      ],
+                                    ),
+                                  ),
+                                ):Container(),
+                                uvProtection?Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xFFE93324)
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+                                    child: Wrap(
+                                      children: [
+                                        Image.asset('assets/images/Sunscreen.png',width: 5.w,),
+                                        SizedBox(width: 1.w,),
+                                        Text('Sunscreen',style: GoogleFonts.inter(fontWeight: FontWeight.w600,color: Colors.white),),
+                                      ],
+                                    ),
+                                  ),
+                                ):Container(),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 3.5.h,),
+
+                        ],
+                      ):Container(),
 
                       Container(
                         width: 100.w,
+            
                         // height: 100.h,
                         color: Color(0xFFF6F8FA),
                         child: Column(

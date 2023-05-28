@@ -218,7 +218,7 @@ class userController extends GetxController{
 
 
       // print(res.data['data'].length);
-      Get.off(
+      Get.offAll(
               () => NavigationBarView(),
           transition: Transition.rightToLeftWithFade
       );
